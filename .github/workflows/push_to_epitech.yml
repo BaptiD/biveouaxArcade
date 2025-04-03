@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
-      - run: rm ./${{ env.EXECUTABLES }}
+      - run: rm -f ${{ env.EXECUTABLES }}
       - run: ./compile.sh -re
       - run: if [ ! -f ./${{ env.EXECUTABLES }}]; then exit 1 fi
 
