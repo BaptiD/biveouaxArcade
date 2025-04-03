@@ -1,5 +1,5 @@
 name: Arcade
-run-name: Testing Arcade programme
+run-name: Mirroring to main
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v4
       - run: rm -rf ${{ env.EXECUTABLES }}
-      - run: compile.sh -re
+      - run: ./compile.sh -re
       - run: if [ ! -f ${{ env.EXECUTABLES }}]; then exit 1 fi
 
   push_to_mirror:
