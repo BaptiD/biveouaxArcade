@@ -12,7 +12,7 @@ on:
       - 'https://github.com/EpitechPromo2028/B-OOP-400-PAR-4-1-arcade-pierre.pruvost'
 
 env:
-  MIRROR_URL: 'git@github.com:EpitechPromo2028/B-OOP-400-PAR-4-1-arcade-pierre.pruvost.git'
+  MIRROR_URL: 'https://github.com/EpitechPromo2028/B-OOP-400-PAR-4-1-arcade-pierre.pruvost.git'
   EXECUTABLES: 'arcade'
 
 jobs:
