@@ -1,5 +1,5 @@
 name: Arcade
-run-name: Mirroring to main
+run-name: Mirroring to main 
 
 on:
   push:
