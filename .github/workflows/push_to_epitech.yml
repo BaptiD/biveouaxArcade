@@ -26,7 +26,7 @@ jobs:
       - run: rm -f ${{ env.EXECUTABLES }}
       - run: ./compile.sh -re
       - run: ls
-      - run: if [ ! -f "./${{ env.EXECUTABLES }}" ]; then exit 1 fi
+      - run: if [ ! -f "./${{ env.EXECUTABLES }}" ]; then exit 1 else fi
 
   push_to_mirror:
     needs: [check_program_compilation]
