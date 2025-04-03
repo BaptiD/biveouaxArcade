@@ -8,7 +8,7 @@
 #include <filesystem>
 
 #include "menu.hpp"
-#include "entitys.hpp"
+#include "entity.hpp"
 
 void arcade::Menu::handleEvent(event_t events)
 {

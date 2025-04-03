@@ -9,7 +9,7 @@
     #define UPDATEMANAGEMENT_HPP_
 
     #include "vector"
-    #include "entitys.hpp"
+    #include "entity.hpp"
 
 typedef struct datas_s {
     std::vector<entity_t> bg;

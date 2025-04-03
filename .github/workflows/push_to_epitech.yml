@@ -24,6 +24,7 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v4
       - run: rm -f ${{ env.EXECUTABLES }}
+      - run: ls
       - run: ./compile.sh -re
       - run: ls
       - run: if [ ! -f "./${{ env.EXECUTABLES }}" ]; then exit 1; fi
@@ -38,4 +39,4 @@ jobs:
           target_repo_url:
             ${{ env.MIRROR_URL }}
           ssh_private_key:
-            ${{ secrets.GIT_SSH_PRIVATE_KezEY }}
+            ${{ secrets.GIT_SSH_PRIVATE_KEY }}
