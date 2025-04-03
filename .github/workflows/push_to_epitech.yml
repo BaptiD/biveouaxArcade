@@ -18,20 +18,18 @@ env:
 jobs:
   check_program_compilation:
     runs-on: ubuntu-latest
-    container: epitechcontent/epitest-docker:latest
     timeout-minutes: 2
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
       - run: rm -f ${{ env.EXECUTABLES }}
-      - run: ls
       - run: ./compile.sh -re
-      - run: ls
       - run: if [ ! -f "./${{ env.EXECUTABLES }}" ]; then exit 1; fi
 
   push_to_mirror:
     needs: [check_program_compilation]
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v4
       - uses: pixta-dev/repository-mirroring-action@v1
