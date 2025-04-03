@@ -23,9 +23,9 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
-      - run: rm -rf ${{ env.EXECUTABLES }}
+      - run: rm ./${{ env.EXECUTABLES }}
       - run: ./compile.sh -re
-      - run: if [ ! -f ${{ env.EXECUTABLES }}]; then exit 1 fi
+      - run: if [ ! -f ./${{ env.EXECUTABLES }}]; then exit 1 fi
 
   push_to_mirror:
     needs: [check_program_compilation]
