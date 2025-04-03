@@ -9,7 +9,7 @@
     #define EVENT_HPP_
 
     #include <vector>
-    #include "tool.hpp"
+    #include <tool.hpp>
 
 enum event_e {
     KEY_A_PRESSED,
