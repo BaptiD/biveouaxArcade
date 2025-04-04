@@ -20,8 +20,7 @@ int arcade::core::loop()
         CALL(_game)->handleEvent(events);
         datas = CALL(_game)->update();
     //     change lib ? / break loop ?
-        CALL(_graphic)->update(datas);
-        CALL(_graphic)->display();
+        CALL(_graphic)->display(datas);
     }
     return SUCCESS;
 }
