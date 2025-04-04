@@ -32,9 +32,10 @@ jobs:
     timeout-minutes: 2
     steps:
       - uses: actions/checkout@v4
-      - uses: pixta-dev/repository-mirroring-action@v1
         with:
           fetch-depth: 0
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
           target_repo_url:
             ${{ env.MIRROR_URL }}
           ssh_private_key:
