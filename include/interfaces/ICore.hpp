@@ -9,16 +9,21 @@
     #define ICORE_HPP_
 
     #include <string>
+    #include "tool.hpp"
+
+namespace arcade {
 
 class ICore {
 
     public:
         virtual ~ICore() = default;
-        virtual int run(std::string graphPath) = 0;
-        virtual int load(std::string gamePath, std::string graphPath) = 0;
+        virtual void run(void) = 0;
+        virtual void load(std::string libPath, typeLib_e type) = 0;
 
     private:
 
 };
+
+}
 
 #endif

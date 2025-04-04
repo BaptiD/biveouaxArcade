@@ -9,6 +9,7 @@
     #define TOOL_HPP_
 
     #include <cstdint>
+    #include <string>
 
     #define SUCCESS 0
     #define ERROR 84
@@ -24,5 +25,15 @@ typedef struct color_s {
     uint8_t b;
     uint8_t a;
 } color_t;
+
+typedef struct libPaths_s {
+    std::string game;
+    std::string graphic;
+} libPaths_t;
+
+enum typeLib_e {
+    GAME_LIB,
+    GRAPHIC_LIB,
+};
 
 #endif

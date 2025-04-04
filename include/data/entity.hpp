@@ -22,8 +22,8 @@ enum direction_e {
 typedef struct entity_s {
     vector_t pos;
     vector_t size;
+    char character;
     std::string asset;
-    char value;
     color_t color;
     direction_e direction;
 } entity_t;

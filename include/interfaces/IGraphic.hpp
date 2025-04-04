@@ -20,8 +20,7 @@ namespace arcade {
         public:
             virtual ~IGraphic() = default;
             virtual event_t handleEvent(void) = 0;
-            virtual void update(datas_t) = 0;
-            virtual void display(void) = 0;
+            virtual void display(data_t) = 0;
 
         private:
 

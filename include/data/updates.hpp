@@ -13,9 +13,11 @@
 
 typedef struct datas_s {
     std::vector<entity_t> bg;
-    std::vector<entity_t> items;
+    std::vector<entity_t> objects;
     std::vector<entity_t> ui;
+    std::vector<std::string> audios;
     std::vector<text_t> texts;
-} datas_t;
+    libPaths_t libs;
+} data_t;
 
 #endif
