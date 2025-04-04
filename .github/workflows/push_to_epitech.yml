@@ -24,6 +24,7 @@ jobs:
         uses: actions/checkout@v4
       - run: rm -f ${{ env.EXECUTABLES }} ./build/ ./lib/
       - run: mkdir ./build/ && cd ./build/
+      - run: ls && ls ..
       - run: cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
       - run: cmake --build .
       - run: cd ..
