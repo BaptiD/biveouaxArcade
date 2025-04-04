@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Clear repo
-        run: rm -f ${{ env.EXECUTABLES }} ./build/ ./lib/
+        run: rm -rf ${{ env.EXECUTABLES }} ./build/ ./lib/
       - name: Creating build directory
         run: mkdir ./build/
       - name: Compilation
