@@ -10,25 +10,27 @@
 
     #include "memory"
     #include "IGraphic.hpp"
-
+    #include <map>
 namespace arcade {
+class nCurses : public IGraphic {
+  public:
 
-    class nCurses : public IGraphic{
-        
-        public:
-            nCurses() {};
-            event_t handleEvent(void) override;
-            void display(datas_t) override;
+    nCurses();
+    ~nCurses();
+    event_t handleEvent(void) override;
+    void display(datas_t) override;
 
-        private:
-            event_t _events;
+    private:
+        static const std::map<char, event_e> _map;
+        event_t _events;
+        void drawEntity(entity_t& entity);
+};
 
-    };
-    extern "C" {
-        IGraphic *makeGraphic() {
-            return new nCurses;
-        }
+extern "C" {
+    IGraphic *makeGraphic() {
+        return new nCurses;
     }
-}
+};
+};
 
 #endif
