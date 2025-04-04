@@ -6,6 +6,8 @@
 ##
 project(arcade_ncurses)
 
+find_package(Curses REQUIRED)
+
 # Objects
 add_library(${PROJECT_NAME} SHARED
     src/nCurses.cpp
@@ -17,6 +19,11 @@ add_library(graphic::ncurses ALIAS ${PROJECT_NAME})
 target_include_directories( ${PROJECT_NAME}
     PUBLIC 
         ./include
+        ${CURSES_INCLUDE_DIR}
+)
+
+target_link_libraries(${PROJECT_NAME}
+    ${CURSES_LIBRARIES}
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} 
