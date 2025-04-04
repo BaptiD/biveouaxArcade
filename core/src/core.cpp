@@ -21,10 +21,26 @@ void arcade::core::load(std::string libPath, typeLib_e type)
         std::cerr << e.what() << std::endl;
         throw e;
     }
-}   
+}
+
+data_t arcade::core::setupNewGame(void)
+{
+    event_t events = CALL(_graphic)->handleEvent();
+
+    CALL(_game)->getEvent(events);
+    return CALL(_game)->update();
+}
 
 data_t arcade::core::checkLibUpdate(libPaths_t paths, data_t data)
 {
+    if (!paths.graphic.compare(data.libs.graphic)) {
+        _graphic.closeLib();
+        load(data.libs.graphic, GRAPHIC_LIB);
+    } else if (!paths.game.compare(data.libs.game)) {
+        _game.closeLib();
+        load(data.libs.game, GAME_LIB);
+        return setupNewGame();
+    }
     return data;
 }
 

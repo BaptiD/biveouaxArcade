@@ -29,6 +29,7 @@ namespace arcade {
 
         private:
             data_t checkLibUpdate(libPaths_t paths, data_t data);
+            data_t setupNewGame(void);
             dlManage<IGraphic> _graphic;
             dlManage<IGame> _game;
     };
