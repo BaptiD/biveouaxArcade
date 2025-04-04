@@ -26,7 +26,6 @@ jobs:
       - run: mkdir ./build/ && cd ./build/
       - run: cmake . -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
       - run: cmake --build .
-      - run: cd ..
       - run: if [ ! -f "./${{ env.EXECUTABLES }}" ]; then exit 1; fi
 
   push_to_mirror:
