@@ -19,7 +19,7 @@ namespace arcade {
 
         public:
             virtual ~IGraphic() = default;
-            virtual event_t handleEvent(void) = 0;
+            virtual event_t getEvent(void) = 0;
             virtual void display(data_t) = 0;
 
         private:
