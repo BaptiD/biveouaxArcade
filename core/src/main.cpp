@@ -5,14 +5,20 @@
 ** main.cpp
 */
 
+#include <iostream>
+
 #include "tool.hpp"
 #include "core.hpp"
 
 int main(const int ac, const char * const *av)
 {
-    arcade::core core;
-
     if (ac != 2)
         return ERROR;
-    return core.run(std::string(av[1]));
+    try {
+        arcade::core core(av[1]);
+        core.run();
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+    };
+    return SUCCESS;
 }

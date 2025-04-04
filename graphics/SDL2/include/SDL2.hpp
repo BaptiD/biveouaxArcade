@@ -15,12 +15,12 @@ namespace arcade {
 
     class SDL2 : public IGraphic{
         
-        private:
-            event_t handleEvent(void) override;
-            void update(datas_t) override;
-            void display(void) override;
-
         public:
+            SDL2() {};
+            event_t handleEvent(void) override;
+            void display(data_t) override;
+
+        private:
             event_t event;
 
     };

@@ -22,8 +22,8 @@ namespace arcade {
 class Menu : public IGame {
 
     public:
-        void handleEvent(event_t) override;
-        datas_t update(void) override;
+        void getEvent(event_t) override;
+        data_t update(void) override;
 
     private:
         void getLibs(void);

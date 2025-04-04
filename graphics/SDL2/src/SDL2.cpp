@@ -15,12 +15,7 @@ event_t arcade::SDL2::handleEvent(void)
     return events;
 }
 
-void arcade::SDL2::update(datas_t data)
-{
-    
-}
-
-void arcade::SDL2::display(void)
+void arcade::SDL2::display(data_t data)
 {
 
 }

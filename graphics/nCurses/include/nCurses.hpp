@@ -18,8 +18,7 @@ namespace arcade {
         public:
             nCurses() {};
             event_t handleEvent(void) override;
-            void update(datas_t) override;
-            void display(void) override;
+            void display(data_t) override;
 
         private:
             event_t event;

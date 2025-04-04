@@ -14,12 +14,7 @@ event_t arcade::nCurses::handleEvent(void)
     return events;
 }
 
-void arcade::nCurses::update(datas_t data)
-{
-
-}
-
-void arcade::nCurses::display(void)
+void arcade::nCurses::display(data_t data)
 {
     
 }

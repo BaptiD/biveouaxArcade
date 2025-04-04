@@ -10,7 +10,7 @@
 #include "menu.hpp"
 #include "entity.hpp"
 
-void arcade::Menu::handleEvent(event_t events)
+void arcade::Menu::getEvent(event_t events)
 {
 
 }
@@ -22,9 +22,9 @@ void arcade::Menu::getLibs(void)
     }
 }
 
-datas_t arcade::Menu::update(void)
+data_t arcade::Menu::update(void)
 {
-    datas_t datas = {};
+    data_t datas = {};
 
     return datas;
 }
