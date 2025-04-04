@@ -1,5 +1,6 @@
 #UNWANTED FILES
 *.log
+.github/workflows/
 
 # OBJECTS
 arcade
