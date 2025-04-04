@@ -6,10 +6,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - .github/workflows/
-    branches-ignore:
-      - 'ga-ignore-**'
-      - 'https://github.com/EpitechPromo2028/B-OOP-400-PAR-4-1-arcade-pierre.pruvost'
+      - .github/workflows
 
 env:
   MIRROR_URL: 'git@github.com:EpitechPromo2028/B-OOP-400-PAR-4-1-arcade-pierre.pruvost.git'
