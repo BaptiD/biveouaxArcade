@@ -50,8 +50,8 @@ void arcade::core::run(void)
     data_t datas = {};
 
     while (1) {
-        events = CALL(_graphic)->handleEvent();
-        CALL(_game)->getEvent(events);
+        events = CALL(_graphic)->getEvent();
+        CALL(_game)->handleEvent(events);
         datas = checkLibUpdate(datas.libs, CALL(_game)->update());
         CALL(_graphic)->display(datas);
     }

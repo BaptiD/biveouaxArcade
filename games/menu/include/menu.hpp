@@ -22,7 +22,7 @@ namespace arcade {
 class Menu : public IGame {
 
     public:
-        void getEvent(event_t) override;
+        void handleEvent(event_t) override;
         data_t update(void) override;
 
     private:

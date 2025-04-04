@@ -19,7 +19,7 @@ namespace arcade {
 class SolarFox : public IGame {
 
     public:
-        void getEvent(event_t) override;
+        void handleEvent(event_t) override;
         data_t update(void) override;
 
     private:

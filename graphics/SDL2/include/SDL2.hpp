@@ -17,7 +17,7 @@ class SDL2 : public IGraphic{
     
     public:
         SDL2() {};
-        event_t handleEvent(void) override;
+        event_t getEvent(void) override;
         void display(data_t) override;
 
     private:

@@ -7,10 +7,10 @@
 
 #include "Centipede.hpp"
 
-void arcade::Centipede::getEvent(event_t) {
-
+void arcade::Centipede::handleEvent(event_t) {
+    
 }
 
-datas_t arcade::Centipede::update(void) {
+data_t arcade::Centipede::update(void) {
     
 }

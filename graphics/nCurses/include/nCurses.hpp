@@ -18,7 +18,7 @@ class nCurses : public IGraphic {
     public:
         nCurses();
         ~nCurses();
-        event_t handleEvent(void) override;
+        event_t getEvent(void) override;
         void display(data_t) override;
 
     private:

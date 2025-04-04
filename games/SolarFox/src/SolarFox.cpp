@@ -7,7 +7,7 @@
 
 #include "SolarFox.hpp"
 
-void arcade::SolarFox::getEvent(event_t) {
+void arcade::SolarFox::handleEvent(event_t) {
 
 }
 

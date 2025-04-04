@@ -19,7 +19,7 @@ namespace arcade {
 
         public:
             virtual ~IGame() = default;
-            virtual void getEvent(event_t) = 0;
+            virtual void handleEvent(event_t) = 0;
             virtual data_t update(void) = 0;
 
         private:

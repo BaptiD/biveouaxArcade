@@ -8,7 +8,7 @@
 #include "SDL2.hpp"
 
 #include <iostream>
-event_t arcade::SDL2::handleEvent(void)
+event_t arcade::SDL2::getEvent(void)
 {
     return _event;
 }
