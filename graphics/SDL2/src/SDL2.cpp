@@ -10,9 +10,7 @@
 #include <iostream>
 event_t arcade::SDL2::handleEvent(void)
 {
-    event_t events;
-
-    return events;
+    return _event;
 }
 
 void arcade::SDL2::display(data_t data)

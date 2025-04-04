@@ -13,22 +13,23 @@
 
 namespace arcade {
 
-    class SDL2 : public IGraphic{
-        
-        public:
-            SDL2() {};
-            event_t handleEvent(void) override;
-            void display(data_t) override;
+class SDL2 : public IGraphic{
+    
+    public:
+        SDL2() {};
+        event_t handleEvent(void) override;
+        void display(data_t) override;
 
-        private:
-            event_t event;
+    private:
+        event_t _event;
 
-    };
-    extern "C" {
-        IGraphic *makeGraphic() {
-            return new SDL2;
-        }
+};
+
+extern "C" {
+    IGraphic *makeGraphic() {
+        return new SDL2;
     }
+}
 }
 
 #endif
