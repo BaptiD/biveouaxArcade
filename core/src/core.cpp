@@ -25,9 +25,9 @@ void arcade::core::load(std::string libPath, typeLib_e type)
 
 data_t arcade::core::setupNewGame(void)
 {
-    event_t events = CALL(_graphic)->handleEvent();
+    event_t events = CALL(_graphic)->getEvent();
 
-    CALL(_game)->getEvent(events);
+    CALL(_game)->handleEvent(events);
     return CALL(_game)->update();
 }
 
