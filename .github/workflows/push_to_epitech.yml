@@ -3,6 +3,8 @@ run-name: Mirroring to main
 
 on:
   push:
+    paths-ignore:
+      - .github/workflows/
     branches-ignore:
       - 'ga-ignore-**'
       - 'https://github.com/EpitechPromo2028/B-OOP-400-PAR-4-1-arcade-pierre.pruvost'
