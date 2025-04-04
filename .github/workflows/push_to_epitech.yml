@@ -20,14 +20,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Set up Git repository
-        uses: actions/checkout@v4
-      - run: rm -f ${{ env.EXECUTABLES }} ./build/ ./lib/
-      - run: mkdir ./build/ && cd ./build/
-      - run: cmake . -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
-      - run: cmake --build .
-      - run: ls
-      - run: if [ ! -f "./${{ env.EXECUTABLES }}" ]; then exit 1; fi
+      - uses: actions/checkout@v4
+      - name: Clear repo
+        run: rm -f ${{ env.EXECUTABLES }} ./build/ ./lib/
+      - name: Creating build directory
+        run: mkdir ./build/
+      - name: Compilation
+        working-directory: ./build/
+        run: cmake . -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release && cmake --build .
+      - name: Check for executable
+        run: if [ ! -f "./${{ env.EXECUTABLES }}" ]; then exit 1; fi
 
   push_to_mirror:
     needs: [check_program_compilation]
