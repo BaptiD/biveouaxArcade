@@ -7,19 +7,10 @@
 
 #include "nCurses.hpp"
 
-event_t arcade::nCurses::handleEvent(void)
-{
-    event_t events;
-
-    return events;
+event_t arcade::nCurses::handleEvent(void) {
+    return _events;
 }
 
-void arcade::nCurses::update(datas_t data)
-{
-
-}
-
-void arcade::nCurses::display(void)
-{
+void arcade::nCurses::display(datas_t data) {
     
 }

@@ -8,19 +8,10 @@
 #include "SDL2.hpp"
 
 #include <iostream>
-event_t arcade::SDL2::handleEvent(void)
-{
-    event_t events;
-
-    return events;
+event_t arcade::SDL2::handleEvent(void) {
+    return _events;
 }
 
-void arcade::SDL2::update(datas_t data)
-{
+void arcade::SDL2::display(datas_t data) {
     
-}
-
-void arcade::SDL2::display(void)
-{
-
 }

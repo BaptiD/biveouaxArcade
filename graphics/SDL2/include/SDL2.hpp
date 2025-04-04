@@ -17,11 +17,10 @@ namespace arcade {
         
         private:
             event_t handleEvent(void) override;
-            void update(datas_t) override;
-            void display(void) override;
+            void display(datas_t) override;
 
         public:
-            event_t event;
+            event_t _events;
 
     };
     extern "C" {
