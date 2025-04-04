@@ -11,7 +11,7 @@
     #include "vector"
     #include "entity.hpp"
 
-typedef struct datas_s {
+typedef struct data_s {
     std::vector<entity_t> bg;
     std::vector<entity_t> objects;
     std::vector<entity_t> ui;
