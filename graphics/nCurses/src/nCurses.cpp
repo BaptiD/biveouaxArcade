@@ -57,7 +57,7 @@ arcade::nCurses::~nCurses() {
     endwin();
 }
 
-event_t arcade::nCurses::handleEvent(void) {
+event_t arcade::nCurses::getEvent(void) {
     int ch;
     
     //while input

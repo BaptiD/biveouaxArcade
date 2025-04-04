@@ -10,7 +10,7 @@
 #include "menu.hpp"
 #include "entity.hpp"
 
-void arcade::Menu::getEvent(event_t events)
+void arcade::Menu::handleEvent(event_t events)
 {
 
 }
