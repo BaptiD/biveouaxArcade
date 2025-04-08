@@ -22,6 +22,7 @@ include_directories(
 # Graphic Libs
 add_subdirectory(graphics/nCurses)
 add_subdirectory(graphics/SDL2)
+add_subdirectory(graphics/SFML)
 
 # Game Libs
 add_subdirectory(games/menu)

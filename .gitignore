@@ -5,7 +5,6 @@
 arcade
 *.o
 *.so
-lib/
 
 # CMAKE
 CMakeFiles/
