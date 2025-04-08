@@ -6,6 +6,8 @@
 */
 
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 #include "tool.hpp"
 #include "core.hpp"
@@ -33,26 +35,42 @@ data_t arcade::core::setupNewGame(void)
 
 data_t arcade::core::checkLibUpdate(libPaths_t paths, data_t data)
 {
-    if (!paths.graphic.compare(data.libs.graphic)) {
-        _graphic.closeLib();
-        load(data.libs.graphic, GRAPHIC_LIB);
-    } else if (!paths.game.compare(data.libs.game)) {
+    if (!data.libs.game.empty() && paths.game != data.libs.game) {
         _game.closeLib();
         load(data.libs.game, GAME_LIB);
         return setupNewGame();
+    } else if (!data.libs.graphic.empty() && paths.graphic != data.libs.graphic) {
+        _graphic.closeLib();
+        load(data.libs.graphic, GRAPHIC_LIB);
     }
     return data;
 }
 
 void arcade::core::run(void)
 {
+    load("./lib/arcade_menu.so", GAME_LIB);
+
     event_t events = {};
     data_t datas = {};
 
+    int fpsLimit = 60;
+    std::chrono::milliseconds frame(1000 / fpsLimit);
     while (1) {
+        auto frameStart = std::chrono::high_resolution_clock::now();
         events = CALL(_graphic)->getEvent();
+        if (!CALL(_game)) {
+            std::cerr << "Error" << std::endl;
+            return;
+        }
         CALL(_game)->handleEvent(events);
         datas = checkLibUpdate(datas.libs, CALL(_game)->update());
         CALL(_graphic)->display(datas);
+
+        auto frameEnd = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart);
+
+        if (elapsed < frame) {
+            std::this_thread::sleep_for(frame - elapsed);
+        }
     }
 }
