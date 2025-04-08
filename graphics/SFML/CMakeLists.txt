@@ -7,6 +7,8 @@
 
 project(arcade_sfml)
 
+find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+
 # Objects
 add_library(${PROJECT_NAME} SHARED
     src/Sfml.cpp
@@ -19,6 +21,9 @@ target_include_directories( ${PROJECT_NAME}
     PUBLIC 
         ./include
 )
+
+target_link_libraries(arcade_sfml sfml-graphics sfml-window sfml-system)
+
 
 add_custom_command(TARGET ${PROJECT_NAME} 
                    POST_BUILD
