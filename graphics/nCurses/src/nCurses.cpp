@@ -15,33 +15,33 @@
 #include <cstdlib>
 #include <unistd.h>
 
-const std::map<char, event_e> arcade::nCurses::_map = {
-    {'a', A_KEY_A},
-    {'b', A_KEY_B},
-    {'c', A_KEY_C},
-    {'d', A_KEY_D},
-    {'e', A_KEY_E},
-    {'f', A_KEY_F},
-    {'g', A_KEY_G},
-    {'h', A_KEY_H},
-    {'i', A_KEY_I},
-    {'j', A_KEY_J},
-    {'k', A_KEY_K},
-    {'l', A_KEY_L},
-    {'m', A_KEY_M},
-    {'n', A_KEY_N},
-    {'o', A_KEY_O},
-    {'p', A_KEY_P},
-    {'q', A_KEY_Q},
-    {'r', A_KEY_R},
-    {'s', A_KEY_S},
-    {'t', A_KEY_T},
-    {'u', A_KEY_U},
-    {'v', A_KEY_V},
-    {'w', A_KEY_W},
-    {'x', A_KEY_X},
-    {'y', A_KEY_Y},
-    {'z', A_KEY_Z}
+const std::map<int, event_e> arcade::nCurses::_map = {
+    {97, A_KEY_A},
+    {98, A_KEY_B},
+    {99, A_KEY_C},
+    {100, A_KEY_D},
+    {101, A_KEY_E},
+    {102, A_KEY_F},
+    {103, A_KEY_G},
+    {104, A_KEY_H},
+    {105, A_KEY_I},
+    {106, A_KEY_J},
+    {107, A_KEY_K},
+    {108, A_KEY_L},
+    {109, A_KEY_M},
+    {110, A_KEY_N},
+    {111, A_KEY_O},
+    {112, A_KEY_P},
+    {113, A_KEY_Q},
+    {114, A_KEY_R},
+    {115, A_KEY_S},
+    {116, A_KEY_T},
+    {117, A_KEY_U},
+    {118, A_KEY_V},
+    {119, A_KEY_W},
+    {120, A_KEY_X},
+    {121, A_KEY_Y},
+    {122, A_KEY_Z}
  };
 
 arcade::nCurses::nCurses() {
@@ -51,6 +51,7 @@ arcade::nCurses::nCurses() {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
     curs_set(0);
+    //halfdelay(1); //100ms getch
 }
 
 arcade::nCurses::~nCurses() {
@@ -58,12 +59,12 @@ arcade::nCurses::~nCurses() {
 }
 
 event_t arcade::nCurses::getEvent(void) {
-    int ch;
+    int ch = getch();
     
-    //while input
-    while ((ch = getch()) != ERR) {
+    //if input
+    if (ch != -1) {
         //looking for equivalent input on our arcade's key (check also if we manage it or not)
-        for (std::map<char, event_e>::const_iterator it = _map.begin(); it != _map.end(); ++it) {
+        for (std::map<int, event_e>::const_iterator it = _map.begin(); it != _map.end(); ++it) {
             if (it->first == ch) {
                 _events.events.push_back(it->second);
                 break;

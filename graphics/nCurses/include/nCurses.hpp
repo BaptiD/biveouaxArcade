@@ -22,7 +22,7 @@ class nCurses : public IGraphic {
         void display(data_t) override;
 
     private:
-        static const std::map<char, event_e> _map;
+        static const std::map<int, event_e> _map;
         event_t _events;
         void drawEntity(entity_t& entity);
 };
