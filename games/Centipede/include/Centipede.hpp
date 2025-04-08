@@ -13,14 +13,19 @@
     #include "IGame.hpp"
 
 namespace arcade {
-
 class Centipede : public IGame {
+  public:
+    void handleEvent(event_t) override;
+    data_t update(void) override;
 
-    public:
-        void handleEvent(event_t) override;
-        data_t update(void) override;
+  private:
+    data_t _state;
+    int _score;
 
-    private:
+    void moveCentipede();
+    void handleCollision();
+    void shoot();
+    void updateBullets();
 };
 
 extern "C" {
