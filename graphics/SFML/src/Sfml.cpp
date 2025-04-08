@@ -51,7 +51,7 @@ void arcade::Sfml::display(data_t data) {
     static sf::Font font;
     static bool fontLoaded = false;
     if (!fontLoaded) {
-        if (!font.loadFromFile("arial.ttf")) {
+        if (!font.loadFromFile("./lib/assets/SFML/font/arial.ttf")) {
             std::cerr << "Error: Can't load font" << std::endl;
         } else {
             fontLoaded = true;
