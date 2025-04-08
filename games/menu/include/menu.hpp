@@ -21,14 +21,20 @@ namespace arcade {
 
 class Menu : public IGame {
 
-    public:
-        void handleEvent(event_t) override;
-        data_t update(void) override;
+  public:
+    Menu();
+    void handleEvent(event_t) override;
+    data_t update(void) override;
 
-    private:
-        void getLibs(void);
-        std::array<std::vector<std::string>, 2> _libs;
-
+  private:
+    std::vector<std::string> _gamePaths;
+    std::vector<std::string> _graphicPaths;
+    int _gameIndex = 0;
+    int _graphicIndex = 0;
+    data_t _state;
+    
+    void getLibs(void);
+    void buildMenu();
 };
 
 extern "C" {
