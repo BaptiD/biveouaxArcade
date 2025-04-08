@@ -26,7 +26,7 @@ class SolarFox : public IGame {
 };
 
 extern "C" {
-    IGame *makeGraphic() {
+    IGame *makeGame() {
         return new SolarFox;
     }
 }
