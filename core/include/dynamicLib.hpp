@@ -38,6 +38,8 @@ class dlManage {
 
         void openLib(const std::string& libPath)
         {
+            if (_handle != nullptr || _lib != nullptr)
+                closeLib();
             Lib *(*make)(void) = NULL;
 
             _handle = dlopen(libPath.c_str(), RTLD_LAZY);
@@ -51,24 +53,33 @@ class dlManage {
                 throw arcade::dynLibError();
             }
             _lib = make();
+            if (!_lib) {
+                dlclose(_handle);
+                _handle = nullptr;
+                throw std::bad_alloc();
+            }
         }
 
         void closeLib(void)
         {
-            if (_handle != NULL)
+            if (_lib != nullptr) {
+                delete _lib;
+                _lib = nullptr;
+            }
+            if (_handle != nullptr) {
                 dlclose(_handle);
-            if (_lib != NULL)
-                free(_lib);
+                _handle = nullptr;
+            }
         }
-
+        
         Lib *call(void)
         {
             return _lib;
         }
-
-    private:
-        void *_handle = NULL;
-        Lib *_lib = NULL;
+        
+        private:
+            void *_handle = NULL;
+            Lib *_lib = NULL;
 };
 
 };
