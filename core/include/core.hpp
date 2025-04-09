@@ -23,6 +23,7 @@ namespace arcade {
             core(std::string graphicPath) {
                 load(MENU_PATH_LIB, GAME_LIB);
                 load(graphicPath, GRAPHIC_LIB);
+                _graphicpath = graphicPath;
             };
             void run(void) override;
             void load(std::string libPath, typeLib_e type) override;
@@ -32,6 +33,7 @@ namespace arcade {
             data_t setupNewGame(void);
             dlManage<IGraphic> _graphic;
             dlManage<IGame> _game;
+            std::string _graphicpath;
     };
 }
 

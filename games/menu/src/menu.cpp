@@ -41,25 +41,47 @@ data_t arcade::Menu::update(void) {
     return _state;
 }
 
-void arcade::Menu::getLibs(void) {
-    for (const auto &lib : std::filesystem::directory_iterator(PATH_LIBS)) {
-        const std::string filename = lib.path().filename().string();
-        const std::string fullpath = lib.path().string();
-        
-        // Try if the file is a game
-        try {
-            dlManage<IGame> game;
-            game.openLib(fullpath);
-            _gamePaths.push_back(filename);
-        } catch (...) {}
+std::vector<std::string> find_graphic(void) {
+    void *handlegraph = nullptr;
+    arcade::IGraphic *(*graphlib)(void) = nullptr;
+    std::vector<std::string> paths;
 
-        // Try if the file is a graphic library
-        try {
-            dlManage<IGraphic> graphic;
-            graphic.openLib(fullpath);
-            _graphicPaths.push_back(filename);
-        } catch (...) {}
+    for (const auto &lib : std::filesystem::directory_iterator(PATH_LIBS)) {
+        const std::string filename = lib.path();
+        handlegraph = dlopen(filename.c_str(), RTLD_LAZY);
+        if (handlegraph == NULL)
+            continue;
+        graphlib = (arcade::IGraphic *(*)())dlsym(handlegraph, "makeGraphic");
+        if (graphlib == nullptr)
+            continue;
+        paths.push_back(filename);
+        dlclose(handlegraph);
     }
+    return paths;
+}
+
+std::vector<std::string> find_game(void) {
+    void *handlegame = nullptr;
+    arcade::IGame *(*gamelib)(void) = nullptr;
+    std::vector<std::string> paths;
+
+    for (const auto &lib : std::filesystem::directory_iterator(PATH_LIBS)) {
+        const std::string filename = lib.path();
+        handlegame = dlopen(filename.c_str(), RTLD_LAZY);
+        if (handlegame == NULL)
+            continue;
+        gamelib = (arcade::IGame *(*)())dlsym(handlegame, "makeGame");
+        if (gamelib == nullptr)
+            continue;
+        paths.push_back(filename);
+        dlclose(handlegame);
+    }
+    return paths;
+}
+
+void arcade::Menu::getLibs(void) {
+    _gamePaths = find_game();
+    _graphicPaths = find_graphic();
 }
 
 void arcade::Menu::buildMenu() {

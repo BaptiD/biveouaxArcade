@@ -51,7 +51,7 @@ arcade::nCurses::nCurses() {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
     curs_set(0);
-    //halfdelay(1); //100ms getch
+    halfdelay(1); //100ms getch
 }
 
 arcade::nCurses::~nCurses() {
@@ -76,7 +76,6 @@ event_t arcade::nCurses::getEvent(void) {
 
 void arcade::nCurses::display(data_t datas) {
     clear();
-    
     //display bg
     for (auto& bg : datas.bg)
         drawEntity(bg);
@@ -90,8 +89,9 @@ void arcade::nCurses::display(data_t datas) {
         drawEntity(ui);
     
     //display texts
-    for (auto& text : datas.texts)
+    for (auto& text : datas.texts) {
         mvprintw(static_cast<int>(text.pos.y), static_cast<int>(text.pos.x), "%s", text.value.c_str());
+    }
 }
 
 void arcade::nCurses::drawEntity(entity_t& entity) {

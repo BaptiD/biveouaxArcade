@@ -35,24 +35,26 @@ data_t arcade::core::setupNewGame(void)
 
 data_t arcade::core::checkLibUpdate(libPaths_t paths, data_t data)
 {
-    if (!data.libs.game.empty() && paths.game != data.libs.game) {
+    if (!data.libs.game.empty() && paths.game.compare(data.libs.game)) {
         _game.closeLib();
         load(data.libs.game, GAME_LIB);
+        data.libs.game = paths.game;
         return setupNewGame();
-    } else if (!data.libs.graphic.empty() && paths.graphic != data.libs.graphic) {
+    } else if (!data.libs.graphic.empty() && paths.graphic.compare(data.libs.graphic)) {
         _graphic.closeLib();
         load(data.libs.graphic, GRAPHIC_LIB);
+        data.libs.graphic = paths.graphic;
     }
     return data;
 }
 
 void arcade::core::run(void)
 {
-    load("./lib/arcade_menu.so", GAME_LIB);
-
     event_t events = {};
     data_t datas = {};
 
+    datas.libs.game = MENU_PATH_LIB;
+    datas.libs.graphic = _graphicpath;
     int fpsLimit = 60;
     std::chrono::milliseconds frame(1000 / fpsLimit);
     while (1) {
@@ -65,12 +67,5 @@ void arcade::core::run(void)
         CALL(_game)->handleEvent(events);
         datas = checkLibUpdate(datas.libs, CALL(_game)->update());
         CALL(_graphic)->display(datas);
-
-        auto frameEnd = std::chrono::high_resolution_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart);
-
-        if (elapsed < frame) {
-            std::this_thread::sleep_for(frame - elapsed);
-        }
     }
 }
