@@ -15,6 +15,7 @@
 namespace arcade {
 class Centipede : public IGame {
   public:
+    Centipede();
     void handleEvent(event_t) override;
     data_t update(void) override;
 
@@ -23,6 +24,7 @@ class Centipede : public IGame {
     int _score;
 
     void moveCentipede();
+    bool isCollision(const entity_t& a, const entity_t& b);
     void handleCollision();
     void shoot();
     void updateBullets();
