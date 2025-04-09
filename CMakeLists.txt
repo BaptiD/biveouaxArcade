@@ -27,6 +27,7 @@ add_subdirectory(graphics/SFML)
 # Game Libs
 add_subdirectory(games/menu)
 add_subdirectory(games/SolarFox)
+add_subdirectory(games/Centipede)
 
 # Core
 add_subdirectory(core)
