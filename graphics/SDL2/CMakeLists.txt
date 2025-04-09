@@ -6,6 +6,9 @@
 ##
 project(arcade_sdl2)
 
+# Requierments
+find_package(SDL2 REQUIRED)
+
 # Objects
 add_library(${PROJECT_NAME} SHARED
     src/SDL2.cpp
@@ -15,8 +18,11 @@ add_library(${PROJECT_NAME} SHARED
 add_library(graphic::sdl2 ALIAS ${PROJECT_NAME})
 
 target_include_directories( ${PROJECT_NAME}
-    PUBLIC 
-        ./include
+    PUBLIC ./include
+)
+
+target_link_libraries(${PROJECT_NAME}
+    ${SDL2_LIBRARIES}
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} 
