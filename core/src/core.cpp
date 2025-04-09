@@ -6,8 +6,6 @@
 */
 
 #include <iostream>
-#include <thread>
-#include <chrono>
 
 #include "tool.hpp"
 #include "core.hpp"
@@ -62,10 +60,7 @@ void arcade::core::run(void)
 
     datas.libs.game = MENU_PATH_LIB;
     datas.libs.graphic = _graphicpath;
-    int fpsLimit = 60;
-    std::chrono::milliseconds frame(1000 / fpsLimit);
     while (1) {
-        auto frameStart = std::chrono::high_resolution_clock::now();
         events = CALL(_graphic)->getEvent();
         if (!CALL(_game))
             return;
