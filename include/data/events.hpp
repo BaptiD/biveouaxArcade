@@ -68,7 +68,8 @@ enum event_e {
     A_MOUSE_XBUTTON1,
     A_MOUSE_XBUTTON2,
     A_MOUSE_VERTICALWHEEL,
-    A_MOUSE_HORIZONTALWHEEL
+    A_MOUSE_HORIZONTALWHEEL,
+    A_MOUSE_MOVE
 };
 
 typedef struct event_s {
