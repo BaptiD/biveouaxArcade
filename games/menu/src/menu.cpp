@@ -33,8 +33,8 @@ void arcade::Menu::handleEvent(event_t events) {
         events.events.clear();
     }
     buildMenu();
-    _state.libs.game = _gamePaths[_gameIndex];
-    _state.libs.graphic = _graphicPaths[_graphicIndex];
+    // _state.libs.game = _gamePaths[_gameIndex];
+    // _state.libs.graphic = _graphicPaths[_graphicIndex];
 }
 
 data_t arcade::Menu::update(void) {

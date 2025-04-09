@@ -24,6 +24,7 @@ namespace arcade {
 class dynLibError : public std::exception {
     public:
         dynLibError(void) noexcept {errMessage = dlerror();};
+        dynLibError(std::string msg) noexcept {errMessage = msg;};
         const char *what() const noexcept override{
             return errMessage.c_str();
         }
@@ -39,6 +40,7 @@ class dlManage {
         void openLib(const std::string& libPath)
         {
             Lib *(*make)(void) = NULL;
+
             if (_handle != NULL || _lib != NULL)
                 closeLib();
             _handle = dlopen(libPath.c_str(), RTLD_LAZY);
@@ -54,6 +56,7 @@ class dlManage {
             if (!_lib) {
                 dlclose(_handle);
                 _handle = NULL;
+                throw dynLibError("Error: bad alloc");
             }
         }
 

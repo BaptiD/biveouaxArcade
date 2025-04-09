@@ -16,6 +16,7 @@ arcade::core::core(std::string graphicPath)
 {
     load(MENU_PATH_LIB, GAME_LIB);
     load(graphicPath, GRAPHIC_LIB);
+    _graphicpath = graphicPath;
 }
 
 void arcade::core::load(std::string libPath, typeLib_e type)
