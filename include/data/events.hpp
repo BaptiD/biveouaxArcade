@@ -22,10 +22,10 @@ enum event_e {
     A_KEY_SHIFTLOCK,
     A_KEY_ALT,
     A_KEY_SQUARE,
-    A_KEY_AUP,
-    A_KEY_ADOWN,
-    A_KEY_ALEFT,
-    A_KEY_ARIGHT,
+    A_KEY_UP,
+    A_KEY_DOWN,
+    A_KEY_LEFT,
+    A_KEY_RIGHT,
     A_KEY_A,
     A_KEY_B,
     A_KEY_C,
@@ -62,6 +62,13 @@ enum event_e {
     A_KEY_7,
     A_KEY_8,
     A_KEY_9,
+    A_MOUSE_LEFT,
+    A_MOUSE_RIGHT,
+    A_MOUSE_MIDDLE,
+    A_MOUSE_XBUTTON1,
+    A_MOUSE_XBUTTON2,
+    A_MOUSE_VERTICALWHEEL,
+    A_MOUSE_HORIZONTALWHEEL
 };
 
 typedef struct event_s {
