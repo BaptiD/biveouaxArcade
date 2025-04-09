@@ -93,7 +93,7 @@ void arcade::Menu::buildMenu() {
 
     //set a cursor to see what is the game selected
     if (!_gamePaths.empty()) {
-        for (size_t i = 0; i < _gamePaths.size(); i++) {
+        for (std::size_t i = 0; i < _gamePaths.size(); i++) {
             std::string prefix = (i == _gameIndex) ? "> " : "  ";
             _state.texts.push_back({{4, (float)y++}, 1, prefix + _gamePaths[i], "", {}});
         }
@@ -104,7 +104,7 @@ void arcade::Menu::buildMenu() {
     _state.texts.push_back({{2, (float)y++}, 1, "Graphic libraries:", "", {}});
     //set a cursor to see what is the game selected
     if (!_graphicPaths.empty()) {
-        for (size_t i = 0; i < _graphicPaths.size(); i++) {
+        for (std::size_t i = 0; i < _graphicPaths.size(); i++) {
             std::string prefix = (i == _graphicIndex) ? "> " : "  ";
             _state.texts.push_back({{4, (float)y++}, 1, prefix + _graphicPaths[i], "", {}});
         }

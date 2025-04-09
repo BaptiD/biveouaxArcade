@@ -20,11 +20,7 @@ namespace arcade {
     class core : public ICore {
 
         public:
-            core(std::string graphicPath) {
-                load(MENU_PATH_LIB, GAME_LIB);
-                load(graphicPath, GRAPHIC_LIB);
-                _graphicpath = graphicPath;
-            };
+            core(std::string graphicPath);
             void run(void) override;
             void load(std::string libPath, typeLib_e type) override;
 
