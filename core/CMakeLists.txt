@@ -12,14 +12,6 @@ add_executable(arcade
     src/main.cpp
 )
 
-# Libs
-target_link_libraries(arcade
-    graphic::ncurses
-    graphic::sdl2
-    game::solarFox
-    game::menu
-)
-
 # Compilation
 target_include_directories(arcade
     PRIVATE

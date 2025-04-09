@@ -47,18 +47,6 @@ void arcade::Menu::getLibs(void) {
         const std::string fullpath = lib.path().string();
         
         // Try if the file is a game
-        try {
-            dlManage<IGame> game;
-            game.openLib(fullpath);
-            _gamePaths.push_back(filename);
-        } catch (...) {}
-
-        // Try if the file is a graphic library
-        try {
-            dlManage<IGraphic> graphic;
-            graphic.openLib(fullpath);
-            _graphicPaths.push_back(filename);
-        } catch (...) {}
     }
 }
 
@@ -71,7 +59,7 @@ void arcade::Menu::buildMenu() {
 
     //set a cursor to see what is the game selected
     if (!_gamePaths.empty()) {
-        for (size_t i = 0; i < _gamePaths.size(); i++) {
+        for (std::size_t i = 0; i < _gamePaths.size(); i++) {
             std::string prefix = (i == _gameIndex) ? "> " : "  ";
             _state.texts.push_back({{4, (float)y++}, 1, prefix + _gamePaths[i], "", {}});
         }
@@ -82,7 +70,7 @@ void arcade::Menu::buildMenu() {
     _state.texts.push_back({{2, (float)y++}, 1, "Graphic libraries:", "", {}});
     //set a cursor to see what is the game selected
     if (!_graphicPaths.empty()) {
-        for (size_t i = 0; i < _graphicPaths.size(); i++) {
+        for (std::size_t i = 0; i < _graphicPaths.size(); i++) {
             std::string prefix = (i == _graphicIndex) ? "> " : "  ";
             _state.texts.push_back({{4, (float)y++}, 1, prefix + _graphicPaths[i], "", {}});
         }

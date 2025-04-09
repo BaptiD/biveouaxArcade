@@ -38,37 +38,35 @@ class dlManage {
 
         void openLib(const std::string& libPath)
         {
-            if (_handle != nullptr || _lib != nullptr)
-                closeLib();
             Lib *(*make)(void) = NULL;
 
+            if (_handle != NULL || _lib != NULL)
+                closeLib();
             _handle = dlopen(libPath.c_str(), RTLD_LAZY);
             if (_handle == NULL)
-                throw arcade::dynLibError();
+                throw dynLibError();
             if (typeid(Lib) == typeid(IGraphic))
                 make = (Lib *(*)())dlsym(_handle, GRAPHIC_MAKER);
             else
                 make = (Lib *(*)())dlsym(_handle, GAME_MAKER);
-            if (make == NULL) {
-                throw arcade::dynLibError();
-            }
+            if (make == NULL)
+                throw dynLibError();
             _lib = make();
             if (!_lib) {
                 dlclose(_handle);
-                _handle = nullptr;
-                throw std::bad_alloc();
+                _handle = NULL;
             }
         }
 
         void closeLib(void)
         {
-            if (_lib != nullptr) {
+            if (_lib != NULL) {
                 delete _lib;
-                _lib = nullptr;
+                _lib = NULL;
             }
-            if (_handle != nullptr) {
+            if (_handle != NULL) {
                 dlclose(_handle);
-                _handle = nullptr;
+                _handle = NULL;
             }
         }
         

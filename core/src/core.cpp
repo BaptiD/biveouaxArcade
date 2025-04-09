@@ -12,16 +12,22 @@
 #include "tool.hpp"
 #include "core.hpp"
 
+arcade::core::core(std::string graphicPath)
+{
+    load(MENU_PATH_LIB, GAME_LIB);
+    load(graphicPath, GRAPHIC_LIB);
+}
+
 void arcade::core::load(std::string libPath, typeLib_e type)
 {
     try {
-        if (type == GAME_LIB)
+        if (type == GAME_LIB) {
             _game.openLib(libPath);
-        else
+        } else
             _graphic.openLib(libPath);
     } catch (arcade::dynLibError& e) {
         std::cerr << e.what() << std::endl;
-        throw e;
+        exit(ERROR);
     }
 }
 
@@ -48,8 +54,6 @@ data_t arcade::core::checkLibUpdate(libPaths_t paths, data_t data)
 
 void arcade::core::run(void)
 {
-    load("./lib/arcade_menu.so", GAME_LIB);
-
     event_t events = {};
     data_t datas = {};
 
@@ -58,10 +62,8 @@ void arcade::core::run(void)
     while (1) {
         auto frameStart = std::chrono::high_resolution_clock::now();
         events = CALL(_graphic)->getEvent();
-        if (!CALL(_game)) {
-            std::cerr << "Error" << std::endl;
+        if (!CALL(_game))
             return;
-        }
         CALL(_game)->handleEvent(events);
         datas = checkLibUpdate(datas.libs, CALL(_game)->update());
         CALL(_graphic)->display(datas);
