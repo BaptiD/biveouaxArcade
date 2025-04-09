@@ -20,7 +20,7 @@
     #define SIZE_ARRAY(a) (sizeof(a)/sizeof(a[0])) // Get size of no-empty any const array
     #define GET_VALUE(m, i) (m.find(i)->second)
 
-    #define RECT(e) ((SDL_Rect){e.pos.x, e.pos.y, e.size.y, e.size.x}) // Get the rectangle from an entity data
+    #define RECT(e) ((SDL_Rect){(int)e.pos.x, (int)e.pos.y, (int)e.size.y, (int)e.size.x}) // Get the rectangle from an entity data
     #define DRAW_RECT(re, e) (SDL_SetRenderDrawColor(re, e.color.r, e.color.g, e.color.b, e.color.a)) // Draw colored rectangle
 
     #define NOT_SET -1
