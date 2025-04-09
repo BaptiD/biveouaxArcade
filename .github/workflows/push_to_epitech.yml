@@ -20,6 +20,7 @@ jobs:
   check_program_compilation:
     needs: [is_mirror]
     runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker
     timeout-minutes: 2
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +37,6 @@ jobs:
   push_to_mirror:
     needs: [check_program_compilation]
     runs-on: ubuntu-latest
-    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v4
         with:
