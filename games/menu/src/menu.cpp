@@ -88,27 +88,27 @@ void arcade::Menu::buildMenu() {
     _state.texts.clear();
 
     int y = 5;
-    _state.texts.push_back({{2, 2}, 1, "--- MENU ---", "", {}});
-    _state.texts.push_back({{2, 4}, 1, "Games:", "", {}});
+    _state.texts.push_back({{2, 2}, 1, "--- MENU ---", FONT_PATH, WHITE});
+    _state.texts.push_back({{2, 4}, 1, "Games:", FONT_PATH, WHITE});
 
     //set a cursor to see what is the game selected
     if (!_gamePaths.empty()) {
         for (std::size_t i = 0; i < _gamePaths.size(); i++) {
             std::string prefix = (i == _gameIndex) ? "> " : "  ";
-            _state.texts.push_back({{4, (float)y++}, 1, prefix + _gamePaths[i], "", {}});
+            _state.texts.push_back({{4, (float)y++}, 1, prefix + _gamePaths[i], FONT_PATH, WHITE});
         }
     } else {
-        _state.texts.push_back({{4, (float)y++}, 1, "No game in lib directory", "", {}});
+        _state.texts.push_back({{4, (float)y++}, 1, "No game in lib directory", FONT_PATH, WHITE});
     }
     y++;
-    _state.texts.push_back({{2, (float)y++}, 1, "Graphic libraries:", "", {}});
+    _state.texts.push_back({{2, (float)y++}, 1, "Graphic libraries:", FONT_PATH, WHITE});
     //set a cursor to see what is the game selected
     if (!_graphicPaths.empty()) {
         for (std::size_t i = 0; i < _graphicPaths.size(); i++) {
             std::string prefix = (i == _graphicIndex) ? "> " : "  ";
-            _state.texts.push_back({{4, (float)y++}, 1, prefix + _graphicPaths[i], "", {}});
+            _state.texts.push_back({{4, (float)y++}, 1, prefix + _graphicPaths[i], FONT_PATH, WHITE});
         }
     } else {
-        _state.texts.push_back({{4, (float)y++}, 1, "No graphic library in lib directory", "", {}});
+        _state.texts.push_back({{4, (float)y++}, 1, "No graphic library in lib directory", FONT_PATH, WHITE});
     }
 }

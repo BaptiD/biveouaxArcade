@@ -6,6 +6,7 @@
 */
 #include <unistd.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "SDL2.hpp"
 
@@ -13,8 +14,8 @@ arcade::SDL2::SDL2()
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
         throw "Error: init SDL";
-    _window = SDL_CreateWindow("SDL2",SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED, WINDOW_SIZE_X, WINDOW_SIZE_Y, SDL_WINDOW_SHOWN);
+    _window = SDL_CreateWindow("SDL2", SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED, WINDOW_SIZE_X, WINDOW_SIZE_Y, SDL_WINDOW_FULLSCREEN);
     if (_window == NULL)
         throw "Error: init SDL window";
     _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
@@ -41,7 +42,7 @@ void arcade::SDL2::eventManager(void)
 
     if (SDL_PollEvent(&_SDLevent)) {
         if (_SDLevent.type == SDL_QUIT)
-            exit(1);
+            exit(0);
     }
     keystate = SDL_GetKeyboardState(NULL);
     if (keystate != NULL) {
@@ -72,6 +73,21 @@ void arcade::SDL2::displayEntity(entity_t entity_data)
     }
 }
 
+void arcade::SDL2::displayText(text_t text_data)
+{
+    TTF_Font* font = TTF_OpenFont(text_data.fontPath.c_str(),
+        text_data.fontSize);
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font,
+        text_data.value.c_str(), COLOR(text_data));
+    SDL_Texture* msg = SDL_CreateTextureFromSurface(_renderer, surfaceMessage);
+    SDL_Rect rect = RECT_TEXT(text_data);
+
+    SDL_RenderCopy(_renderer, msg, NULL, &rect);
+    SDL_FreeSurface(surfaceMessage);
+    TTF_CloseFont(font);
+    SDL_DestroyTexture(msg);
+}
+
 void arcade::SDL2::display(data_t data)
 {
     SDL_RenderClear(_renderer);
@@ -81,5 +97,8 @@ void arcade::SDL2::display(data_t data)
         displayEntity(ui);
     for (auto& objects : data.objects)
         displayEntity(objects);
+    for (auto& text : data.texts)
+        displayText(text);
+    SDL_RenderPresent(_renderer);
     eventManager();
 }

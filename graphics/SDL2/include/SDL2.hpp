@@ -8,8 +8,8 @@
 #ifndef DLSDL2_HPP_
     #define DLSDL2_HPP_
 
-    #include <memory>
     #include <map>
+    #include <memory>
     #include <SDL2/SDL.h>
 
     #include "IGraphic.hpp"
@@ -18,10 +18,12 @@
     #define WINDOW_SIZE_Y 720
 
     #define SIZE_ARRAY(a) (sizeof(a)/sizeof(a[0])) // Get size of no-empty any const array
-    #define GET_VALUE(m, i) (m.find(i)->second)
+    #define GET_VALUE(m, i) (m.find(i)->second) // Get value from map with index
 
     #define RECT(e) ((SDL_Rect){(int)e.pos.x, (int)e.pos.y, (int)e.size.y, (int)e.size.x}) // Get the rectangle from an entity data
+    #define COLOR(e) ((SDL_Color){(Uint8)e.color.r, (Uint8)e.color.g, (Uint8)e.color.b}) // Get color from an entity or text
     #define DRAW_RECT(re, e) (SDL_SetRenderDrawColor(re, e.color.r, e.color.g, e.color.b, e.color.a)) // Draw colored rectangle
+    #define RECT_TEXT(t) ((SDL_Rect){(int)t.pos.x, (int)t.pos.y, (int)t.fontSize, (int)(sizeof(t.value.c_str()) * t.fontSize)}) // Get the rectangle from an text data
 
     #define NOT_SET -1
 
@@ -97,6 +99,7 @@ class SDL2 : public IGraphic{
 
     private:
         void eventManager(void);
+        void displayText(text_t text_data);
         void displayEntity(entity_t entity);
         SDL_Window *_window = NULL;
         SDL_Renderer *_renderer = NULL;
