@@ -16,6 +16,7 @@
 #include <unistd.h>
 
 const std::map<int, event_e> arcade::nCurses::_map = {
+    {32, A_KEY_SPACE},
     {97, A_KEY_A},
     {98, A_KEY_B},
     {99, A_KEY_C},
@@ -48,10 +49,11 @@ arcade::nCurses::nCurses() {
     initscr();
     noecho();
     cbreak();
+    start_color();
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
     curs_set(0);
-    halfdelay(1); //100ms getch
+    halfdelay(1); //100ms getch)
 }
 
 arcade::nCurses::~nCurses() {
@@ -59,6 +61,7 @@ arcade::nCurses::~nCurses() {
 }
 
 event_t arcade::nCurses::getEvent(void) {
+    _events.events.clear();
     int ch = getch();
     
     //if input
@@ -69,6 +72,7 @@ event_t arcade::nCurses::getEvent(void) {
                 _events.events.push_back(it->second);
                 break;
             }
+            flushinp();
         }
     }
     return _events;
@@ -95,5 +99,5 @@ void arcade::nCurses::display(data_t datas) {
 }
 
 void arcade::nCurses::drawEntity(entity_t& entity) {
-    mvprintw(static_cast<int>(entity.pos.y), static_cast<int>(entity.pos.x), "%c", '#');
+    mvprintw(static_cast<int>(entity.pos.y), static_cast<int>(entity.pos.x), "%c", entity.character);
 }
