@@ -30,11 +30,13 @@ void arcade::Menu::handleEvent(event_t events) {
             _graphicIndex = (_graphicIndex - 1) < 0 ? 0 : (_graphicIndex - 1);
         if (event == A_KEY_D)
             _graphicIndex = (_graphicIndex + 1) > (_graphicPaths.size() - 1) ? _graphicIndex : _graphicIndex + 1;
+        if (event == A_KEY_ENTER) {
+            _state.libs.game = _gamePaths[_gameIndex];
+            _state.libs.graphic = _graphicPaths[_graphicIndex];
+        }
         events.events.clear();
     }
     buildMenu();
-    // _state.libs.game = _gamePaths[_gameIndex];
-    // _state.libs.graphic = _graphicPaths[_graphicIndex];
 }
 
 data_t arcade::Menu::update(void) {
