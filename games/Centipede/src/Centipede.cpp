@@ -34,18 +34,19 @@ void arcade::Centipede::initGame() {
             }
         }
     }
-    player = {{10, 20}, {10, 10}, 'P', " ", WHITE, RIGHT};
+    player = {{10, 20}, {10, 10}, 'P', "./lib/assets/arcade_centipede/sprites/Blaster.png", WHITE, RIGHT};
     _state.objects.push_back(player);
 
     //the centipede
     for (size_t i = 0; i < 10; i++) {
-        centipede = {{(double)5 + i, 5}, {10, 10}, 's', " ", WHITE, RIGHT};
+        centipede = {{(double)5 + i, 5}, {10, 10}, 's', "./lib/assets/arcade_centipede/sprites/CentipedeBody.png", WHITE, RIGHT};
         _state.objects.push_back(centipede);
     }
     
     //some mushrooms
     for (size_t i = 0; i < 5; i++) {
-        mushroom = {{(double)(rand() % 20), (double)(rand() % 15)}, {10, 10}, 'm', " ", WHITE, RIGHT};
+        mushroom = {{(double)(rand() % 20), (double)(rand() % 15)}, {10, 10}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, RIGHT};
+        _mushroomsPos.push_back(mushroom.pos);
         _state.objects.push_back(mushroom);
     }
     
@@ -103,7 +104,7 @@ void arcade::Centipede::spawnNewCentipede() {
 
     if (!centipedeExists) {
         for (size_t i = 0; i < 10; i++) {
-            entity_t centipede = {{5.0 + i, 5}, {10, 10}, 's', " ", WHITE, RIGHT};
+            entity_t centipede = {{5.0 + i, 5}, {10, 10}, 's', "./lib/assets/arcade_centipede/sprites/CentipedeBody.png", WHITE, RIGHT};
             _state.objects.push_back(centipede);
         }
     }
@@ -179,7 +180,7 @@ void arcade::Centipede::handleCollision() {
                     _score += (_state.objects[j].character == 's') ? 100 : 10;
                     toRemove[i] = true;
                     toRemove[j] = true;
-                    entity_t newMushroom = {_state.objects[i].pos, {10, 10}, 'm', " ", WHITE, RIGHT};
+                    entity_t newMushroom = {_state.objects[i].pos, {10, 10}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, RIGHT};
                     _state.objects.push_back(newMushroom);
                     _mushroomsPos.push_back(_state.objects[i].pos);
                     break;

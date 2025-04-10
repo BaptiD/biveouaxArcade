@@ -16,6 +16,7 @@
     #define FONT_PATH "./lib/assets/arcade_menu/font/arcade.ttf"
     #define MAP_WIDTH 30
     #define MAP_HEIGHT 30
+    #define ASSET_DIR "./lib/assets/arcade_centipede/"
 
 namespace arcade {
 class Centipede : public IGame {
