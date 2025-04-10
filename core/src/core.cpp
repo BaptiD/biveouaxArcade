@@ -40,15 +40,14 @@ data_t arcade::core::setupNewGame(void)
 
 data_t arcade::core::checkLibUpdate(libPaths_t paths, data_t data)
 {
+    if (!data.libs.graphic.empty() && paths.graphic.compare(data.libs.graphic)) {
+        _graphic.closeLib();
+        load(data.libs.graphic, GRAPHIC_LIB);
+    }
     if (!data.libs.game.empty() && paths.game.compare(data.libs.game)) {
         _game.closeLib();
         load(data.libs.game, GAME_LIB);
-        data.libs.game = paths.game;
         return setupNewGame();
-    } else if (!data.libs.graphic.empty() && paths.graphic.compare(data.libs.graphic)) {
-        _graphic.closeLib();
-        load(data.libs.graphic, GRAPHIC_LIB);
-        data.libs.graphic = paths.graphic;
     }
     return data;
 }

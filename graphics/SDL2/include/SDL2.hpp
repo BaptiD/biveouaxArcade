@@ -28,7 +28,7 @@
     #define DRAW_RECT(re, e) (SDL_SetRenderDrawColor(re, e.color.r, e.color.g, e.color.b, e.color.a))
     // Set SDL_Rect from text data
     #define RECT_TEXT(t) ((SDL_Rect){WINDOW_SIZE_X * (int)t.pos.x / 100, WINDOW_SIZE_Y * (int)t.pos.y / 100, \
-        ((int)SIZE_ARRAY(t.value) * (int)t.fontSize) / 2, t.fontSize})
+        ((int)SIZE_ARRAY(t.value) * (int)t.fontSize) / 3, t.fontSize})
 
     #define NOT_SET -1
 
