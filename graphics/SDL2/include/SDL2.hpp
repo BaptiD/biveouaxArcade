@@ -21,14 +21,15 @@
     #define GET_VALUE(m, i) (m.find(i)->second) // Get value from map with index
 
     // Set SDL_Rect from entity data
-    #define RECT(e) ((SDL_Rect){(int)e.pos.x, (int)e.pos.y, (int)e.size.y, (int)e.size.x})
+    #define RECT(e) ((SDL_Rect){WINDOW_SIZE_X * (int)e.pos.x / 100, WINDOW_SIZE_Y * (int)e.pos.y / 100, \
+        WINDOW_SIZE_X * (int)e.size.y / 100, WINDOW_SIZE_Y * (int)e.size.x / 100})
     // Set SDL_Color from entity data
     #define COLOR(e) ((SDL_Color){(Uint8)e.color.r, (Uint8)e.color.g, (Uint8)e.color.b})
     // Draw colored rectangle
     #define DRAW_RECT(re, e) (SDL_SetRenderDrawColor(re, e.color.r, e.color.g, e.color.b, e.color.a))
     // Set SDL_Rect from text data
     #define RECT_TEXT(t) ((SDL_Rect){WINDOW_SIZE_X * (int)t.pos.x / 100, WINDOW_SIZE_Y * (int)t.pos.y / 100, \
-        ((int)SIZE_ARRAY(t.value) * (int)t.fontSize) / 3, t.fontSize})
+        (int)t.value.size() * t.fontSize, t.fontSize})
 
     #define NOT_SET -1
 

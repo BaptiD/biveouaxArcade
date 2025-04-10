@@ -57,7 +57,6 @@ bool arcade::SDL2::keyNotAllreadyPressed(event_e event)
 
 void arcade::SDL2::eventManager(void)
 {
-    const Uint8 *keystate = NULL;
 
     if (SDL_PollEvent(&_SDLevent)) {
         if (_SDLevent.type == SDL_QUIT)
@@ -66,14 +65,6 @@ void arcade::SDL2::eventManager(void)
             if (keyNotAllreadyPressed(GET_VALUE(KEYS, _SDLevent.key.keysym.sym))) {
                 _events.events.push_back(GET_VALUE(KEYS, _SDLevent.key.keysym.sym));
             }
-    }
-    keystate = SDL_GetKeyboardState(NULL);
-    if (keystate != NULL) {
-        for (std::size_t i = 0; i < SIZE_ARRAY(keystate); ++i) {
-            if (keystate[i] && keyNotAllreadyPressed(GET_VALUE(KEYS, i))) {
-                _events.events.push_back(GET_VALUE(KEYS, i));
-            }
-        }
     }
 }
 
