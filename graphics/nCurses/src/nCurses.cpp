@@ -95,10 +95,16 @@ void arcade::nCurses::display(data_t datas) {
     
     //display texts
     for (auto& text : datas.texts) {
-        mvprintw(static_cast<int>(text.pos.y), static_cast<int>(text.pos.x), "%s", text.value.c_str());
+        if (LINES > 100)
+            mvprintw(static_cast<int>(((float)LINES / 100) * text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
+        else
+            mvprintw(static_cast<int>(text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
     }
 }
 
 void arcade::nCurses::drawEntity(entity_t& entity) {
-    mvprintw(static_cast<int>(entity.pos.y), static_cast<int>(entity.pos.x), "%c", entity.character);
+    if (LINES > 100)
+        mvprintw(static_cast<int>(LINES / 100 * entity.pos.y), static_cast<int>(COLS / 100 * entity.pos.x), "%c", entity.character);
+    else
+        mvprintw(static_cast<int>(entity.pos.y), static_cast<int>(COLS / 100 * entity.pos.x), "%c", entity.character);
 }
