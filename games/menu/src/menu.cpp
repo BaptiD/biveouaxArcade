@@ -90,8 +90,8 @@ void arcade::Menu::buildMenu() {
     _state.texts.clear();
 
     int y = 5;
-    _state.texts.push_back({{40, (float)(y += OFST_PERCENTAGE + 2)}, 30, "--- MENU ---", FONT_PATH, WHITE});
-    y += OFST_PERCENTAGE;
+    _state.texts.push_back({{40, (float)(y += OFST_PERCENTAGE)}, 30, "--- MENU ---", FONT_PATH, WHITE});
+    y += OFST_PERCENTAGE * 2;
     _state.texts.push_back({{20, (float)(y += OFST_PERCENTAGE)}, 30, "Games:", FONT_PATH, WHITE});
     y += OFST_PERCENTAGE;
     //set a cursor to see what is the game selected
