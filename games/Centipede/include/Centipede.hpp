@@ -22,12 +22,14 @@ class Centipede : public IGame {
   private:
     data_t _state;
     int _score;
+    std::vector<vector_t> _mushroomsPos;
 
     void moveCentipede();
     bool isCollision(const entity_t& a, const entity_t& b);
     void handleCollision();
     void shoot();
     void updateBullets();
+    bool isThereMushroom(double x, double y);
 };
 
 extern "C" {
