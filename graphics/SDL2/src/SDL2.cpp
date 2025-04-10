@@ -4,7 +4,7 @@
 ** File description:
 ** test.cpp
 */
-#include <unistd.h>
+#include <filesystem>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
@@ -60,7 +60,7 @@ void arcade::SDL2::displayEntity(entity_t entity_data)
     SDL_Texture *texture = NULL;
     SDL_Rect rect = RECT(entity_data);
 
-    if (access(entity_data.asset.c_str(), F_OK)) {
+    if (std::filesystem::exists(entity_data.asset)) {
         sprite = IMG_Load(entity_data.asset.c_str());
         texture = SDL_CreateTextureFromSurface(_renderer, sprite);
         SDL_FreeSurface(sprite);
@@ -73,10 +73,19 @@ void arcade::SDL2::displayEntity(entity_t entity_data)
     }
 }
 
+#include <iostream>
 void arcade::SDL2::displayText(text_t text_data)
 {
+    std::cout << \
+        text_data.fontPath.c_str() << " - " << (int)text_data.fontSize \
+        << " / " << text_data.pos.x << " " << text_data.pos.y \
+        << std::endl;
+    if (std::filesystem::exists(text_data.fontPath))
+        std::cout << "ahah\n";
     TTF_Font* font = TTF_OpenFont(text_data.fontPath.c_str(),
-        text_data.fontSize);
+        (int)text_data.fontSize);
+    if (font == NULL)
+        std::cout << "KO" << std::endl;
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font,
         text_data.value.c_str(), COLOR(text_data));
     SDL_Texture* msg = SDL_CreateTextureFromSurface(_renderer, surfaceMessage);
