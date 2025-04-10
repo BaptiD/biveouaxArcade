@@ -11,6 +11,9 @@
     #include "memory"
     #include "IGraphic.hpp"
     #include <map>
+
+    #define GAME_WIDTH 30
+    #define GAME_HEIGHT 30
 namespace arcade {
 
 class nCurses : public IGraphic {
@@ -24,7 +27,7 @@ class nCurses : public IGraphic {
     private:
         static const std::map<int, event_e> _map;
         event_t _events;
-        void drawEntity(entity_t& entity);
+        void drawEntity(entity_t& entity, float offsetX, float offsetY);
 };
 
 extern "C" {

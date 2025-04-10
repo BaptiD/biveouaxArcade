@@ -81,30 +81,30 @@ event_t arcade::nCurses::getEvent(void) {
 
 void arcade::nCurses::display(data_t datas) {
     clear();
+
+    float offsetX = (COLS - GAME_WIDTH) / 2;
+    float offsetY = (LINES - GAME_HEIGHT) / 2;
     //display bg
     for (auto& bg : datas.bg)
-        drawEntity(bg);
+        drawEntity(bg, offsetX, offsetY);
 
     //display items
     for (auto& item : datas.objects)
-        drawEntity(item);
+        drawEntity(item, offsetX, offsetY);
 
     //display UI
     for (auto& ui : datas.ui)
-        drawEntity(ui);
+        drawEntity(ui, offsetX, offsetY);
     
     //display texts
     for (auto& text : datas.texts) {
         if (LINES > 100)
             mvprintw(static_cast<int>(((float)LINES / 100) * text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
         else
-            mvprintw(static_cast<int>(text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
+        mvprintw(static_cast<int>(text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
     }
 }
 
-void arcade::nCurses::drawEntity(entity_t& entity) {
-    if (LINES > 100)
-        mvprintw(static_cast<int>(LINES / 100 * entity.pos.y), static_cast<int>(COLS / 100 * entity.pos.x), "%c", entity.character);
-    else
-        mvprintw(static_cast<int>(entity.pos.y), static_cast<int>(COLS / 100 * entity.pos.x), "%c", entity.character);
+void arcade::nCurses::drawEntity(entity_t& entity, float offsetX, float offsetY) {
+    mvprintw(static_cast<int>(entity.pos.y + offsetY), static_cast<int>(entity.pos.x + offsetX), "%c", entity.character);
 }

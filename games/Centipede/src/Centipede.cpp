@@ -47,7 +47,7 @@ void arcade::Centipede::initGame() {
     }
 
     //score
-    text_t score = {{0, 0}, 10, "Score: 0", FONT_PATH, WHITE};
+    text_t score = {{50, 10}, 10, "Score: 0", FONT_PATH, WHITE};
     _state.texts.push_back(score);
     _score = 0;
 }
