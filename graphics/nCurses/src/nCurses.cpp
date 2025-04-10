@@ -54,7 +54,6 @@ arcade::nCurses::nCurses() {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
     curs_set(0);
-    halfdelay(1); //100ms getch)
 }
 
 arcade::nCurses::~nCurses() {
