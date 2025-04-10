@@ -14,6 +14,8 @@
 
     #define WHITE {255, 255, 255, 255}
     #define FONT_PATH "./lib/assets/arcade_menu/font/arcade.ttf"
+    #define MAP_WIDTH 30
+    #define MAP_HEIGHT 30
 
 namespace arcade {
 class Centipede : public IGame {

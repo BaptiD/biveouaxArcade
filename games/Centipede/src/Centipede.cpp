@@ -25,6 +25,15 @@ void arcade::Centipede::initGame() {
     entity_t mushroom;
     entity_t player;
     srand(time(nullptr));
+
+    for (size_t y = 0; y < MAP_HEIGHT; y++) {
+        for (size_t x = 0; x < MAP_WIDTH; x++) {
+            if (x == 0 || x == MAP_WIDTH - 1 || y == 0 || y == MAP_HEIGHT - 1) {
+                entity_t wall = {{static_cast<double>(x), static_cast<double>(y)}, {10, 10}, '#', " ", WHITE, RIGHT};
+                _state.bg.push_back(wall);
+            }
+        }
+    }
     player = {{10, 20}, {10, 10}, 'P', " ", WHITE, RIGHT};
     _state.objects.push_back(player);
 
@@ -36,7 +45,7 @@ void arcade::Centipede::initGame() {
     
     //some mushrooms
     for (size_t i = 0; i < 5; i++) {
-        mushroom = {{(double)(rand() % 30), (double)(rand() % 15)}, {10, 10}, 'm', " ", WHITE, RIGHT};
+        mushroom = {{(double)(rand() % 20), (double)(rand() % 15)}, {10, 10}, 'm', " ", WHITE, RIGHT};
         _state.objects.push_back(mushroom);
     }
     
@@ -61,11 +70,11 @@ void arcade::Centipede::handleEvent(event_t events) {
         if (event == A_KEY_Q)
             _state.objects[0].pos.x = std::max((double)0, _state.objects[0].pos.x - 1);
         if (event == A_KEY_D)
-            _state.objects[0].pos.x = std::min((double)30, _state.objects[0].pos.x + 1);
+            _state.objects[0].pos.x = std::min((double)28, _state.objects[0].pos.x + 1);
         if (event == A_KEY_Z)
             _state.objects[0].pos.y = std::max((double)0, _state.objects[0].pos.y - 1);
         if (event == A_KEY_S)
-            _state.objects[0].pos.y = std::min((double)30, _state.objects[0].pos.y + 1);
+            _state.objects[0].pos.y = std::min((double)28, _state.objects[0].pos.y + 1);
         if (event == A_KEY_SPACE)
             shoot();
     }
@@ -116,14 +125,14 @@ void arcade::Centipede::moveCentipede() {
     for (auto& entity : _state.objects) {
         if (entity.character == 's') {
             if (entity.direction == RIGHT) {
-                if (isThereMushroom(entity.pos.x + 1, entity.pos.y) || entity.pos.x + 1 > 30) {
+                if (isThereMushroom(entity.pos.x + 1, entity.pos.y) || entity.pos.x + 1 > 28) {
                     entity.pos.y += 1;
                     entity.direction = LEFT;
                 } else {
                     entity.pos.x += 1;
                 }
             } else {
-                if (isThereMushroom(entity.pos.x - 1, entity.pos.y) || entity.pos.x + 1 == 1) {
+                if (isThereMushroom(entity.pos.x - 1, entity.pos.y) || entity.pos.x - 1 == 0) {
                     entity.pos.y += 1;
                     entity.direction = RIGHT;
                 } else {
