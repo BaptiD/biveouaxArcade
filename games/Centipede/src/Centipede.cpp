@@ -78,6 +78,8 @@ void arcade::Centipede::handleEvent(event_t events) {
             _state.objects[0].pos.y = std::min((double)28, _state.objects[0].pos.y + 1);
         if (event == A_KEY_SPACE)
             shoot();
+        if (event == A_KEY_ESC)
+            _state.libs.game = MENU_PATH;
     }
     moveCentipede();
     handleCollision();

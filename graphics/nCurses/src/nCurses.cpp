@@ -16,6 +16,7 @@
 #include <unistd.h>
 
 const std::map<int, event_e> arcade::nCurses::_map = {
+    {27, A_KEY_ESC},
     {10, A_KEY_ENTER},
     {32, A_KEY_SPACE},
     {97, A_KEY_A},

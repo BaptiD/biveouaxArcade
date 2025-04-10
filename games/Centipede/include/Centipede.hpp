@@ -12,6 +12,8 @@
     #include "updates.hpp"
     #include "IGame.hpp"
 
+    #define MENU_PATH "./lib/arcade_menu.so"
+
     #define WHITE {255, 255, 255, 255}
     #define FONT_PATH "./lib/assets/arcade_menu/font/arcade.ttf"
     #define MAP_WIDTH 30
