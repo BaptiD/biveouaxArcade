@@ -2,7 +2,7 @@ clear
 if [[ $1 == "-re" ]]
 then
     echo "------------RE-BUILD"------------
-    rm -rf ./lib/
+    rm -rf ./lib/*.so
     rm -rf ./build/
     rm -f ./arcade
     if [ ! -d "./build/" ]
@@ -29,7 +29,7 @@ then
 elif [[ $1 == "-c" ]]
 then
     echo "------------CLEAR------------"
-    rm -rf ./lib/
+    rm -rf ./lib/*.so
     rm -rf ./build/
     rm -f ./arcade
     echo "------------END------------"
