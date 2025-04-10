@@ -84,9 +84,9 @@ const std::map<int, event_e> KEYS = {
     {SDLK_7, A_KEY_7},
     {SDLK_8, A_KEY_8},
     {SDLK_9, A_KEY_9},
-    {NOT_SET, A_MOUSE_LEFT},
-    {NOT_SET, A_MOUSE_RIGHT},
-    {NOT_SET, A_MOUSE_MIDDLE},
+    {SDL_BUTTON_LEFT, A_MOUSE_LEFT},
+    {SDL_BUTTON_RIGHT, A_MOUSE_RIGHT},
+    {SDL_BUTTON_MIDDLE, A_MOUSE_MIDDLE},
     {NOT_SET, A_MOUSE_XBUTTON1},
     {NOT_SET, A_MOUSE_XBUTTON2},
     {NOT_SET, A_MOUSE_VERTICALWHEEL},
@@ -104,7 +104,7 @@ class SDL2 : public IGraphic{
         void display(data_t) override;
 
     private:
-        bool keyNotAllreadyPressed(event_e);
+        bool eventNotAllreadySet(event_e);
         void eventManager(void);
         void displayText(text_t text_data);
         void displayEntity(entity_t entity);

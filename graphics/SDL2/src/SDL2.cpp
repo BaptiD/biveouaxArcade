@@ -35,19 +35,15 @@ arcade::SDL2::~SDL2()
     SDL_Quit();
 }
 
-#include <iostream>
 event_t arcade::SDL2::getEvent(void)
 {
     event_t giveEvent = _events;
 
-    for (std::size_t i = 0; i < _events.events.size(); ++i) {
-        std::cout << _events.events[i] << std::endl;
-    }
     _events.events.clear();
     return giveEvent;
 }
 
-bool arcade::SDL2::keyNotAllreadyPressed(event_e event)
+bool arcade::SDL2::eventNotAllreadySet(event_e event)
 {
     for (std::size_t i = 0; i < _events.events.size(); ++i)
         if (event == _events.events[i])
@@ -57,14 +53,23 @@ bool arcade::SDL2::keyNotAllreadyPressed(event_e event)
 
 void arcade::SDL2::eventManager(void)
 {
+    int x, y = 0;
 
     if (SDL_PollEvent(&_SDLevent)) {
         if (_SDLevent.type == SDL_QUIT)
             exit(0);
         if (_SDLevent.type == SDL_KEYDOWN)
-            if (keyNotAllreadyPressed(GET_VALUE(KEYS, _SDLevent.key.keysym.sym))) {
+            if (eventNotAllreadySet(GET_VALUE(KEYS, _SDLevent.key.keysym.sym)))
                 _events.events.push_back(GET_VALUE(KEYS, _SDLevent.key.keysym.sym));
-            }
+        if(_SDLevent.type == SDL_MOUSEMOTION) {
+            SDL_GetGlobalMouseState(&x, &y);
+            _events.mPos.x = (double)x;
+            _events.mPos.y = (double)y;
+        }
+        if (_SDLevent.type == SDL_MOUSEBUTTONDOWN) {
+            if (eventNotAllreadySet(GET_VALUE(KEYS, _SDLevent.button.button)))
+                _events.events.push_back(GET_VALUE(KEYS, _SDLevent.button.button));
+        }
     }
 }
 
