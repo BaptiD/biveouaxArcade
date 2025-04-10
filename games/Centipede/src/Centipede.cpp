@@ -145,10 +145,7 @@ void arcade::Centipede::moveCentipede() {
 }
 
 void arcade::Centipede::shoot() {
-    entity_t bullet;
-
-    bullet.pos = {_state.objects[0].pos.x, _state.objects[0].pos.y - 1};
-    bullet.character = '*';
+    entity_t bullet = {{_state.objects[0].pos.x, _state.objects[0].pos.y - 1}, {10, 10}, '*', "./lib/assets/arcade_centipede/sprites/Dart.png", WHITE, RIGHT};
     _state.objects.push_back(bullet);
 }
 
