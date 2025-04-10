@@ -18,6 +18,12 @@
     #define MAP_HEIGHT 30
     #define ASSET_DIR "./lib/assets/arcade_centipede/"
 
+    #define MUSHROOM_SIZE 3
+    #define PLAYER_SIZE 3
+    #define CENTIPEDE_SIZE 3
+    #define WALL_SIZE 3
+    #define BULLET_SIZE 3
+
 namespace arcade {
 class Centipede : public IGame {
   public:
