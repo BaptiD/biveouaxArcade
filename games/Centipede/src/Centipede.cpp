@@ -24,28 +24,22 @@ void arcade::Centipede::initGame() {
     entity_t centipede;
     entity_t mushroom;
     entity_t player;
-
     srand(time(nullptr));
-    player.pos = {10, 20};
-    player.character = 'P';
+    player = {{10, 20}, {10, 10}, 'P', " ", WHITE, RIGHT};
     _state.objects.push_back(player);
 
     //the centipede
     for (size_t i = 0; i < 10; i++) {
-        centipede.pos = {(double)5 + i, 5};
-        centipede.character = 's';
-        centipede.direction = RIGHT;
+        centipede = {{(double)5 + i, 5}, {10, 10}, 's', " ", WHITE, RIGHT};
         _state.objects.push_back(centipede);
     }
-
+    
     //some mushrooms
     for (size_t i = 0; i < 5; i++) {
-        mushroom.pos = {(double)(rand() % 30), (double)(rand() % 15)};
-        mushroom.character = 'm';
-        _mushroomsPos.push_back(mushroom.pos);
+        mushroom = {{(double)(rand() % 30), (double)(rand() % 15)}, {10, 10}, 'm', " ", WHITE, RIGHT};
         _state.objects.push_back(mushroom);
     }
-
+    
     //score
     text_t score = {{50, 10}, 10, "Score: 0", FONT_PATH, WHITE};
     _state.texts.push_back(score);
@@ -81,9 +75,10 @@ void arcade::Centipede::handleEvent(event_t events) {
     checkPlayerCollision();
     if (!_gameOver)
         spawnNewCentipede();
-    if (_gameOver)
+    if (_gameOver) {
         _state.texts[0].value = "You lost! Score: " + std::to_string(_score) + " - Press Enter to restart";
-    else
+        _state.texts[0].pos = {40, 10};
+    } else
         _state.texts[0].value = "Score: " + std::to_string(_score);
 }
 
@@ -99,7 +94,7 @@ void arcade::Centipede::spawnNewCentipede() {
 
     if (!centipedeExists) {
         for (size_t i = 0; i < 10; i++) {
-            entity_t centipede = {{5.0 + i, 5}, {10, 10}, 's', NULL, WHITE, RIGHT};
+            entity_t centipede = {{5.0 + i, 5}, {10, 10}, 's', " ", WHITE, RIGHT};
             _state.objects.push_back(centipede);
         }
     }
@@ -175,9 +170,7 @@ void arcade::Centipede::handleCollision() {
                     _score += (_state.objects[j].character == 's') ? 100 : 10;
                     toRemove[i] = true;
                     toRemove[j] = true;
-                    entity_t newMushroom;
-                    newMushroom.pos = _state.objects[i].pos;
-                    newMushroom.character = 'm';
+                    entity_t newMushroom = {_state.objects[i].pos, {10, 10}, 'm', " ", WHITE, RIGHT};
                     _state.objects.push_back(newMushroom);
                     _mushroomsPos.push_back(_state.objects[i].pos);
                     break;
@@ -195,18 +188,15 @@ void arcade::Centipede::handleCollision() {
 }
 
 void arcade::Centipede::checkPlayerCollision() {
-    entity_t* player = nullptr;
+    entity_t player;
     for (size_t i = 0; i < _state.objects.size(); i++) {
         if (_state.objects[i].character == 'P') {
-            player = &_state.objects[i];
+            player = _state.objects[i];
             break;
         }
     }
-    if (player == nullptr)
-        return;
-
     for (auto& entity : _state.objects) {
-        if (entity.character == 's' && isCollision(*player, entity)) {
+        if (entity.character == 's' && isCollision(player, entity)) {
             _gameOver = true;
             break;
         }
