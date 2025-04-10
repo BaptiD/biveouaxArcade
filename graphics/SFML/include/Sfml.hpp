@@ -15,20 +15,21 @@
 #include "updates.hpp"
 
 namespace arcade {
-class Sfml : public IGraphic {
-  public:
-    Sfml();
-    ~Sfml() override;
-    event_t getEvent() override;
-    void display(data_t data) override;
-    
-  private:
-    sf::RenderWindow window;
-};
+	class Sfml : public IGraphic {
+		public:
+			Sfml();
+			~Sfml() override;
+			event_t getEvent() override;
+			void display(data_t data) override;
 
-extern "C" IGraphic* makeGraphic() {
-    return new Sfml();
-};
+		private:
+			sf::RenderWindow _window;
+			sf::Font _font;
+	};
+
+	extern "C" IGraphic* makeGraphic() {
+		return new Sfml();
+	};
 
 };
 
