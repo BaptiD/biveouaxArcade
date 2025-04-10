@@ -90,9 +90,10 @@ void arcade::Menu::buildMenu() {
     _state.texts.clear();
 
     int y = 5;
-    _state.texts.push_back({{40, (float)(y += OFST_PERCENTAGE + 2)}, 20, "--- MENU ---", FONT_PATH, WHITE});
-    _state.texts.push_back({{20, (float)(y += OFST_PERCENTAGE)}, 20, "Games:", FONT_PATH, WHITE});
-    
+    _state.texts.push_back({{40, (float)(y += OFST_PERCENTAGE + 2)}, 30, "--- MENU ---", FONT_PATH, WHITE});
+    y += OFST_PERCENTAGE;
+    _state.texts.push_back({{20, (float)(y += OFST_PERCENTAGE)}, 30, "Games:", FONT_PATH, WHITE});
+    y += OFST_PERCENTAGE;
     //set a cursor to see what is the game selected
     if (!_gamePaths.empty()) {
         for (std::size_t i = 0; i < _gamePaths.size(); i++) {
@@ -102,8 +103,9 @@ void arcade::Menu::buildMenu() {
     } else {
         _state.texts.push_back({{30, (float)(y += OFST_PERCENTAGE)}, 20, "No game in lib directory", FONT_PATH, WHITE});
     }
-    y++;
-    _state.texts.push_back({{20, (float)(y += OFST_PERCENTAGE)}, 20, "Graphic libraries:", FONT_PATH, WHITE});
+    y += OFST_PERCENTAGE;
+    _state.texts.push_back({{20, (float)(y += OFST_PERCENTAGE)}, 30, "Graphic libraries:", FONT_PATH, WHITE});
+    y += OFST_PERCENTAGE;
     //set a cursor to see what is the game selected
     if (!_graphicPaths.empty()) {
         for (std::size_t i = 0; i < _graphicPaths.size(); i++) {
