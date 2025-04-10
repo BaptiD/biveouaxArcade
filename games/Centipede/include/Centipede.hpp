@@ -8,11 +8,18 @@
 #ifndef CENTIPEDE_HPP_
     #define CENTIPEDE_HPP_
 
+    #include <chrono>
+
     #include "events.hpp"
     #include "updates.hpp"
     #include "IGame.hpp"
 
     #define MENU_PATH "./lib/arcade_menu.so"
+
+    #define FRAME_RATE 1
+    #define FPS (1000 / FRAME_RATE)
+    #define GET_TIME std::chrono::steady_clock::now()
+    #define CHRONO(lc) (std::chrono::duration_cast<std::chrono::microseconds>(GET_TIME - lc))
 
     #define WHITE {255, 255, 255, 255}
     #define FONT_PATH "./lib/assets/arcade_menu/font/arcade.ttf"
@@ -34,6 +41,8 @@ class Centipede : public IGame {
     data_t update(void) override;
 
   private:
+    std::chrono::steady_clock::time_point _lastCheck;
+    std::size_t _clockIteration = 0;
     data_t _state;
     int _score;
     std::vector<vector_t> _mushroomsPos;

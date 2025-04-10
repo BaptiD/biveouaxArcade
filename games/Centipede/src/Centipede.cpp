@@ -26,8 +26,8 @@ void arcade::Centipede::initGame() {
     entity_t player;
     srand(time(nullptr));
 
-    for (size_t y = 0; y < MAP_HEIGHT; y++) {
-        for (size_t x = 0; x < MAP_WIDTH; x++) {
+    for (std::size_t y = 0; y < MAP_HEIGHT; y++) {
+        for (std::size_t x = 0; x < MAP_WIDTH; x++) {
             if (x == 0 || x == MAP_WIDTH - 1 || y == 0 || y == MAP_HEIGHT - 1) {
                 entity_t wall = {{static_cast<double>(x), static_cast<double>(y)}, {WALL_SIZE, WALL_SIZE}, '#', "", WHITE, RIGHT};
                 _state.bg.push_back(wall);
@@ -38,13 +38,13 @@ void arcade::Centipede::initGame() {
     _state.objects.push_back(player);
 
     //the centipede
-    for (size_t i = 0; i < 10; i++) {
+    for (std::size_t i = 0; i < 10; i++) {
         centipede = {{(double)5 + i, 5}, {CENTIPEDE_SIZE, CENTIPEDE_SIZE}, 's', "./lib/assets/arcade_centipede/sprites/CentipedeBody.png", WHITE, RIGHT};
         _state.objects.push_back(centipede);
     }
 
     //some mushrooms
-    for (size_t i = 0; i < 5; i++) {
+    for (std::size_t i = 0; i < 5; i++) {
         mushroom = {{(double)(rand() % 20), (double)(rand() % 15)}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, RIGHT};
         _mushroomsPos.push_back(mushroom.pos);
         _state.objects.push_back(mushroom);
@@ -56,7 +56,16 @@ void arcade::Centipede::initGame() {
     _score = 0;
 }
 
+#include <iostream>
 void arcade::Centipede::handleEvent(event_t events) {
+    auto dTime = GET_TIME;
+    std::chrono::microseconds chrono = std::chrono::duration_cast<std::chrono::microseconds>(dTime - _lastCheck);
+    if (chrono.count() < FPS * _clockIteration) {
+        return;
+    } else {
+        _lastCheck = dTime;
+        _clockIteration += 1;
+    }
     if (_gameOver) {
         for (auto event : events.events) {
             if (event == A_KEY_ENTER) {
@@ -105,7 +114,7 @@ void arcade::Centipede::spawnNewCentipede() {
     }
 
     if (!centipedeExists) {
-        for (size_t i = 0; i < 10; i++) {
+        for (std::size_t i = 0; i < 10; i++) {
             entity_t centipede = {{5.0 + i, 5}, {CENTIPEDE_SIZE, CENTIPEDE_SIZE}, 's', "./lib/assets/arcade_centipede/sprites/CentipedeBody.png", WHITE, RIGHT};
             _state.objects.push_back(centipede);
         }
@@ -169,9 +178,9 @@ bool arcade::Centipede::isCollision(const entity_t& a, const entity_t& b) {
 
 void arcade::Centipede::handleCollision() {
     std::vector<bool> toRemove(_state.objects.size(), false);
-    for (size_t i = 0; i < _state.objects.size(); i++) {
+    for (std::size_t i = 0; i < _state.objects.size(); i++) {
         if (_state.objects[i].character == '*') {
-            for (size_t j = 0; j < _state.objects.size(); j++) {
+            for (std::size_t j = 0; j < _state.objects.size(); j++) {
                 if (i == j)
                     continue;
                 if ((_state.objects[j].character == 'm' || _state.objects[j].character == 's') &&
@@ -188,7 +197,7 @@ void arcade::Centipede::handleCollision() {
         }
     }
     std::vector<entity_t> newObjects;
-    for (size_t i = 0; i < _state.objects.size(); i++) {
+    for (std::size_t i = 0; i < _state.objects.size(); i++) {
         if (!toRemove[i]) {
             newObjects.push_back(_state.objects[i]);
         }
@@ -198,7 +207,7 @@ void arcade::Centipede::handleCollision() {
 
 void arcade::Centipede::checkPlayerCollision() {
     entity_t player;
-    for (size_t i = 0; i < _state.objects.size(); i++) {
+    for (std::size_t i = 0; i < _state.objects.size(); i++) {
         if (_state.objects[i].character == 'P') {
             player = _state.objects[i];
             break;
