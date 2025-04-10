@@ -14,8 +14,8 @@
 	#include "IGraphic.hpp"
 	#include "updates.hpp"
 
-	#define WIN_SIZE_X 1700
-	#define WIN_SIZE_Y 1700
+	#define WIN_SIZE_X 1000
+	#define WIN_SIZE_Y 1000
 
 namespace arcade {
 	class Sfml : public IGraphic {

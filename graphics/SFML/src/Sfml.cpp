@@ -11,6 +11,24 @@ const std::map<int, event_e> arcade::Sfml::_conversionMap = {
     {sf::Keyboard::Escape, A_KEY_ESC},
     {sf::Keyboard::Enter, A_KEY_ENTER},
     {sf::Keyboard::Space, A_KEY_SPACE},
+    {sf::Keyboard::Delete, A_KEY_DEL},
+    {sf::Keyboard::Tab, A_KEY_TAB},
+    {sf::Keyboard::Up, A_KEY_UP},
+    {sf::Keyboard::Down, A_KEY_DOWN},
+    {sf::Keyboard::Left, A_KEY_LEFT},
+    {sf::Keyboard::Right, A_KEY_RIGHT},
+    {sf::Keyboard::F1, A_KEY_F1},
+    {sf::Keyboard::F2, A_KEY_F2},
+    {sf::Keyboard::F3, A_KEY_F3},
+    {sf::Keyboard::F4, A_KEY_F4},
+    {sf::Keyboard::F5, A_KEY_F5},
+    {sf::Keyboard::F6, A_KEY_F6},
+    {sf::Keyboard::F7, A_KEY_F7},
+    {sf::Keyboard::F8, A_KEY_F8},
+    {sf::Keyboard::F9, A_KEY_F9},
+    {sf::Keyboard::F10, A_KEY_F10},
+    {sf::Keyboard::F11, A_KEY_F11},
+    {sf::Keyboard::F12, A_KEY_F12},
     {sf::Keyboard::A, A_KEY_A},
     {sf::Keyboard::B, A_KEY_B},
     {sf::Keyboard::C, A_KEY_C},
@@ -58,8 +76,7 @@ event_t arcade::Sfml::getEvent() {
     while (_window.pollEvent(sfEvent)) {
         if (sfEvent.type == sf::Event::Closed) {
             events.events.push_back(A_KEY_C);
-        }
-        else if (sfEvent.type == sf::Event::KeyPressed) {
+        } else if (sfEvent.type == sf::Event::KeyPressed) {
             for (std::map<int, event_e>::const_iterator it = _conversionMap.begin(); it != _conversionMap.end(); ++it) {
                 if (it->first == sfEvent.key.code) {
                     events.events.push_back(it->second);
