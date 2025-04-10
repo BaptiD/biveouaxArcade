@@ -40,6 +40,7 @@ arcade::Centipede::Centipede() {
     score.pos = {0, 0};
     score.value = "Score: 0";
     _state.texts.push_back(score);
+    _score = 0;
 }
 
 void arcade::Centipede::handleEvent(event_t events) {
