@@ -12,6 +12,15 @@
 #include <algorithm>
 
 arcade::Centipede::Centipede() {
+    initGame();
+}
+
+void arcade::Centipede::initGame() {
+    _state.objects.clear();
+    _state.texts.clear();
+    _mushroomsPos.clear();
+    _score = 0;
+    _gameOver = false;
     entity_t centipede;
     entity_t mushroom;
     entity_t player;
@@ -25,6 +34,7 @@ arcade::Centipede::Centipede() {
     for (size_t i = 0; i < 10; i++) {
         centipede.pos = {(double)5 + i, 5};
         centipede.character = 's';
+        centipede.direction = RIGHT;
         _state.objects.push_back(centipede);
     }
 
@@ -37,14 +47,22 @@ arcade::Centipede::Centipede() {
     }
 
     //score
-    text_t score;
-    score.pos = {0, 0};
-    score.value = "Score: 0";
+    text_t score = {{0, 0}, 10, "Score: 0", FONT_PATH, WHITE};
     _state.texts.push_back(score);
     _score = 0;
 }
 
 void arcade::Centipede::handleEvent(event_t events) {
+    if (_gameOver) {
+        for (auto event : events.events) {
+            if (event == A_KEY_ENTER) {
+                initGame();
+                return;
+            }
+        }
+        _state.texts[0].value = "You lost! Score: " + std::to_string(_score) + " - Press Enter to restart";
+        return;
+    }
     for (auto event : events.events) {
         if (event == A_KEY_Q)
             _state.objects[0].pos.x = std::max((double)0, _state.objects[0].pos.x - 1);
@@ -60,7 +78,31 @@ void arcade::Centipede::handleEvent(event_t events) {
     moveCentipede();
     handleCollision();
     updateBullets();
-    _state.texts[0].value = "Score: " + std::to_string(_score);
+    checkPlayerCollision();
+    if (!_gameOver)
+        spawnNewCentipede();
+    if (_gameOver)
+        _state.texts[0].value = "You lost! Score: " + std::to_string(_score) + " - Press Enter to restart";
+    else
+        _state.texts[0].value = "Score: " + std::to_string(_score);
+}
+
+void arcade::Centipede::spawnNewCentipede() {
+    bool centipedeExists = false;
+
+    for (auto& entity : _state.objects) {
+        if (entity.character == 's') {
+            centipedeExists = true;
+            break;
+        }
+    }
+
+    if (!centipedeExists) {
+        for (size_t i = 0; i < 10; i++) {
+            entity_t centipede = {{5.0 + i, 5}, {10, 10}, 's', NULL, WHITE, RIGHT};
+            _state.objects.push_back(centipede);
+        }
+    }
 }
 
 data_t arcade::Centipede::update(void) {
@@ -150,4 +192,23 @@ void arcade::Centipede::handleCollision() {
         }
     }
     _state.objects = std::move(newObjects);
+}
+
+void arcade::Centipede::checkPlayerCollision() {
+    entity_t* player = nullptr;
+    for (size_t i = 0; i < _state.objects.size(); i++) {
+        if (_state.objects[i].character == 'P') {
+            player = &_state.objects[i];
+            break;
+        }
+    }
+    if (player == nullptr)
+        return;
+
+    for (auto& entity : _state.objects) {
+        if (entity.character == 's' && isCollision(*player, entity)) {
+            _gameOver = true;
+            break;
+        }
+    }
 }
