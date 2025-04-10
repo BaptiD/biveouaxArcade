@@ -17,6 +17,8 @@
     #define PATH_LIBS "./lib"
     #define GAME_LIBS 0
     #define GRAPHIC_LIBS 1
+    #define FONT_SIZE 20
+    #define OFST_PERCENTAGE 3
 
 
 namespace arcade {
