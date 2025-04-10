@@ -23,7 +23,7 @@
     #define RECT(e) ((SDL_Rect){(int)e.pos.x, (int)e.pos.y, (int)e.size.y, (int)e.size.x}) // Get the rectangle from an entity data
     #define COLOR(e) ((SDL_Color){(Uint8)e.color.r, (Uint8)e.color.g, (Uint8)e.color.b}) // Get color from an entity or text
     #define DRAW_RECT(re, e) (SDL_SetRenderDrawColor(re, e.color.r, e.color.g, e.color.b, e.color.a)) // Draw colored rectangle
-    #define RECT_TEXT(t) ((SDL_Rect){(int)t.pos.x, (int)t.pos.y, (int)t.fontSize, (int)(sizeof(t.value.c_str()) * t.fontSize)}) // Get the rectangle from an text data
+    #define RECT_TEXT(t) ((SDL_Rect){(int)t.pos.x, (int)t.pos.y, 0, 0}) // Get the rectangle from an text data
 
     #define NOT_SET -1
 

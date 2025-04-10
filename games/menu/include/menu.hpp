@@ -13,7 +13,7 @@
     #include "IGame.hpp"
 
     #define WHITE {255, 255, 255, 255}
-    #define FONT_PATH "./lib/assets/arcade_menu/font/arcade.TTF"
+    #define FONT_PATH "./lib/assets/arcade_menu/font/arcade.ttf"
     #define PATH_LIBS "./lib"
     #define GAME_LIBS 0
     #define GRAPHIC_LIBS 1

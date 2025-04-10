@@ -32,6 +32,7 @@ arcade::Centipede::Centipede() {
     for (size_t i = 0; i < 5; i++) {
         mushroom.pos = {(double)(rand() % 30), (double)(rand() % 15)};
         mushroom.character = 'm';
+        _mushroomsPos.push_back(mushroom.pos);
         _state.objects.push_back(mushroom);
     }
 
@@ -66,13 +67,31 @@ data_t arcade::Centipede::update(void) {
     return _state;
 }
 
+bool arcade::Centipede::isThereMushroom(double x, double y) {
+    for (auto& pos : _mushroomsPos) {
+        if (x == pos.x && y == pos.y)
+            return true;
+    }
+    return false;
+}
+
 void arcade::Centipede::moveCentipede() {
     for (auto& entity : _state.objects) {
         if (entity.character == 's') {
-            entity.pos.x += 1;
-            if (entity.pos.x > 30) {
-                entity.pos.x = 0;
-                entity.pos.y += 1;
+            if (entity.direction == RIGHT) {
+                if (isThereMushroom(entity.pos.x + 1, entity.pos.y) || entity.pos.x + 1 > 30) {
+                    entity.pos.y += 1;
+                    entity.direction = LEFT;
+                } else {
+                    entity.pos.x += 1;
+                }
+            } else {
+                if (isThereMushroom(entity.pos.x - 1, entity.pos.y) || entity.pos.x + 1 == 1) {
+                    entity.pos.y += 1;
+                    entity.direction = RIGHT;
+                } else {
+                    entity.pos.x -= 1;
+                }
             }
         }
     }
@@ -114,6 +133,11 @@ void arcade::Centipede::handleCollision() {
                     _score += (_state.objects[j].character == 's') ? 100 : 10;
                     toRemove[i] = true;
                     toRemove[j] = true;
+                    entity_t newMushroom;
+                    newMushroom.pos = _state.objects[i].pos;
+                    newMushroom.character = 'm';
+                    _state.objects.push_back(newMushroom);
+                    _mushroomsPos.push_back(_state.objects[i].pos);
                     break;
                 }
             }
