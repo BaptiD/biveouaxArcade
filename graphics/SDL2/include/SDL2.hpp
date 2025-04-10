@@ -14,19 +14,23 @@
 
     #include "IGraphic.hpp"
 
-    #define WINDOW_SIZE_X 1280
-    #define WINDOW_SIZE_Y 720
+    #define WINDOW_SIZE_X 1000
+    #define WINDOW_SIZE_Y 1000
+    #define BLACK (color_t){0, 0, 0, 255}
+
+    // Get mouse pos in percentage
+    #define MOUSE_POS_PERCENT(mPos) ((vector_t){mPos.x / WINDOW_SIZE_X * 100, mPos.y / WINDOW_SIZE_Y * 100})
 
     #define SIZE_ARRAY(a) (sizeof(a)/sizeof(a[0])) // Get size of no-empty any const array
     #define GET_VALUE(m, i) (m.find(i)->second) // Get value from map with index
 
     // Set SDL_Rect from entity data
     #define RECT(e) ((SDL_Rect){WINDOW_SIZE_X * (int)e.pos.x / 100, WINDOW_SIZE_Y * (int)e.pos.y / 100, \
-        WINDOW_SIZE_X * (int)e.size.y / 100, WINDOW_SIZE_Y * (int)e.size.x / 100})
+        WINDOW_SIZE_X * (int)e.size.x / 100, WINDOW_SIZE_Y * (int)e.size.y / 100})
     // Set SDL_Color from entity data
-    #define COLOR(e) ((SDL_Color){(Uint8)e.color.r, (Uint8)e.color.g, (Uint8)e.color.b})
+    #define COLOR(e) ((SDL_Color){(Uint8)e.color.r, (Uint8)e.color.g, (Uint8)e.color.b, (Uint8)e.color.a})
     // Draw colored rectangle
-    #define DRAW_RECT(re, e) (SDL_SetRenderDrawColor(re, e.color.r, e.color.g, e.color.b, e.color.a))
+    #define DRAW_RECT(re, c) (SDL_SetRenderDrawColor(re, (Uint8)c.r, (Uint8)c.g, (Uint8)c.b, (Uint8)c.a))
     // Set SDL_Rect from text data
     #define RECT_TEXT(t) ((SDL_Rect){WINDOW_SIZE_X * (int)t.pos.x / 100, WINDOW_SIZE_Y * (int)t.pos.y / 100, \
         (int)t.value.size() * t.fontSize, t.fontSize})
@@ -91,6 +95,7 @@ const std::map<int, event_e> KEYS = {
     {NOT_SET, A_MOUSE_XBUTTON2},
     {NOT_SET, A_MOUSE_VERTICALWHEEL},
     {NOT_SET, A_MOUSE_HORIZONTALWHEEL},
+    {SDL_MOUSEMOTION, A_MOUSE_MOVE},
 };
 
 namespace arcade {

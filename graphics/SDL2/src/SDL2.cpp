@@ -40,6 +40,7 @@ event_t arcade::SDL2::getEvent(void)
     event_t giveEvent = _events;
 
     _events.events.clear();
+    giveEvent.mPos = MOUSE_POS_PERCENT(giveEvent.mPos);
     return giveEvent;
 }
 
@@ -62,6 +63,7 @@ void arcade::SDL2::eventManager(void)
             if (eventNotAllreadySet(GET_VALUE(KEYS, _SDLevent.key.keysym.sym)))
                 _events.events.push_back(GET_VALUE(KEYS, _SDLevent.key.keysym.sym));
         if(_SDLevent.type == SDL_MOUSEMOTION) {
+            _events.events.push_back(GET_VALUE(KEYS, SDL_MOUSEMOTION));
             SDL_GetGlobalMouseState(&x, &y);
             _events.mPos.x = (double)x;
             _events.mPos.y = (double)y;
@@ -86,9 +88,10 @@ void arcade::SDL2::displayEntity(entity_t entity_data)
         SDL_RenderCopy(_renderer, texture, &rect, &rect);
         SDL_DestroyTexture(texture);
     } else {
-        DRAW_RECT(_renderer, entity_data);
+        DRAW_RECT(_renderer, entity_data.color);
         SDL_RenderFillRect(_renderer, &rect);
         SDL_RenderDrawRect(_renderer, &rect);
+        DRAW_RECT(_renderer, BLACK);
     }
 }
 
@@ -109,6 +112,7 @@ void arcade::SDL2::displayText(text_t text_data)
 
 void arcade::SDL2::display(data_t data)
 {
+    SDL_Color color;
     SDL_RenderClear(_renderer);
     for (auto& bg : data.bg)
         displayEntity(bg);
