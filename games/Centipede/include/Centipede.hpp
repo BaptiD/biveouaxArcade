@@ -12,6 +12,11 @@
     #include "updates.hpp"
     #include "IGame.hpp"
 
+    #define WHITE {255, 255, 255, 255}
+    #define FONT_PATH "./lib/assets/arcade_menu/font/arcade.ttf"
+    #define MAP_WIDTH 30
+    #define MAP_HEIGHT 30
+
 namespace arcade {
 class Centipede : public IGame {
   public:
@@ -23,6 +28,8 @@ class Centipede : public IGame {
     data_t _state;
     int _score;
     std::vector<vector_t> _mushroomsPos;
+    vector_t _playerPos;
+    bool _gameOver = false;
 
     void moveCentipede();
     bool isCollision(const entity_t& a, const entity_t& b);
@@ -30,6 +37,9 @@ class Centipede : public IGame {
     void shoot();
     void updateBullets();
     bool isThereMushroom(double x, double y);
+    void initGame();
+    void spawnNewCentipede();
+    void checkPlayerCollision();
 };
 
 extern "C" {
