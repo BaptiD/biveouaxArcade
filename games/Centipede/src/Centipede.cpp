@@ -219,4 +219,10 @@ void arcade::Centipede::checkPlayerCollision() {
             break;
         }
     }
+    for (auto& centipede : _state.objects) {
+        if (centipede.character == 's' && centipede.pos.y >= 28) {
+            _gameOver = true;
+            break;
+        }
+    }
 }
