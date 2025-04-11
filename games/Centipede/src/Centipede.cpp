@@ -34,7 +34,7 @@ void arcade::Centipede::initGame() {
             }
         }
     }
-    player = {{10 + OFFSETX_GAME, 20 + OFFSETY_GAME}, {PLAYER_SIZE, PLAYER_SIZE}, 'P', "./lib/assets/arcade_centipede/sprites/Blaster.png", BLUE, RIGHT};
+    player = {{10 + OFFSETX_GAME, 20 + OFFSETY_GAME}, {PLAYER_SIZE, PLAYER_SIZE}, 'P', "./lib/assets/arcade_centipede/sprites/Blaster.png", BLUE, UP};
     _state.objects.push_back(player);
 
     //the centipede
