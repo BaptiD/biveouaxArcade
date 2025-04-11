@@ -22,6 +22,10 @@
     #define CHRONO(lc) (std::chrono::duration_cast<std::chrono::microseconds>(GET_TIME - lc))
 
     #define WHITE {255, 255, 255, 255}
+    #define PINK {248, 148, 200, 255}
+    #define GREEN {107, 200, 107, 255}
+    #define BLUE {107, 158, 200, 255}
+    #define RED {250, 57, 18, 255}
     #define FONT_PATH "./lib/assets/arcade_menu/font/arcade.ttf"
     #define MAP_WIDTH 30
     #define MAP_HEIGHT 30

@@ -34,19 +34,19 @@ void arcade::Centipede::initGame() {
             }
         }
     }
-    player = {{10 + OFFSETX_GAME, 20 + OFFSETY_GAME}, {PLAYER_SIZE, PLAYER_SIZE}, 'P', "./lib/assets/arcade_centipede/sprites/Blaster.png", WHITE, RIGHT};
+    player = {{10 + OFFSETX_GAME, 20 + OFFSETY_GAME}, {PLAYER_SIZE, PLAYER_SIZE}, 'P', "./lib/assets/arcade_centipede/sprites/Blaster.png", BLUE, RIGHT};
     _state.objects.push_back(player);
 
     //the centipede
     for (std::size_t i = 0; i < 10; i++) {
-        centipede = {{(double)5 + i + OFFSETX_GAME, 5 + OFFSETY_GAME}, {CENTIPEDE_SIZE, CENTIPEDE_SIZE}, 's', "./lib/assets/arcade_centipede/sprites/CentipedeBody.png", WHITE, UP};
+        centipede = {{(double)5 + i + OFFSETX_GAME, 5 + OFFSETY_GAME}, {CENTIPEDE_SIZE, CENTIPEDE_SIZE}, 's', "./lib/assets/arcade_centipede/sprites/CentipedeBody.png", PINK, UP};
         _state.objects.push_back(centipede);
     }
 
     //some mushrooms
     for (std::size_t i = 0; i < 5; i++) {
         mushroom.health = 3;
-        mushroom.entity = {{(double)(rand() % 20) + OFFSETX_GAME, (double)(rand() % 15) + OFFSETY_GAME}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, UP};
+        mushroom.entity = {{(double)(rand() % 20) + OFFSETX_GAME, (double)(rand() % 15) + OFFSETY_GAME}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", GREEN, UP};
         _mushroomsPos.push_back(mushroom.entity.pos);
         _state.objects.push_back(mushroom.entity);
         _mushrooms.push_back(mushroom);
@@ -109,7 +109,7 @@ void arcade::Centipede::spawnNewCentipede() {
 
     if (!centipedeExists) {
         for (std::size_t i = 0; i < 10; i++) {
-            entity_t centipede = {{5.0 + i + OFFSETX_GAME, 5 + OFFSETY_GAME}, {CENTIPEDE_SIZE, CENTIPEDE_SIZE}, 's', "./lib/assets/arcade_centipede/sprites/CentipedeBody.png", WHITE, UP};
+            entity_t centipede = {{5.0 + i + OFFSETX_GAME, 5 + OFFSETY_GAME}, {CENTIPEDE_SIZE, CENTIPEDE_SIZE}, 's', "./lib/assets/arcade_centipede/sprites/CentipedeBody.png", PINK, UP};
             _state.objects.push_back(centipede);
         }
     }
@@ -150,7 +150,7 @@ void arcade::Centipede::moveCentipede() {
 }
 
 void arcade::Centipede::shoot() {
-    entity_t bullet = {{_state.objects[0].pos.x, _state.objects[0].pos.y - 1}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, '*', "./lib/assets/arcade_centipede/sprites/Dart.png", WHITE, UP};
+    entity_t bullet = {{_state.objects[0].pos.x, _state.objects[0].pos.y - 1}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, '*', "./lib/assets/arcade_centipede/sprites/Dart.png", RED, UP};
     _state.objects.push_back(bullet);
 }
 
@@ -188,7 +188,7 @@ void arcade::Centipede::handleCollision() {
                         toRemove[j] = true;
                         mushroom_t newMushroom;
                         newMushroom.health = 3;
-                        newMushroom.entity = {_state.objects[i].pos, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, UP};
+                        newMushroom.entity = {_state.objects[i].pos, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", GREEN, UP};
                         _state.objects.push_back(newMushroom.entity);
                         _mushroomsPos.push_back(_state.objects[i].pos);
                         _mushrooms.push_back(newMushroom);
