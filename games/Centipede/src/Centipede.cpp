@@ -29,31 +29,31 @@ void arcade::Centipede::initGame() {
     for (std::size_t y = 0; y < MAP_HEIGHT; y++) {
         for (std::size_t x = 0; x < MAP_WIDTH; x++) {
             if (x == 0 || x == MAP_WIDTH - 1 || y == 0 || y == MAP_HEIGHT - 1) {
-                entity_t wall = {{static_cast<double>(x), static_cast<double>(y)}, {WALL_SIZE, WALL_SIZE}, '#', "", WHITE, RIGHT};
+                entity_t wall = {{static_cast<double>(x) + OFFSETX_GAME, static_cast<double>(y) + OFFSETY_GAME}, {WALL_SIZE, WALL_SIZE}, '#', "", WHITE, UP};
                 _state.bg.push_back(wall);
             }
         }
     }
-    player = {{10, 20}, {PLAYER_SIZE, PLAYER_SIZE}, 'P', "./lib/assets/arcade_centipede/sprites/Blaster.png", WHITE, RIGHT};
+    player = {{10 + OFFSETX_GAME, 20 + OFFSETY_GAME}, {PLAYER_SIZE, PLAYER_SIZE}, 'P', "./lib/assets/arcade_centipede/sprites/Blaster.png", WHITE, RIGHT};
     _state.objects.push_back(player);
 
     //the centipede
     for (std::size_t i = 0; i < 10; i++) {
-        centipede = {{(double)5 + i, 5}, {CENTIPEDE_SIZE, CENTIPEDE_SIZE}, 's', "./lib/assets/arcade_centipede/sprites/CentipedeBody.png", WHITE, RIGHT};
+        centipede = {{(double)5 + i + OFFSETX_GAME, 5 + OFFSETY_GAME}, {CENTIPEDE_SIZE, CENTIPEDE_SIZE}, 's', "./lib/assets/arcade_centipede/sprites/CentipedeBody.png", WHITE, UP};
         _state.objects.push_back(centipede);
     }
 
     //some mushrooms
     for (std::size_t i = 0; i < 5; i++) {
         mushroom.health = 3;
-        mushroom.entity = {{(double)(rand() % 20), (double)(rand() % 15)}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, RIGHT};
+        mushroom.entity = {{(double)(rand() % 20) + OFFSETX_GAME, (double)(rand() % 15) + OFFSETY_GAME}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, UP};
         _mushroomsPos.push_back(mushroom.entity.pos);
         _state.objects.push_back(mushroom.entity);
         _mushrooms.push_back(mushroom);
     }
 
     //score
-    text_t score = {{50, 10}, 10, "Score: 0", FONT_PATH, WHITE};
+    text_t score = {{45, 10}, 10, "Score: 0", FONT_PATH, WHITE};
     _state.texts.push_back(score);
     _score = 0;
 }
@@ -67,17 +67,18 @@ void arcade::Centipede::handleEvent(event_t events) {
             }
         }
         _state.texts[0].value = "You lost! Score: " + std::to_string(_score) + " - Press Enter to restart";
+        _state.texts[0].pos = {35, 10};
         return;
     }
     for (auto event : events.events) {
         if (event == A_KEY_Q)
-            _state.objects[0].pos.x = std::max((double)0, _state.objects[0].pos.x - 1);
+            _state.objects[0].pos.x = std::max((double)0 + OFFSETX_GAME, _state.objects[0].pos.x - 1);
         if (event == A_KEY_D)
-            _state.objects[0].pos.x = std::min((double)28, _state.objects[0].pos.x + 1);
+            _state.objects[0].pos.x = std::min((double)28 + OFFSETX_GAME, _state.objects[0].pos.x + 1);
         if (event == A_KEY_Z)
-            _state.objects[0].pos.y = std::max((double)0, _state.objects[0].pos.y - 1);
+            _state.objects[0].pos.y = std::max((double)0 + OFFSETY_GAME, _state.objects[0].pos.y - 1);
         if (event == A_KEY_S)
-            _state.objects[0].pos.y = std::min((double)28, _state.objects[0].pos.y + 1);
+            _state.objects[0].pos.y = std::min((double)28 + OFFSETY_GAME, _state.objects[0].pos.y + 1);
         if (event == A_KEY_SPACE)
             shoot();
         if (event == A_KEY_ESC)
@@ -91,7 +92,7 @@ void arcade::Centipede::handleEvent(event_t events) {
         spawnNewCentipede();
     if (_gameOver) {
         _state.texts[0].value = "You lost! Score: " + std::to_string(_score) + " - Press Enter to restart";
-        _state.texts[0].pos = {40, 10};
+        _state.texts[0].pos = {45, 10};
     } else
         _state.texts[0].value = "Score: " + std::to_string(_score);
 }
@@ -108,7 +109,7 @@ void arcade::Centipede::spawnNewCentipede() {
 
     if (!centipedeExists) {
         for (std::size_t i = 0; i < 10; i++) {
-            entity_t centipede = {{5.0 + i, 5}, {CENTIPEDE_SIZE, CENTIPEDE_SIZE}, 's', "./lib/assets/arcade_centipede/sprites/CentipedeBody.png", WHITE, RIGHT};
+            entity_t centipede = {{5.0 + i + OFFSETX_GAME, 5 + OFFSETY_GAME}, {CENTIPEDE_SIZE, CENTIPEDE_SIZE}, 's', "./lib/assets/arcade_centipede/sprites/CentipedeBody.png", WHITE, UP};
             _state.objects.push_back(centipede);
         }
     }
@@ -130,14 +131,14 @@ void arcade::Centipede::moveCentipede() {
     for (auto& entity : _state.objects) {
         if (entity.character == 's') {
             if (entity.direction == RIGHT) {
-                if (isThereMushroom(entity.pos.x + 1, entity.pos.y) || entity.pos.x + 1 > 28) {
+                if (isThereMushroom(entity.pos.x + 1, entity.pos.y) || entity.pos.x + 1 > 28 + OFFSETX_GAME) {
                     entity.pos.y += 1;
                     entity.direction = LEFT;
                 } else {
                     entity.pos.x += 1;
                 }
             } else {
-                if (isThereMushroom(entity.pos.x - 1, entity.pos.y) || entity.pos.x - 1 == 0) {
+                if (isThereMushroom(entity.pos.x - 1, entity.pos.y) || entity.pos.x - 1 == OFFSETX_GAME) {
                     entity.pos.y += 1;
                     entity.direction = RIGHT;
                 } else {
@@ -149,7 +150,7 @@ void arcade::Centipede::moveCentipede() {
 }
 
 void arcade::Centipede::shoot() {
-    entity_t bullet = {{_state.objects[0].pos.x, _state.objects[0].pos.y - 1}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, '*', "./lib/assets/arcade_centipede/sprites/Dart.png", WHITE, RIGHT};
+    entity_t bullet = {{_state.objects[0].pos.x, _state.objects[0].pos.y - 1}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, '*', "./lib/assets/arcade_centipede/sprites/Dart.png", WHITE, UP};
     _state.objects.push_back(bullet);
 }
 
@@ -159,7 +160,7 @@ void arcade::Centipede::updateBullets() {
             entity.pos.y -= 1;
     }
     _state.objects.erase(std::remove_if(_state.objects.begin(), _state.objects.end(), [](entity_t& entity) {
-        return entity.character == '*' && entity.pos.y < 0;
+        return entity.character == '*' && entity.pos.y < 0 + OFFSETY_GAME;
         }),
         _state.objects.end()
     );
@@ -171,7 +172,7 @@ bool arcade::Centipede::isCollision(const entity_t& a, const entity_t& b) {
 
 void arcade::Centipede::handleCollision() {
     std::vector<bool> toRemove(_state.objects.size(), false);
-    std::size_t nbMushroom = 0;
+    size_t nbMushroom = 0;
 
     for (std::size_t i = 0; i < _state.objects.size(); i++) {
         if (_state.objects[i].character == '*') {
@@ -187,7 +188,7 @@ void arcade::Centipede::handleCollision() {
                         toRemove[j] = true;
                         mushroom_t newMushroom;
                         newMushroom.health = 3;
-                        newMushroom.entity = {_state.objects[i].pos, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, RIGHT};
+                        newMushroom.entity = {_state.objects[i].pos, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, UP};
                         _state.objects.push_back(newMushroom.entity);
                         _mushroomsPos.push_back(_state.objects[i].pos);
                         _mushrooms.push_back(newMushroom);
@@ -229,7 +230,7 @@ void arcade::Centipede::checkPlayerCollision() {
         }
     }
     for (auto& centipede : _state.objects) {
-        if (centipede.character == 's' && centipede.pos.y >= 28) {
+        if (centipede.character == 's' && centipede.pos.y >= 28 + OFFSETY_GAME) {
             _gameOver = true;
             break;
         }

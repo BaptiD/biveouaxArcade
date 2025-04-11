@@ -8,6 +8,8 @@
 #ifndef CENTIPEDE_HPP_
     #define CENTIPEDE_HPP_
 
+    #include <chrono>
+
     #include "events.hpp"
     #include "updates.hpp"
     #include "IGame.hpp"
@@ -24,18 +26,20 @@
     #define MAP_WIDTH 30
     #define MAP_HEIGHT 30
     #define ASSET_DIR "./lib/assets/arcade_centipede/"
+    #define OFFSETY_GAME 20
+    #define OFFSETX_GAME 40
 
-    #define MUSHROOM_SIZE 3
-    #define PLAYER_SIZE 3
-    #define CENTIPEDE_SIZE 3
-    #define WALL_SIZE 3
-    #define BULLET_SIZE 3
+    #define MUSHROOM_SIZE 1
+    #define PLAYER_SIZE 1
+    #define CENTIPEDE_SIZE 1
+    #define WALL_SIZE 1
+    #define BULLET_SIZE 1
 
 namespace arcade {
 class Centipede : public IGame {
   public:
     typedef struct mushroom_s {
-      std::size_t health;
+      size_t health;
       entity_t entity;
     } mushroom_t;
 
