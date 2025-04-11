@@ -10,8 +10,6 @@
 #include <iostream>
 
 #include "menu.hpp"
-#include "entity.hpp"
-#include "dynamicLib.hpp"
 
 arcade::Menu::Menu()
 {
@@ -50,52 +48,12 @@ data_t arcade::Menu::update(void)
     return _state;
 }
 
-std::vector<std::string> find_graphic(void)
-{
-    void *handlegraph = NULL;
-    arcade::IGraphic *(*graphlib)(void) = NULL;
-    std::vector<std::string> paths;
-
-    for (const auto &lib : std::filesystem::directory_iterator(PATH_LIBS)) {
-        const std::string filename = lib.path();
-        handlegraph = dlopen(filename.c_str(), RTLD_LAZY);
-        if (handlegraph == NULL)
-            continue;
-        graphlib = (arcade::IGraphic *(*)())dlsym(handlegraph, "makeGraphic");
-        if (graphlib == NULL)
-            continue;
-        paths.push_back(filename);
-        dlclose(handlegraph);
-    }
-    return paths;
-}
-
-std::vector<std::string> find_game(void)
-{
-    void *handlegame = NULL;
-    arcade::IGame *(*gamelib)(void) = NULL;
-    std::vector<std::string> paths;
-
-    for (const auto &lib : std::filesystem::directory_iterator(PATH_LIBS)) {
-        const std::string filename = lib.path();
-        if (!filename.compare(MENU_LIB))
-            continue;
-        handlegame = dlopen(filename.c_str(), RTLD_LAZY);
-        if (handlegame == NULL)
-            continue;
-        gamelib = (arcade::IGame *(*)())dlsym(handlegame, "makeGame");
-        if (gamelib == NULL)
-            continue;
-        paths.push_back(filename);
-        dlclose(handlegame);
-    }
-    return paths;
-}
-
 void arcade::Menu::getLibs(void)
 {
-    _gamePaths = find_game();
-    _graphicPaths = find_graphic();
+    for (const auto &lib : std::filesystem::directory_iterator(PATH_LIBS)) {
+        tryLib<arcade::IGame>(lib.path());
+        tryLib<arcade::IGraphic>(lib.path());
+    }
 }
 
 void arcade::Menu::buildMenu()

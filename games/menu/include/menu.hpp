@@ -8,9 +8,12 @@
 #ifndef MENU_HPP_
     #define MENU_HPP_
 
-    #include "memory"
-    #include "array"
+    #include <dlfcn.h>
+    #include <memory>
+    #include <array>
+
     #include "IGame.hpp"
+    #include "IGraphic.hpp"
 
     #define WHITE {255, 255, 255, 255}
     #define FONT_PATH "./lib/assets/arcade_menu/font/arcade.ttf"
@@ -42,27 +45,26 @@ class Menu : public IGame {
     void getLibs(void);
 
     template<typename Lib>
-    void findLibs(void)
-    {
+    void tryLib(const std::string& filename) {
         void *handlegame = NULL;
-        Lib *(*gamelib)(void) = NULL;
-        std::vector<std::string> paths;
-
-        for (const auto &lib : std::filesystem::directory_iterator(PATH_LIBS)) {
-            const std::string filename = lib.path();
-            if (!filename.compare(MENU_LIB))
-                continue;
-            handlegame = dlopen(filename.c_str(), RTLD_LAZY);
-            if (handlegame == NULL)
-                continue;
-            gamelib = (Lib *(*)())dlsym(handlegame, "makeGame");
-            if (gamelib == NULL)
-                continue;
-            if (typeid(Lib) == typeid(arcade::IGame))
-            _path.push_back(filename);
-            dlclose(handlegame);
+        Lib *(*make)(void) = NULL;
+        if (!filename.compare(MENU_LIB))
+            return;
+        handlegame = dlopen(filename.c_str(), RTLD_LAZY);
+        if (handlegame == NULL)
+            return;
+        if (typeid(Lib) == typeid(arcade::IGame)) {
+            make = (Lib *(*)())dlsym(handlegame, "makeGame");
+            if (make == NULL)
+                return;
+            _gamePaths.push_back(filename);
+        } else {
+            make = (Lib *(*)())dlsym(handlegame, "makeGraphic");
+            if (make == NULL)
+                return;
+            _graphicPaths.push_back(filename);
         }
-        return paths;
+        dlclose(handlegame);
     }
     void buildMenu();
 };
