@@ -203,7 +203,6 @@ void arcade::Centipede::handleCollision() {
                     } else if (_state.objects[j].character == 'm') {
                         _mushrooms[nbMushroom - 1].health -= 1;
                         if (_mushrooms[nbMushroom - 1].health <= 0) {
-                            printf("aaaaa\n");
                             _score += 10;
                             toRemove[j] = true;
                             _mushrooms.erase(_mushrooms.begin() + nbMushroom - 1);
