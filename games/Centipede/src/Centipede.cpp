@@ -86,6 +86,8 @@ void arcade::Centipede::handleEvent(event_t events) {
             shoot();
         if (event == A_KEY_ESC)
             _state.libs.game = MENU_PATH;
+        if (event == A_KEY_F4)
+            _state.libs.game.clear();
     }
     moveCentipede();
     handleCollision();

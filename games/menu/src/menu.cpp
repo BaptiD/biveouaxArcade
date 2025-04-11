@@ -23,7 +23,7 @@ void arcade::Menu::handleEvent(event_t events) {
         return;
     if (!events.events.empty()) {
         event_e event = events.events[0];
-        if (event == A_KEY_ESC)
+        if (event == A_KEY_ESC || event == A_KEY_F4)
             _state.libs.game.clear();
         if (event == A_KEY_Z)
             _gameIndex = (_gameIndex - 1) < 0 ? 0 : (_gameIndex - 1);
