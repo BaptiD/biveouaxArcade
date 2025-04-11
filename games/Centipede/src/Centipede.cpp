@@ -22,7 +22,7 @@ void arcade::Centipede::initGame() {
     _score = 0;
     _gameOver = false;
     entity_t centipede;
-    entity_t mushroom;
+    mushroom_t mushroom;
     entity_t player;
     srand(time(nullptr));
 
@@ -45,9 +45,11 @@ void arcade::Centipede::initGame() {
 
     //some mushrooms
     for (std::size_t i = 0; i < 5; i++) {
-        mushroom = {{(double)(rand() % 20), (double)(rand() % 15)}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, RIGHT};
-        _mushroomsPos.push_back(mushroom.pos);
-        _state.objects.push_back(mushroom);
+        mushroom.health = 3;
+        mushroom.entity = {{(double)(rand() % 20), (double)(rand() % 15)}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, RIGHT};
+        _mushroomsPos.push_back(mushroom.entity.pos);
+        _state.objects.push_back(mushroom.entity);
+        _mushrooms.push_back(mushroom);
     }
 
     //score
@@ -178,19 +180,36 @@ bool arcade::Centipede::isCollision(const entity_t& a, const entity_t& b) {
 
 void arcade::Centipede::handleCollision() {
     std::vector<bool> toRemove(_state.objects.size(), false);
+    size_t nbMushroom = 0;
+
     for (std::size_t i = 0; i < _state.objects.size(); i++) {
         if (_state.objects[i].character == '*') {
             for (std::size_t j = 0; j < _state.objects.size(); j++) {
+                if (_state.objects[j].character == 'm')
+                    nbMushroom += 1;
                 if (i == j)
                     continue;
                 if ((_state.objects[j].character == 'm' || _state.objects[j].character == 's') &&
-                isCollision(_state.objects[i], _state.objects[j])) {
-                    _score += (_state.objects[j].character == 's') ? 100 : 10;
+                    isCollision(_state.objects[i], _state.objects[j])) {
+                    if (_state.objects[j].character == 's') {
+                        _score += 100;
+                        toRemove[j] = true;
+                        mushroom_t newMushroom;
+                        newMushroom.health = 3;
+                        newMushroom.entity = {_state.objects[i].pos, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, RIGHT};
+                        _state.objects.push_back(newMushroom.entity);
+                        _mushroomsPos.push_back(_state.objects[i].pos);
+                        _mushrooms.push_back(newMushroom);
+                    } else if (_state.objects[j].character == 'm') {
+                        _mushrooms[nbMushroom - 1].health -= 1;
+                        if (_mushrooms[nbMushroom - 1].health <= 0) {
+                            printf("aaaaa\n");
+                            _score += 10;
+                            toRemove[j] = true;
+                            _mushrooms.erase(_mushrooms.begin() + nbMushroom - 1);
+                        }
+                    }
                     toRemove[i] = true;
-                    toRemove[j] = true;
-                    entity_t newMushroom = {_state.objects[i].pos, {MUSHROOM_SIZE, MUSHROOM_SIZE}, 'm', "./lib/assets/arcade_centipede/sprites/Mushroom01.png", WHITE, RIGHT};
-                    _state.objects.push_back(newMushroom);
-                    _mushroomsPos.push_back(_state.objects[i].pos);
                     break;
                 }
             }

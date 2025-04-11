@@ -16,7 +16,7 @@
 
     #define MENU_PATH "./lib/arcade_menu.so"
 
-    #define FRAME_RATE 1
+    #define FRAME_RATE 10
     #define FPS (1000 / FRAME_RATE)
     #define GET_TIME std::chrono::steady_clock::now()
     #define CHRONO(lc) (std::chrono::duration_cast<std::chrono::microseconds>(GET_TIME - lc))
@@ -36,6 +36,11 @@
 namespace arcade {
 class Centipede : public IGame {
   public:
+    typedef struct mushroom_s {
+      size_t health;
+      entity_t entity;
+    } mushroom_t;
+
     Centipede();
     void handleEvent(event_t) override;
     data_t update(void) override;
@@ -46,6 +51,7 @@ class Centipede : public IGame {
     data_t _state;
     int _score;
     std::vector<vector_t> _mushroomsPos;
+    std::vector<mushroom_t> _mushrooms;
     vector_t _playerPos;
     bool _gameOver = false;
 
