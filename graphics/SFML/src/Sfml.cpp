@@ -7,12 +7,18 @@
 
 #include "Sfml.hpp"
 
-const std::map<int, event_e> arcade::Sfml::_conversionMap = {
+const std::map<int, event_e> arcade::Sfml::_conversionKeyboard = {
     {sf::Keyboard::Escape, A_KEY_ESC},
     {sf::Keyboard::Enter, A_KEY_ENTER},
     {sf::Keyboard::Space, A_KEY_SPACE},
     {sf::Keyboard::Delete, A_KEY_DEL},
     {sf::Keyboard::Tab, A_KEY_TAB},
+    {sf::Keyboard::LControl, A_KEY_CTRL},
+    {sf::Keyboard::RControl, A_KEY_CTRL},
+    {sf::Keyboard::LShift, A_KEY_SHIFT},
+    {sf::Keyboard::RShift, A_KEY_SHIFT},
+    {sf::Keyboard::LAlt, A_KEY_ALT},
+    {sf::Keyboard::RAlt, A_KEY_ALT},
     {sf::Keyboard::Up, A_KEY_UP},
     {sf::Keyboard::Down, A_KEY_DOWN},
     {sf::Keyboard::Left, A_KEY_LEFT},
@@ -57,6 +63,17 @@ const std::map<int, event_e> arcade::Sfml::_conversionMap = {
     {sf::Keyboard::Z, A_KEY_Z}
 };
 
+const std::map<int, event_e> arcade::Sfml::_conversionMouse = {
+    {sf::Mouse::Button::Left, A_MOUSE_LEFT},
+    {sf::Mouse::Button::Right, A_MOUSE_RIGHT},
+    {sf::Mouse::Button::Middle, A_MOUSE_MIDDLE},
+    {sf::Mouse::Wheel::HorizontalWheel, A_MOUSE_HORIZONTALWHEEL},
+    {sf::Mouse::Wheel::HorizontalWheel, A_MOUSE_VERTICALWHEEL},
+    {sf::Mouse::Button::XButton1, A_MOUSE_XBUTTON1},
+    {sf::Mouse::Button::XButton2, A_MOUSE_XBUTTON2},
+};
+
+
 arcade::Sfml::Sfml() {
     _window.create(sf::VideoMode(WIN_SIZE_X, WIN_SIZE_Y), "Arcade SFML");
 
@@ -77,13 +94,25 @@ event_t arcade::Sfml::getEvent() {
         if (sfEvent.type == sf::Event::Closed) {
             events.events.push_back(A_KEY_F4);
         } else if (sfEvent.type == sf::Event::KeyPressed) {
-            for (std::map<int, event_e>::const_iterator it = _conversionMap.begin(); it != _conversionMap.end(); ++it) {
+            for (std::map<int, event_e>::const_iterator it = _conversionKeyboard.begin(); it != _conversionKeyboard.end(); ++it) {
                 if (it->first == sfEvent.key.code) {
                     events.events.push_back(it->second);
                 }
             }
+        } else if (sfEvent.type == sf::Event::MouseButtonPressed) {
+            for (std::map<int, event_e>::const_iterator it = _conversionMouse.begin(); it != _conversionMouse.end(); ++it) {
+                if (it->first == sfEvent.key.code) {
+                    events.events.push_back(it->second);
+                }
+            }
+        } else if (sfEvent.type == sf::Event::MouseMoved) {
+            events.events.push_back(A_MOUSE_MOVE);
         }
+
     }
+    sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(_window));
+    events.mPos.x = mousePos.x / static_cast<float>(WIN_SIZE_X) * 100;
+    events.mPos.y = mousePos.y / static_cast<float>(WIN_SIZE_Y) * 100;
     return events;
 }
 
@@ -109,12 +138,7 @@ void arcade::Sfml::drawSprites(std::vector<entity_t> entities) {
         if (entity.asset == "") {
             sf::RectangleShape rectangle({static_cast<float>(WIN_SIZE_X / 100 * entity.size.x), static_cast<float>(WIN_SIZE_Y / 100 * entity.size.y)});
             rectangle.setPosition(WIN_SIZE_X / 100 * entity.pos.x, WIN_SIZE_Y / 100 * entity.pos.y);
-            sf::Color color;
-            color.r = entity.color.r;
-            color.g = entity.color.g;
-            color.b = entity.color.b;
-            color.a = entity.color.a;
-            rectangle.setFillColor(color);
+            rectangle.setFillColor((sf::Color){entity.color.r, entity.color.g, entity.color.b, entity.color.a});
             _window.draw(rectangle);
         } else {
             sf::Sprite sprite;

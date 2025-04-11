@@ -14,8 +14,8 @@
 	#include "IGraphic.hpp"
 	#include "updates.hpp"
 
-	#define WIN_SIZE_X 1000
-	#define WIN_SIZE_Y 1000
+	#define WIN_SIZE_X 1700
+	#define WIN_SIZE_Y 1700
 
 namespace arcade {
 	class Sfml : public IGraphic {
@@ -29,7 +29,8 @@ namespace arcade {
 			sf::Sprite rotateSprite(sf::Sprite, int direction);
 
 		private:
-			static const std::map<int, event_e> _conversionMap;
+			static const std::map<int, event_e> _conversionKeyboard;
+			static const std::map<int, event_e> _conversionMouse;
 			sf::RenderWindow _window;
 			sf::Font _font;
 	};
