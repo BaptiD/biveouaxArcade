@@ -5,6 +5,7 @@
 ** menu.cpp
 */
 
+#include <stddef.h>
 #include <filesystem>
 #include <iostream>
 
@@ -12,12 +13,14 @@
 #include "entity.hpp"
 #include "dynamicLib.hpp"
 
-arcade::Menu::Menu() {
+arcade::Menu::Menu()
+{
     getLibs();
     buildMenu();
 }
 
-void arcade::Menu::handleEvent(event_t events) {
+void arcade::Menu::handleEvent(event_t events)
+{
     SET_BASE_GAME(this);
     if (_gamePaths.empty() || _graphicPaths.empty())
         return;
@@ -25,15 +28,15 @@ void arcade::Menu::handleEvent(event_t events) {
         event_e event = events.events[0];
         if (event == A_KEY_ESC || event == A_KEY_F4)
             _state.libs.game.clear();
-        if (event == A_KEY_Z)
+        if (event == A_KEY_Z || event == A_KEY_UP)
             _gameIndex = (_gameIndex - 1) < 0 ? 0 : (_gameIndex - 1);
-        if (event == A_KEY_S)
+        if (event == A_KEY_S || event == A_KEY_DOWN)
             _gameIndex = (_gameIndex + 1) > (_gamePaths.size() - 1) ? _gameIndex : _gameIndex + 1;
-        if (event == A_KEY_Q)
+        if (event == A_KEY_Q || event == A_KEY_LEFT)
             _graphicIndex = (_graphicIndex - 1) < 0 ? 0 : (_graphicIndex - 1);
-        if (event == A_KEY_D)
+        if (event == A_KEY_D || event == A_KEY_RIGHT)
             _graphicIndex = (_graphicIndex + 1) > (_graphicPaths.size() - 1) ? _graphicIndex : _graphicIndex + 1;
-        if (event == A_KEY_ENTER) {
+        if (event == A_KEY_ENTER || event == A_KEY_SPACE) {
             _state.libs.game = _gamePaths[_gameIndex];
             _state.libs.graphic = _graphicPaths[_graphicIndex];
         }
@@ -42,13 +45,15 @@ void arcade::Menu::handleEvent(event_t events) {
     buildMenu();
 }
 
-data_t arcade::Menu::update(void) {
+data_t arcade::Menu::update(void)
+{
     return _state;
 }
 
-std::vector<std::string> find_graphic(void) {
-    void *handlegraph = nullptr;
-    arcade::IGraphic *(*graphlib)(void) = nullptr;
+std::vector<std::string> find_graphic(void)
+{
+    void *handlegraph = NULL;
+    arcade::IGraphic *(*graphlib)(void) = NULL;
     std::vector<std::string> paths;
 
     for (const auto &lib : std::filesystem::directory_iterator(PATH_LIBS)) {
@@ -57,7 +62,7 @@ std::vector<std::string> find_graphic(void) {
         if (handlegraph == NULL)
             continue;
         graphlib = (arcade::IGraphic *(*)())dlsym(handlegraph, "makeGraphic");
-        if (graphlib == nullptr)
+        if (graphlib == NULL)
             continue;
         paths.push_back(filename);
         dlclose(handlegraph);
@@ -65,18 +70,21 @@ std::vector<std::string> find_graphic(void) {
     return paths;
 }
 
-std::vector<std::string> find_game(void) {
-    void *handlegame = nullptr;
-    arcade::IGame *(*gamelib)(void) = nullptr;
+std::vector<std::string> find_game(void)
+{
+    void *handlegame = NULL;
+    arcade::IGame *(*gamelib)(void) = NULL;
     std::vector<std::string> paths;
 
     for (const auto &lib : std::filesystem::directory_iterator(PATH_LIBS)) {
         const std::string filename = lib.path();
+        if (!filename.compare(MENU_LIB))
+            continue;
         handlegame = dlopen(filename.c_str(), RTLD_LAZY);
         if (handlegame == NULL)
             continue;
         gamelib = (arcade::IGame *(*)())dlsym(handlegame, "makeGame");
-        if (gamelib == nullptr)
+        if (gamelib == NULL)
             continue;
         paths.push_back(filename);
         dlclose(handlegame);
@@ -84,12 +92,14 @@ std::vector<std::string> find_game(void) {
     return paths;
 }
 
-void arcade::Menu::getLibs(void) {
+void arcade::Menu::getLibs(void)
+{
     _gamePaths = find_game();
     _graphicPaths = find_graphic();
 }
 
-void arcade::Menu::buildMenu() {
+void arcade::Menu::buildMenu()
+{
     _state.texts.clear();
 
     int y = 5;

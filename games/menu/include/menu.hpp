@@ -40,6 +40,30 @@ class Menu : public IGame {
     data_t _state;
     
     void getLibs(void);
+
+    template<typename Lib>
+    void findLibs(void)
+    {
+        void *handlegame = NULL;
+        Lib *(*gamelib)(void) = NULL;
+        std::vector<std::string> paths;
+
+        for (const auto &lib : std::filesystem::directory_iterator(PATH_LIBS)) {
+            const std::string filename = lib.path();
+            if (!filename.compare(MENU_LIB))
+                continue;
+            handlegame = dlopen(filename.c_str(), RTLD_LAZY);
+            if (handlegame == NULL)
+                continue;
+            gamelib = (Lib *(*)())dlsym(handlegame, "makeGame");
+            if (gamelib == NULL)
+                continue;
+            if (typeid(Lib) == typeid(arcade::IGame))
+            _path.push_back(filename);
+            dlclose(handlegame);
+        }
+        return paths;
+    }
     void buildMenu();
 };
 
