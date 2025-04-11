@@ -26,6 +26,7 @@
     #define GREEN {107, 200, 107, 255}
     #define BLUE {107, 158, 200, 255}
     #define RED {250, 57, 18, 255}
+    #define BLACK {0, 0, 0, 0}
     #define FONT_PATH "./lib/assets/arcade_menu/font/arcade.ttf"
     #define MAP_WIDTH 30
     #define MAP_HEIGHT 30

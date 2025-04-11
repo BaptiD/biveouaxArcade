@@ -31,6 +31,9 @@ void arcade::Centipede::initGame() {
             if (x == 0 || x == MAP_WIDTH - 1 || y == 0 || y == MAP_HEIGHT - 1) {
                 entity_t wall = {{static_cast<double>(x) + OFFSETX_GAME, static_cast<double>(y) + OFFSETY_GAME}, {WALL_SIZE, WALL_SIZE}, '#', "", WHITE, UP};
                 _state.bg.push_back(wall);
+            } else {
+                entity_t tile = {{static_cast<double>(x) + OFFSETX_GAME, static_cast<double>(y) + OFFSETY_GAME}, {WALL_SIZE, WALL_SIZE}, ' ', "", BLACK, UP};
+                _state.bg.push_back(tile);
             }
         }
     }
@@ -55,7 +58,6 @@ void arcade::Centipede::initGame() {
     //score
     text_t score = {{45, 10}, 10, "Score: 0", FONT_PATH, WHITE};
     _state.texts.push_back(score);
-    _score = 0;
 }
 
 void arcade::Centipede::handleEvent(event_t events) {
