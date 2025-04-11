@@ -16,6 +16,9 @@
 
     #define MENU_PATH "./lib/arcade_menu.so"
 
+    #define GAME_PATH "./lib/arcade_centiped.so"
+    #define SET_BASE_GAME(c) (c->_state.libs.game = GAME_PATH)
+
     #define FRAME_RATE 10
     #define FPS (1000 / FRAME_RATE)
     #define GET_TIME std::chrono::steady_clock::now()
@@ -44,7 +47,7 @@ namespace arcade {
 class Centipede : public IGame {
   public:
     typedef struct mushroom_s {
-      size_t health;
+      std::size_t health;
       entity_t entity;
     } mushroom_t;
 

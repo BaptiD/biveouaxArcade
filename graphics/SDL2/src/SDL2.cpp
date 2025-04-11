@@ -23,7 +23,7 @@ arcade::SDL2::SDL2()
         throw "Error: init SDL renderer failed";
     TTF_Init();
     IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
-    SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0);
+    CHANGE_RENDER_COLOR(_renderer, BLACK);
 }
 
 arcade::SDL2::~SDL2()
@@ -56,7 +56,7 @@ void arcade::SDL2::eventManager(void)
 {
     int x, y = 0;
 
-    if (SDL_PollEvent(&_SDLevent)) {
+    while (SDL_PollEvent(&_SDLevent)) {
         if (_SDLevent.type == SDL_QUIT)
             exit(0);
         if (_SDLevent.type == SDL_KEYDOWN)
@@ -88,10 +88,9 @@ void arcade::SDL2::displayEntity(entity_t entity_data)
         SDL_FreeSurface(sprite);
         SDL_DestroyTexture(texture);
     } else {
-        DRAW_RECT(_renderer, entity_data.color);
+        CHANGE_RENDER_COLOR(_renderer, entity_data.color);
         SDL_RenderFillRect(_renderer, &rect);
-        SDL_RenderDrawRect(_renderer, &rect);
-        DRAW_RECT(_renderer, BLACK);
+        CHANGE_RENDER_COLOR(_renderer, BLACK);
     }
 }
 
@@ -112,7 +111,6 @@ void arcade::SDL2::displayText(text_t text_data)
 
 void arcade::SDL2::display(data_t data)
 {
-    SDL_Color color;
     SDL_RenderClear(_renderer);
     for (auto& bg : data.bg)
         displayEntity(bg);

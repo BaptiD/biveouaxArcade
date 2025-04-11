@@ -18,10 +18,13 @@ arcade::Menu::Menu() {
 }
 
 void arcade::Menu::handleEvent(event_t events) {
+    SET_BASE_GAME(this);
     if (_gamePaths.empty() || _graphicPaths.empty())
         return;
     if (!events.events.empty()) {
         event_e event = events.events[0];
+        if (event == A_KEY_ESC)
+            _state.libs.game.clear();
         if (event == A_KEY_Z)
             _gameIndex = (_gameIndex - 1) < 0 ? 0 : (_gameIndex - 1);
         if (event == A_KEY_S)

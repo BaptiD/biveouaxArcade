@@ -61,6 +61,7 @@ void arcade::Centipede::initGame() {
 }
 
 void arcade::Centipede::handleEvent(event_t events) {
+    SET_BASE_GAME(this);
     if (_gameOver) {
         for (auto event : events.events) {
             if (event == A_KEY_ENTER) {
@@ -172,9 +173,9 @@ bool arcade::Centipede::isCollision(const entity_t& a, const entity_t& b) {
     return (a.pos.x == b.pos.x && a.pos.y == b.pos.y);
 }
 
-void arcade::Centipede::handleCollision() {
+void arcade::Centipede::handleCollision(){
     std::vector<bool> toRemove(_state.objects.size(), false);
-    size_t nbMushroom = 0;
+    std::size_t nbMushroom = 0;
 
     for (std::size_t i = 0; i < _state.objects.size(); i++) {
         if (_state.objects[i].character == '*') {

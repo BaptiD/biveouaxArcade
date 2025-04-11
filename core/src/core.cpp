@@ -42,11 +42,13 @@ data_t arcade::core::setupNewGame(void)
 
 data_t arcade::core::checkLibUpdate(libPaths_t paths, data_t data)
 {
+    if (data.libs.game.empty())
+        return data;
     if (!data.libs.graphic.empty() && paths.graphic.compare(data.libs.graphic)) {
         _graphic.closeLib();
         load(data.libs.graphic, GRAPHIC_LIB);
     }
-    if (!data.libs.game.empty() && paths.game.compare(data.libs.game)) {
+    if (paths.game.compare(data.libs.game)) {
         _game.closeLib();
         load(data.libs.game, GAME_LIB);
         return setupNewGame();
@@ -70,6 +72,8 @@ void arcade::core::run(void)
             return;
         CALL(_game)->handleEvent(events);
         datas = checkLibUpdate(datas.libs, CALL(_game)->update());
+        if (datas.libs.game.empty())
+            return;
         CALL(_graphic)->display(datas);
         
         auto frameEnd = std::chrono::steady_clock::now();

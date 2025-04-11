@@ -29,8 +29,8 @@
         WINDOW_SIZE_X * (int)e.size.x / 100, WINDOW_SIZE_Y * (int)e.size.y / 100})
     // Set SDL_Color from entity data
     #define COLOR(e) ((SDL_Color){(Uint8)e.color.r, (Uint8)e.color.g, (Uint8)e.color.b, (Uint8)e.color.a})
-    // Draw colored rectangle
-    #define DRAW_RECT(re, c) (SDL_SetRenderDrawColor(re, (Uint8)c.r, (Uint8)c.g, (Uint8)c.b, (Uint8)c.a))
+    // Change render color
+    #define CHANGE_RENDER_COLOR(re, c) (SDL_SetRenderDrawColor(re, (Uint8)c.r, (Uint8)c.g, (Uint8)c.b, (Uint8)c.a))
     // Get height of text
     #define HEIGHT_TEXT(t) (int)(t.fontSize)
     // Get width of text
