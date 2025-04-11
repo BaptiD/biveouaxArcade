@@ -26,6 +26,7 @@ namespace arcade {
 			void display(data_t data) override;
 			void drawSprites(std::vector<entity_t> entities);
 			void drawTexts(std::vector<text_t> texts);
+			sf::Sprite rotateSprite(sf::Sprite, int direction);
 
 		private:
 			static const std::map<int, event_e> _conversionMap;
