@@ -12,7 +12,7 @@
 
 arcade::SDL2::SDL2()
 {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
         throw "Error: init SDL";
     _window = SDL_CreateWindow("SDL2", SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED, WINDOW_SIZE_X, WINDOW_SIZE_Y, SDL_WINDOW_SHOWN);
@@ -84,8 +84,8 @@ void arcade::SDL2::displayEntity(entity_t entity_data)
     if (std::filesystem::exists(entity_data.asset)) {
         sprite = IMG_Load(entity_data.asset.c_str());
         texture = SDL_CreateTextureFromSurface(_renderer, sprite);
+        SDL_RenderCopy(_renderer, texture, NULL, &rect);
         SDL_FreeSurface(sprite);
-        SDL_RenderCopy(_renderer, texture, &rect, &rect);
         SDL_DestroyTexture(texture);
     } else {
         DRAW_RECT(_renderer, entity_data.color);

@@ -5,11 +5,11 @@
 ** Centipede.cpp
 */
 
-#include "Centipede.hpp"
-
 #include <cstdlib>
 #include <time.h>
 #include <algorithm>
+
+#include "Centipede.hpp"
 
 arcade::Centipede::Centipede() {
     initGame();
@@ -58,16 +58,7 @@ void arcade::Centipede::initGame() {
     _score = 0;
 }
 
-#include <iostream>
 void arcade::Centipede::handleEvent(event_t events) {
-    auto dTime = GET_TIME;
-    std::chrono::microseconds chrono = std::chrono::duration_cast<std::chrono::microseconds>(dTime - _lastCheck);
-    if (chrono.count() < FPS * _clockIteration) {
-        return;
-    } else {
-        _lastCheck = dTime;
-        _clockIteration += 1;
-    }
     if (_gameOver) {
         for (auto event : events.events) {
             if (event == A_KEY_ENTER) {
@@ -180,7 +171,7 @@ bool arcade::Centipede::isCollision(const entity_t& a, const entity_t& b) {
 
 void arcade::Centipede::handleCollision() {
     std::vector<bool> toRemove(_state.objects.size(), false);
-    size_t nbMushroom = 0;
+    std::size_t nbMushroom = 0;
 
     for (std::size_t i = 0; i < _state.objects.size(); i++) {
         if (_state.objects[i].character == '*') {

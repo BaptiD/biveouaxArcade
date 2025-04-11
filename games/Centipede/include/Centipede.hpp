@@ -8,8 +8,6 @@
 #ifndef CENTIPEDE_HPP_
     #define CENTIPEDE_HPP_
 
-    #include <chrono>
-
     #include "events.hpp"
     #include "updates.hpp"
     #include "IGame.hpp"
@@ -37,7 +35,7 @@ namespace arcade {
 class Centipede : public IGame {
   public:
     typedef struct mushroom_s {
-      size_t health;
+      std::size_t health;
       entity_t entity;
     } mushroom_t;
 
@@ -46,8 +44,6 @@ class Centipede : public IGame {
     data_t update(void) override;
 
   private:
-    std::chrono::steady_clock::time_point _lastCheck;
-    std::size_t _clockIteration = 0;
     data_t _state;
     int _score;
     std::vector<vector_t> _mushroomsPos;
