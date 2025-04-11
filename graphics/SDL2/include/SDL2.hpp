@@ -31,9 +31,13 @@
     #define COLOR(e) ((SDL_Color){(Uint8)e.color.r, (Uint8)e.color.g, (Uint8)e.color.b, (Uint8)e.color.a})
     // Draw colored rectangle
     #define DRAW_RECT(re, c) (SDL_SetRenderDrawColor(re, (Uint8)c.r, (Uint8)c.g, (Uint8)c.b, (Uint8)c.a))
+    // Get height of text
+    #define HEIGHT_TEXT(t) (int)(t.fontSize)
+    // Get width of text
+    #define WIDTH_TEXT(t) (int)(t.value.size() * t.fontSize)
     // Set SDL_Rect from text data
-    #define RECT_TEXT(t) ((SDL_Rect){WINDOW_SIZE_X * (int)t.pos.x / 100, WINDOW_SIZE_Y * (int)t.pos.y / 100, \
-        (int)t.value.size() * t.fontSize, t.fontSize})
+    #define RECT_TEXT(t) ((SDL_Rect){WINDOW_SIZE_X * (int)t.pos.x / 100, \
+        WINDOW_SIZE_Y * (int)t.pos.y / 100, WIDTH_TEXT(t), HEIGHT_TEXT(t)})
 
     #define NOT_SET -1
 
