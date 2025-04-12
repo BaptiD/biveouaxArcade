@@ -46,7 +46,8 @@ class SolarFox : public IGame {
     enum gamestatus_e {
         RUNNING,
         WIN,
-        LOSE
+        LOSE,
+        PAUSE,
     };
 
     public:
