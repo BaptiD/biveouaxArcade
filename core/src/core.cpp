@@ -60,13 +60,10 @@ void arcade::core::run(void)
 {
     event_t events = {};
     data_t datas = {};
-    const int targetFPS = 60;
-    const std::chrono::milliseconds frameDuration(1000 / targetFPS);
 
     datas.libs.game = MENU_PATH_LIB;
     datas.libs.graphic = _graphicpath;
     while (1) {
-        auto frameStart = std::chrono::steady_clock::now();
         events = CALL(_graphic)->getEvent();
         if (!CALL(_game))
             return;
@@ -75,10 +72,5 @@ void arcade::core::run(void)
         // if (datas.libs.game.empty())
         //     return;
         CALL(_graphic)->display(datas);
-        
-        auto frameEnd = std::chrono::steady_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart);
-        if (elapsed < frameDuration)
-            std::this_thread::sleep_for(frameDuration - elapsed);
     }
 }
