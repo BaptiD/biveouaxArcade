@@ -91,6 +91,7 @@ class Centipede : public IGame {
     std::vector<mushroom_t> _mushrooms;
     vector_t _playerPos;
     bool _gameOver = false;
+    bool _isBullet = false;
     std::chrono::_V2::system_clock::time_point _lastTime;
 
     void moveCentipede();

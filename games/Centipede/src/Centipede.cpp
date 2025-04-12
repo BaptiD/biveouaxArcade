@@ -162,14 +162,21 @@ void arcade::Centipede::moveCentipede() {
 }
 
 void arcade::Centipede::shoot() {
+    if (_isBullet == true)
+        return;
     entity_t bullet = {{_state.objects[0].pos.x, _state.objects[0].pos.y - 1}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, BULLET_CHAR, BULLET_PATH, RED, UP};
     _state.objects.push_back(bullet);
+    _isBullet = true;
 }
 
 void arcade::Centipede::updateBullets() {
+    std::vector<entity_t>::const_iterator i;
     for (auto& entity : _state.objects) {
-        if (entity.character == BULLET_CHAR)
+        if (entity.character == BULLET_CHAR) {
             entity.pos.y -= 1;
+            if (entity.pos.y <= 0 + OFFSETY_GAME)
+                _isBullet = false;
+        }
     }
     _state.objects.erase(std::remove_if(_state.objects.begin(), _state.objects.end(), [](entity_t& entity) {
         return entity.character == BULLET_CHAR && entity.pos.y < 0 + OFFSETY_GAME;
@@ -210,11 +217,12 @@ void arcade::Centipede::handleCollision(){
                             _mushrooms.erase(_mushrooms.begin() + nbMushroom);
                         }
                     }
+                    _isBullet = false;
                     toRemove[i] = true;
                     break;
                 }
                 if (_state.objects[j].character == MUSHROOM_CHAR)
-                    nbMushroom += 1;
+                nbMushroom += 1;
             }
         }
     }
