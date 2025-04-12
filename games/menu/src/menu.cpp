@@ -22,8 +22,7 @@ void arcade::Menu::handleEvent(event_t events)
     SET_BASE_GAME(this);
     if (_gamePaths.empty() || _graphicPaths.empty())
         return;
-    if (!events.events.empty()) {
-        event_e event = events.events[0];
+    for (auto& event : events.events) {
         if (event == A_KEY_ESC || event == A_KEY_F4)
             _state.libs.game.clear();
         if (event == A_KEY_Z || event == A_KEY_UP)
@@ -38,8 +37,8 @@ void arcade::Menu::handleEvent(event_t events)
             _state.libs.game = _gamePaths[_gameIndex];
             _state.libs.graphic = _graphicPaths[_graphicIndex];
         }
-        events.events.clear();
     }
+    events.events.clear();
     buildMenu();
 }
 
