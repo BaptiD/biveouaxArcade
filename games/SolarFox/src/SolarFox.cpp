@@ -11,6 +11,7 @@
 arcade::SolarFox::SolarFox() {
     setBorder({MAP_SIZE, MAP_SIZE});
     initGame();
+    _sendMusic = true;
 }
 
 void arcade::SolarFox::initGame() {
@@ -26,7 +27,7 @@ void arcade::SolarFox::initGame() {
         .pos = PLAYER_START_POS,
         .size = {PLAYER_SIZE, PLAYER_SIZE},
         .character = '^',
-        .asset = "./lib/assets/arcade_solarfox/xwing.png",
+        .asset = ASSETS_PATH + static_cast<std::string>("xwing.png"),
         .color = {.r = 255, .g = 0, .b = 255, .a = 255},
         .direction = UP
     };
@@ -124,7 +125,7 @@ void arcade::SolarFox::ennemyShoot(void) {
                 .pos = _ennemies[index].pos,
                 .size = {1, 1},
                 .character = '*',
-                .asset = "./lib/assets/arcade_solarfox/dart.png",
+                .asset = ASSETS_PATH + static_cast<std::string>("dart.png"),
                 .color = {.r = 0, .g = 255, .b = 0, .a = 255},
                 .direction = DOWN
             };
@@ -232,7 +233,7 @@ void arcade::SolarFox::setCoins(void) {
         .pos = {0, 0},
         .size = {COIN_SIZE, COIN_SIZE},
         .character = 'c',
-        .asset = "./lib/assets/arcade_solarfox/stormtrooper.png",
+        .asset = ASSETS_PATH + static_cast<std::string>("stormtrooper.png"),
         .color = {255, 255, 0, 255},
         .direction = UP,
     };
@@ -257,7 +258,7 @@ void arcade::SolarFox::setEnnemies(void) {
         .pos = {0, 0},
         .size = {PLAYER_SIZE, PLAYER_SIZE},
         .character = '$',
-        .asset = "./lib/assets/arcade_solarfox/tie_fighter.png",
+        .asset = ASSETS_PATH + static_cast<std::string>("tie_fighter.png"),
         .color = {.r = 150, .g = 0, .b = 0, .a = 255},
         .direction = UP
     };
@@ -289,7 +290,7 @@ data_t arcade::SolarFox::update(void) {
             .pos = {MAP_OFST.x, 2},
             .fontSize = 20,
             .value = "score : " + std::to_string(_score),
-            .fontPath = "./lib/assets/arcade_solarfox/Starjedi.ttf",
+            .fontPath = ASSETS_PATH + static_cast<std::string>("Starjedi.ttf"),
             .color = {255, 255, 0, 255}
         };
         data.texts.push_back(text);
@@ -307,7 +308,7 @@ data_t arcade::SolarFox::update(void) {
             .pos = {35, 40},
             .fontSize = 20,
             .value = "press enter to restart",
-            .fontPath = "./lib/assets/arcade_solarfox/Starjedi.ttf",
+            .fontPath = ASSETS_PATH + static_cast<std::string>("Starjedi.ttf"),
             .color = {255, 255, 0, 255}
         };
         data.texts.push_back(text);
@@ -319,6 +320,10 @@ data_t arcade::SolarFox::update(void) {
             text.value = "defeat !";
         }
         data.texts.push_back(text);
+    }
+    if (_sendMusic) {
+        data.audios = {ASSETS_PATH + static_cast<std::string>("resistance.wav")};
+        _sendMusic = false;
     }
     data.libs = _libs;
     return data;
