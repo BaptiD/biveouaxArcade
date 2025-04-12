@@ -5,6 +5,7 @@
 ** Sfml.cpp
 */
 
+#include <unistd.h>
 #include "Sfml.hpp"
 
 const std::map<int, event_e> arcade::Sfml::_conversionKeyboard = {
@@ -136,19 +137,26 @@ void arcade::Sfml::drawSprites(std::vector<entity_t> entities) {
             rectangle.setFillColor((sf::Color){entity.color.r, entity.color.g, entity.color.b, entity.color.a});
             _window.draw(rectangle);
         } else {
-            sf::Sprite sprite;
-            sf::Texture texture;
-            texture.loadFromFile(entity.asset);
-            sprite.setTexture(texture);
-            sprite.setPosition(WIN_SIZE_X / 100 * entity.pos.x, WIN_SIZE_Y / 100 * entity.pos.y);
-            sf::FloatRect spriteBounds = sprite.getLocalBounds();
-            sf::Vector2f scale;
-            scale.x = (WIN_SIZE_X / 100 * entity.size.x) / spriteBounds.width;
-            scale.y = (WIN_SIZE_Y / 100 * entity.size.y) / spriteBounds.height;
-            sprite.setScale(scale);
-            sf::Vector2f size = static_cast<sf::Vector2f>(texture.getSize());
-            sprite = rotateSprite(sprite, entity.direction, size);
-            _window.draw(sprite);
+            if (access(entity.asset.c_str(), F_OK) == -1) {
+                sf::RectangleShape rectangle({static_cast<float>(WIN_SIZE_X / 100 * entity.size.x), static_cast<float>(WIN_SIZE_Y / 100 * entity.size.y)});
+                rectangle.setPosition(WIN_SIZE_X / 100 * entity.pos.x, WIN_SIZE_Y / 100 * entity.pos.y);
+                rectangle.setFillColor((sf::Color){entity.color.r, entity.color.g, entity.color.b, entity.color.a});
+                _window.draw(rectangle);
+            } else {
+                sf::Sprite sprite;
+                sf::Texture texture;
+                texture.loadFromFile(entity.asset);
+                sprite.setTexture(texture);
+                sprite.setPosition(WIN_SIZE_X / 100 * entity.pos.x, WIN_SIZE_Y / 100 * entity.pos.y);
+                sf::FloatRect spriteBounds = sprite.getLocalBounds();
+                sf::Vector2f scale;
+                scale.x = (WIN_SIZE_X / 100 * entity.size.x) / spriteBounds.width;
+                scale.y = (WIN_SIZE_Y / 100 * entity.size.y) / spriteBounds.height;
+                sprite.setScale(scale);
+                sf::Vector2f size = static_cast<sf::Vector2f>(texture.getSize());
+                sprite = rotateSprite(sprite, entity.direction, size);
+                _window.draw(sprite);
+            }
         }
     }
 }
@@ -157,19 +165,20 @@ void arcade::Sfml::drawTexts(std::vector<text_t> texts) {
     for (text_t txt : texts) {
         sf::Font font;
         sf::Text text;
-        if (!font.loadFromFile(txt.fontPath))
-            std::cerr << "Error: Can't load font" << std::endl;
-        text.setFont(font);
-        text.setString(txt.value);
-        text.setCharacterSize(txt.fontSize);
-        sf::Color color;
-        color.r = txt.color.r;
-        color.g = txt.color.g;
-        color.b = txt.color.b;
-        color.a = txt.color.a;
-        text.setFillColor(color);
-        text.setPosition(WIN_SIZE_X / 100 * txt.pos.x, WIN_SIZE_Y / 100 * txt.pos.y);
-        _window.draw(text);
+        if (access(txt.fontPath.c_str(), F_OK) != -1) {
+            font.loadFromFile(txt.fontPath);
+            text.setFont(font);
+            text.setString(txt.value);
+            text.setCharacterSize(txt.fontSize);
+            sf::Color color;
+            color.r = txt.color.r;
+            color.g = txt.color.g;
+            color.b = txt.color.b;
+            color.a = txt.color.a;
+            text.setFillColor(color);
+            text.setPosition(WIN_SIZE_X / 100 * txt.pos.x, WIN_SIZE_Y / 100 * txt.pos.y);
+            _window.draw(text);
+        }
     }
 }
 
