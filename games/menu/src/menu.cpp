@@ -60,29 +60,29 @@ void arcade::Menu::buildMenu()
     _state.texts.clear();
 
     int y = 5;
-    _state.texts.push_back({{50, (float)(y += OFST_PERCENTAGE)}, 30, "--- MENU ---", FONT_PATH, WHITE});
+    _state.texts.push_back({{BASE_X + 10, (float)(y += OFST_PERCENTAGE)}, 30, "--- MENU ---", FONT_PATH, WHITE});
     y += OFST_PERCENTAGE * 2;
-    _state.texts.push_back({{40, (float)(y += OFST_PERCENTAGE)}, 30, "Games:", FONT_PATH, WHITE});
+    _state.texts.push_back({{BASE_X + 0, (float)(y += OFST_PERCENTAGE)}, 30, "Games:", FONT_PATH, WHITE});
     y += OFST_PERCENTAGE;
     //set a cursor to see what is the game selected
     if (!_gamePaths.empty()) {
         for (std::size_t i = 0; i < _gamePaths.size(); i++) {
             std::string prefix = (i == _gameIndex) ? "> " : "  ";
-            _state.texts.push_back({{45, (float)(y += OFST_PERCENTAGE)}, 20, prefix + _gamePaths[i], FONT_PATH, WHITE});
+            _state.texts.push_back({{BASE_X + 5, (float)(y += OFST_PERCENTAGE)}, 20, prefix + _gamePaths[i], FONT_PATH, WHITE});
         }
     } else {
-        _state.texts.push_back({{45, (float)(y += OFST_PERCENTAGE)}, 20, "No game in lib directory", FONT_PATH, WHITE});
+        _state.texts.push_back({{BASE_X + 5, (float)(y += OFST_PERCENTAGE)}, 20, "No game in lib directory", FONT_PATH, WHITE});
     }
     y += OFST_PERCENTAGE;
-    _state.texts.push_back({{40, (float)(y += OFST_PERCENTAGE)}, 30, "Graphic libraries:", FONT_PATH, WHITE});
+    _state.texts.push_back({{BASE_X + 0, (float)(y += OFST_PERCENTAGE)}, 30, "Graphic libraries:", FONT_PATH, WHITE});
     y += OFST_PERCENTAGE;
     //set a cursor to see what is the game selected
     if (!_graphicPaths.empty()) {
         for (std::size_t i = 0; i < _graphicPaths.size(); i++) {
             std::string prefix = (i == _graphicIndex) ? "> " : "  ";
-            _state.texts.push_back({{45, (float)(y += OFST_PERCENTAGE)}, 20, prefix + _graphicPaths[i], FONT_PATH, WHITE});
+            _state.texts.push_back({{BASE_X + 5, (float)(y += OFST_PERCENTAGE)}, 20, prefix + _graphicPaths[i], FONT_PATH, WHITE});
         }
     } else {
-        _state.texts.push_back({{45, (float)(y += OFST_PERCENTAGE)}, 20, "No graphic library in lib directory", FONT_PATH, WHITE});
+        _state.texts.push_back({{BASE_X + 5, (float)(y += OFST_PERCENTAGE)}, 20, "No graphic library in lib directory", FONT_PATH, WHITE});
     }
 }
