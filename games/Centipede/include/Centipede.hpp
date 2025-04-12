@@ -30,18 +30,46 @@
     #define BLUE {107, 158, 200, 255}
     #define RED {250, 57, 18, 255}
     #define BLACK {0, 0, 0, 0}
+
+    #define ASSET_DIR "./lib/assets/arcade_centipede/"
     #define FONT_PATH "./lib/assets/arcade_menu/font/arcade.ttf"
+    #define BULLET_PATH "./lib/assets/arcade_centipede/sprites/Dart.png"
+    #define CENTIPEDE_PATH "./lib/assets/arcade_centipede/sprites/CentipedeBody.png"
+    #define MUSHROOM_PATH "./lib/assets/arcade_centipede/sprites/Mushroom01.png"
+    #define PLAYER_PATH "./lib/assets/arcade_centipede/sprites/Blaster.png"
+
     #define MAP_WIDTH 30
     #define MAP_HEIGHT 30
-    #define ASSET_DIR "./lib/assets/arcade_centipede/"
+    #define MAP_AREA 28
     #define OFFSETY_GAME 20
     #define OFFSETX_GAME 40
+
+    #define MUSHROOM_PTS 10
+    #define CENTIPEDE_PTS 100
+    #define MUSHROOM_HEATH 5
+    #define BULLET_DMG 1
+
+    #define DEFAULT_NB_MUSHROOMS 5
+    #define DEFAULT_LEN_CENTIPEDE 10
 
     #define MUSHROOM_SIZE 1
     #define PLAYER_SIZE 1
     #define CENTIPEDE_SIZE 1
     #define WALL_SIZE 1
     #define BULLET_SIZE 1
+    #define FONT_SIZE 10
+
+    #define DEFAULT_PLAYER_POS {10 + OFFSETX_GAME, 20 + OFFSETY_GAME}
+    #define DEFAULT_CENTIPEDE_POS(x) {(double)5 + i + OFFSETX_GAME, 5 + OFFSETY_GAME}
+    #define DEFAULT_RANDOM_MUSH_POS {(double)(rand() % 20) + OFFSETX_GAME + 1, (double)(rand() % 15) + OFFSETY_GAME + 1}
+    #define DEFAULT_TEXT_POS {0, 0}
+
+    #define CENTIPEDE_CHAR 's'
+    #define WALL_CHAR '#'
+    #define MUSHROOM_CHAR 'm'
+    #define BULLET_CHAR '*'
+    #define TILE_CHAR ' '
+    #define PLAYER_CHAR 'P'
 
 namespace arcade {
 class Centipede : public IGame {
