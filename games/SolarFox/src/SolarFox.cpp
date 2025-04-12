@@ -5,14 +5,22 @@
 ** test.cpp
 */
 
+#include <cstdlib>
 #include "SolarFox.hpp"
 
 arcade::SolarFox::SolarFox() {
-    _libs.game = GAME_PATH;
+    setBorder({MAP_SIZE, MAP_SIZE});
     initGame();
 }
 
 void arcade::SolarFox::initGame() {
+    _gameStatus = RUNNING;
+    _ennemiesDirections.clear();
+    _ennemyShots.clear();
+    _playerShots.clear();
+    _ennemies.clear();
+    _coins.clear();
+    _libs.game = GAME_PATH;
     _player = {
         .pos = PLAYER_START_POS,
         .size = {PLAYER_SIZE, PLAYER_SIZE},
@@ -23,7 +31,6 @@ void arcade::SolarFox::initGame() {
     };
     _player.pos.y = MAP_OFST.y + MAP_SIZE - MARGIN_ZONE;
     _player.pos.x = MAP_OFST.x + MAP_SIZE / 2;
-    setBorder({MAP_SIZE, MAP_SIZE});
     setCoins();
     setEnnemies();
 }
@@ -62,6 +69,25 @@ void arcade::SolarFox::movePlayer(void) {
     }
 }
 
+void arcade::SolarFox::checkShots(void) {
+    std::vector<std::vector<entity_t>::const_iterator> to_delete;
+    bool found = false;
+
+    for (std::vector<entity_t>::const_iterator shot = _ennemyShots.begin(); shot != _ennemyShots.end(); shot++) {
+        if (shot->pos.y < MAP_OFST.y + WALL_SIZE ||
+            shot->pos.y > MAP_OFST.y + MAP_SIZE) {
+                to_delete.push_back(shot);
+        } else if ((shot->pos.x - _player.pos.x >= 0 && shot->pos.x - _player.pos.x <= PLAYER_SIZE) &&
+                (shot->pos.y - _player.pos.y >= 0 && shot->pos.y - _player.pos.y <= PLAYER_SIZE)) {
+                    to_delete.push_back(shot);
+                    _gameStatus = LOSE;
+        }
+    }
+    for (std::size_t k = 0; k < to_delete.size(); k++) {
+        _ennemyShots.erase(to_delete[k]);
+    }
+}
+
 void arcade::SolarFox::checkIfPlayerOnCoin(void) {
     std::vector<entity_t>::const_iterator to_delete;
     bool found = false;
@@ -78,6 +104,35 @@ void arcade::SolarFox::checkIfPlayerOnCoin(void) {
         _coins.erase(to_delete);
 }
 
+void arcade::SolarFox::moveShots(void) {
+    for (std::size_t k = 0; k < _ennemyShots.size(); k++) {
+        if (_ennemyShots[k].direction == UP) {
+            _ennemyShots[k].pos.y -= SHOT_SPEED;
+        } else {
+            _ennemyShots[k].pos.y += SHOT_SPEED;
+        }
+    }
+}
+
+void arcade::SolarFox::ennemyShoot(void) {
+    for (std::size_t index = 0; index < _ennemies.size(); index++) {
+        int chance = rand() % 100;
+        if (chance <= SHOOT_PERCENTAGE) {
+            entity_t newShot = {
+                .pos = _ennemies[index].pos,
+                .size = {1, 1},
+                .character = '*',
+                .asset = "./lib/assets/arcade_solarfox/dart.png",
+                .color = {.r = 0, .g = 255, .b = 0, .a = 255},
+                .direction = DOWN
+            };
+            if (_ennemies[index].pos.y > MAP_OFST.y + MAP_SIZE / 2)
+                newShot.direction = UP;
+            _ennemyShots.push_back(newShot);
+        }
+    }
+}
+
 void arcade::SolarFox::moveEnnemies(void) {
     for (std::size_t index = 0; index < _ennemies.size(); index++) {
         _ennemies[index].pos.x += ENNEMY_SPEED * _ennemiesDirections[index];
@@ -89,6 +144,18 @@ void arcade::SolarFox::moveEnnemies(void) {
 }
 
 void arcade::SolarFox::handleEvent(event_t events) {
+    if (_gameStatus != RUNNING) {
+        for (event_e event : events.events) {
+            if (event == A_KEY_ENTER) {
+                initGame();
+            } else if (event == A_KEY_ESC) {
+                _libs.game = MENU_PATH;
+            } else if (event == A_KEY_F4) {
+                _libs.game.clear();
+            }
+        }
+        return;
+    }
     for (event_e event : events.events) {
         if (event == A_KEY_Z && _player.direction != DOWN) {
             _player.direction = UP;
@@ -111,6 +178,9 @@ void arcade::SolarFox::handleEvent(event_t events) {
     movePlayer();
     checkIfPlayerOnCoin();
     moveEnnemies();
+    ennemyShoot();
+    moveShots();
+    checkShots();
 }
 
 void arcade::SolarFox::setBorder(vector_t size) {
@@ -191,9 +261,11 @@ data_t arcade::SolarFox::update(void) {
     for (auto wall : _border)
         data.bg.push_back(wall);
     for (auto coin : _coins)
-        data.bg.push_back(coin);
+        data.objects.push_back(coin);
     for (auto ennemy : _ennemies)
-        data.bg.push_back(ennemy);
+        data.objects.push_back(ennemy);
+    for (auto ennemyShot : _ennemyShots)
+        data.objects.push_back(ennemyShot);
     data.libs = _libs;
     return data;
 }

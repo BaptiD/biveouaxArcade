@@ -29,12 +29,20 @@ class SolarFox : public IGame {
     #define PLAYER_SPEED 0.2
     #define PLAYER_SIZE 3
 
-    #define ENNEMY_SPEED 0.4
+    #define ENNEMY_SPEED 0.3
+    #define SHOT_SPEED 0.5
+    #define SHOOT_PERCENTAGE 0.2
 
     #define WALL_SIZE 2
 
     #define COIN_SIZE 3
     #define COIN_OFST 0
+
+    enum gamestatus_e {
+        RUNNING,
+        WIN,
+        LOSE
+    };
 
     public:
         SolarFox();
@@ -43,6 +51,7 @@ class SolarFox : public IGame {
         data_t update(void) override;
 
     private:
+        arcade::SolarFox::gamestatus_e _gameStatus;
         entity_t _player;
         std::vector<entity_t> _ennemies;
         std::vector<int> _ennemiesDirections;
@@ -54,6 +63,9 @@ class SolarFox : public IGame {
         void initGame();
         void movePlayer(void);
         void moveEnnemies(void);
+        void ennemyShoot(void);
+        void moveShots(void);
+        void checkShots(void);
         void checkIfPlayerOnCoin(void);
         void setBorder(vector_t size);
         void setCoins(void);
