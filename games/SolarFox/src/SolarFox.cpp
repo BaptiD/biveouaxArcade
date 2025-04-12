@@ -143,6 +143,11 @@ void arcade::SolarFox::moveEnnemies(void) {
     }
 }
 
+void arcade::SolarFox::isThereCoin(void) {
+    if (_coins.size() == 0)
+        _gameStatus = WIN;
+}
+
 void arcade::SolarFox::handleEvent(event_t events) {
     if (_gameStatus != RUNNING) {
         for (event_e event : events.events) {
@@ -181,6 +186,7 @@ void arcade::SolarFox::handleEvent(event_t events) {
     ennemyShoot();
     moveShots();
     checkShots();
+    isThereCoin();
 }
 
 void arcade::SolarFox::setBorder(vector_t size) {
@@ -257,15 +263,34 @@ void arcade::SolarFox::setEnnemies(void) {
 data_t arcade::SolarFox::update(void) {
     data_t data = {};
 
-    data.objects.push_back(_player);
-    for (auto wall : _border)
-        data.bg.push_back(wall);
-    for (auto coin : _coins)
-        data.objects.push_back(coin);
-    for (auto ennemy : _ennemies)
-        data.objects.push_back(ennemy);
-    for (auto ennemyShot : _ennemyShots)
-        data.objects.push_back(ennemyShot);
+    if (_gameStatus == RUNNING) {
+        data.objects.push_back(_player);
+        for (auto wall : _border)
+            data.bg.push_back(wall);
+        for (auto coin : _coins)
+            data.objects.push_back(coin);
+        for (auto ennemy : _ennemies)
+            data.objects.push_back(ennemy);
+        for (auto ennemyShot : _ennemyShots)
+            data.objects.push_back(ennemyShot);
+    } else {
+        text_t text = {
+            .pos = {35, 40},
+            .fontSize = 20,
+            .value = "Press Enter to restart",
+            .fontPath = "./lib/assets/arcade_solarfox/Starjedi.ttf",
+            .color = {255, 255, 0, 255}
+        };
+        data.texts.push_back(text);
+        text.pos = {40, 30};
+        text.fontSize = 30;
+        if (_gameStatus == WIN) {
+            text.value = "VICTORY !";
+        } else {
+            text.value = "DEFEAT !";
+        }
+        data.texts.push_back(text);
+    }
     data.libs = _libs;
     return data;
 }

@@ -70,6 +70,7 @@ class SolarFox : public IGame {
         void setBorder(vector_t size);
         void setCoins(void);
         void setEnnemies(void);
+        void isThereCoin(void);
 };
 
 extern "C" {
