@@ -39,6 +39,7 @@ class SolarFox : public IGame {
 
     #define COIN_SIZE 3
     #define COIN_OFST 0
+    #define COIN_VALUE 10
 
     #define FPS 60
     #define DELTA_TIME 1000 / FPS
@@ -58,6 +59,7 @@ class SolarFox : public IGame {
 
     private:
         arcade::SolarFox::gamestatus_e _gameStatus;
+        int _score;
         entity_t _player;
         std::vector<entity_t> _ennemies;
         std::vector<int> _ennemiesDirections;

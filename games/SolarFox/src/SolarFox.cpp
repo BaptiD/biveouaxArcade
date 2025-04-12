@@ -15,6 +15,7 @@ arcade::SolarFox::SolarFox() {
 
 void arcade::SolarFox::initGame() {
     _gameStatus = RUNNING;
+    _score = 0;
     _ennemiesDirections.clear();
     _ennemyShots.clear();
     _playerShots.clear();
@@ -98,6 +99,7 @@ void arcade::SolarFox::checkIfPlayerOnCoin(void) {
             player_center_pos.y - coin->pos.y >= 0 && player_center_pos.y - coin->pos.y <= COIN_SIZE) {
             to_delete = coin;
             found = true;
+            _score += COIN_VALUE;
         }
     }
     if (found)
@@ -283,12 +285,13 @@ data_t arcade::SolarFox::update(void) {
         for (auto ennemyShot : _ennemyShots)
             data.objects.push_back(ennemyShot);
         text_t text = {
-            .pos = {50, 2},
+            .pos = {MAP_OFST.x, 2},
             .fontSize = 20,
-            .value = "paused",
+            .value = "score : " + std::to_string(_score),
             .fontPath = "./lib/assets/arcade_solarfox/Starjedi.ttf",
             .color = {255, 255, 0, 255}
         };
+        data.texts.push_back(text);
         if (_gameStatus == PAUSE) {
             text.pos = {60, 2};
             text.value = "paused";
