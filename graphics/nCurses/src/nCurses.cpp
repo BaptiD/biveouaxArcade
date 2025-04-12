@@ -19,6 +19,17 @@ const std::map<int, event_e> arcade::nCurses::_map = {
     {27, A_KEY_ESC},
     {10, A_KEY_ENTER},
     {32, A_KEY_SPACE},
+    {127, A_KEY_DEL},
+    {48,  A_KEY_0},
+    {49,  A_KEY_1},
+    {50,  A_KEY_2},
+    {51,  A_KEY_3},
+    {52,  A_KEY_4},
+    {53,  A_KEY_5},
+    {54,  A_KEY_6},
+    {55,  A_KEY_7},
+    {56,  A_KEY_8},
+    {57,  A_KEY_9},
     {97, A_KEY_A},
     {98, A_KEY_B},
     {99, A_KEY_C},
@@ -44,7 +55,23 @@ const std::map<int, event_e> arcade::nCurses::_map = {
     {119, A_KEY_W},
     {120, A_KEY_X},
     {121, A_KEY_Y},
-    {122, A_KEY_Z}
+    {122, A_KEY_Z},
+    {KEY_UP, A_KEY_UP},
+    {KEY_DOWN, A_KEY_DOWN},
+    {KEY_RIGHT, A_KEY_RIGHT},
+    {KEY_LEFT, A_KEY_LEFT},
+    {264, A_KEY_F1},
+    {265, A_KEY_F2},
+    {266, A_KEY_F3},
+    {267, A_KEY_F4},
+    {268, A_KEY_F5},
+    {269, A_KEY_F6},
+    {270, A_KEY_F7},
+    {271, A_KEY_F8},
+    {272, A_KEY_F9},
+    {273, A_KEY_F10},
+    {274, A_KEY_F11},
+    {275, A_KEY_F12},
  };
 
 arcade::nCurses::nCurses() {
@@ -98,16 +125,10 @@ void arcade::nCurses::display(data_t datas) {
     
     //display texts
     for (auto& text : datas.texts) {
-        if (LINES > 100)
-            mvprintw(static_cast<int>(((float)LINES / 100) * text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
-        else
-            mvprintw(static_cast<int>(text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
+        mvprintw(static_cast<int>(((float)text.pos.y / 100) * LINES), static_cast<int>(((float)text.pos.x / 100) * COLS), "%s", text.value.c_str());
     }
 }
 
 void arcade::nCurses::drawEntity(entity_t& entity, float offsetX, float offsetY) {
-    if (LINES > 100)
-        mvprintw(static_cast<int>(LINES / 100 * entity.pos.y), static_cast<int>(COLS / 100 * entity.pos.x), "%c", entity.character);
-    else
-        mvprintw(static_cast<int>(entity.pos.y), static_cast<int>(COLS / 100 * entity.pos.x), "%c", entity.character);
+        mvprintw(static_cast<int>(entity.pos.y / 100 * LINES), static_cast<int>(entity.pos.x / 100 * COLS), "%c", entity.character);
 }
