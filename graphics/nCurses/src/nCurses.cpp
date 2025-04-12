@@ -82,13 +82,13 @@ arcade::nCurses::nCurses() {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
     curs_set(0);
-    init_pair(1, COLOR_RED, COLOR_WHITE);
-    init_pair(2, COLOR_GREEN, COLOR_WHITE);
-    init_pair(3, COLOR_WHITE, COLOR_WHITE);
-    init_pair(4, COLOR_BLUE, COLOR_WHITE);
-    init_pair(5, COLOR_CYAN, COLOR_WHITE);
-    init_pair(6, COLOR_MAGENTA, COLOR_WHITE);
-    init_pair(7, COLOR_YELLOW, COLOR_WHITE);
+    init_pair(1, COLOR_RED, COLOR_BLACK);
+    init_pair(2, COLOR_GREEN, COLOR_BLACK);
+    init_pair(3, COLOR_WHITE, COLOR_BLACK);
+    init_pair(4, COLOR_BLUE, COLOR_BLACK);
+    init_pair(5, COLOR_CYAN, COLOR_BLACK);
+    init_pair(6, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(7, COLOR_YELLOW, COLOR_BLACK);
 }
 
 arcade::nCurses::~nCurses() {
@@ -187,7 +187,7 @@ int arcade::nCurses::get_color_pair(const color_t &color) {
         int ncurses_g = convertColorComponent(color.g);
         int ncurses_b = convertColorComponent(color.b);
         init_color(customColorIndex, ncurses_r, ncurses_g, ncurses_b);
-        init_pair(customPairIndex, customColorIndex, COLOR_WHITE);
+        init_pair(customPairIndex, customColorIndex, COLOR_BLACK);
         _rgbaToPair[key] = customPairIndex;
         return customPairIndex;
     }
