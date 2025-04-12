@@ -23,7 +23,7 @@ target_include_directories( ${PROJECT_NAME}
         ./include
 )
 
-target_link_libraries(arcade_sfml sfml-graphics sfml-window sfml-system)
+target_link_libraries(arcade_sfml sfml-graphics sfml-audio sfml-window sfml-system)
 
 
 add_custom_command(TARGET ${PROJECT_NAME} 

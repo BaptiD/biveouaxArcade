@@ -9,6 +9,7 @@
     #define SFML_HPP_
 
 	#include <SFML/Graphics.hpp>
+	#include <SFML/Audio.hpp>
 	#include <SFML/Window.hpp>
 	#include <iostream>
 	#include "IGraphic.hpp"
@@ -27,11 +28,13 @@ namespace arcade {
 			void drawSprites(std::vector<entity_t> entities);
 			void drawTexts(std::vector<text_t> texts);
 			sf::Sprite rotateSprite(sf::Sprite, int direction, sf::Vector2f size);
+			void playMusic(std::vector<std::string>);
 
 		private:
 			static const std::map<int, event_e> _conversionKeyboard;
 			static const std::map<int, event_e> _conversionMouse;
 			sf::RenderWindow _window;
+			sf::Music _music;
 	};
 
 	extern "C" IGraphic* makeGraphic() {

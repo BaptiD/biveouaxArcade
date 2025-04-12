@@ -182,6 +182,16 @@ void arcade::Sfml::drawTexts(std::vector<text_t> texts) {
     }
 }
 
+void arcade::Sfml::playMusic(std::vector<std::string> audios) {
+    std::vector<sf::SoundBuffer> soundBuffers;
+
+    for (const auto& path : audios) {
+        _music.setVolume(10);
+        _music.openFromFile(path);
+        _music.play();
+    }
+}
+
 void arcade::Sfml::display(data_t data) {
     _window.clear(sf::Color::Black);
 
@@ -189,5 +199,6 @@ void arcade::Sfml::display(data_t data) {
     drawSprites(data.objects);
     drawSprites(data.ui);
     drawTexts(data.texts);
+    playMusic(data.audios);
     _window.display();
 }
