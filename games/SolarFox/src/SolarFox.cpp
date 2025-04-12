@@ -14,7 +14,7 @@ arcade::SolarFox::SolarFox() {
 }
 
 void arcade::SolarFox::initGame() {
-    _gameStatus = RUNNING;
+    _gameStatus = WAITING;
     _score = 0;
     _ennemiesDirections.clear();
     _ennemyShots.clear();
@@ -159,7 +159,7 @@ void arcade::SolarFox::handleEvent(event_t events) {
                 _libs.game = MENU_PATH;
             } else if (event == A_KEY_F4) {
                 _libs.game.clear();
-            } else if (event == A_KEY_SPACE && _gameStatus == PAUSE) {
+            } else if (event == A_KEY_SPACE && (_gameStatus == PAUSE || _gameStatus == WAITING)) {
                 _gameStatus = RUNNING;
             }
         }
@@ -274,7 +274,7 @@ void arcade::SolarFox::setEnnemies(void) {
 data_t arcade::SolarFox::update(void) {
     data_t data = {};
 
-    if (_gameStatus == RUNNING || _gameStatus == PAUSE) {
+    if (_gameStatus == RUNNING || _gameStatus == PAUSE || _gameStatus == WAITING) {
         data.objects.push_back(_player);
         for (auto wall : _border)
             data.bg.push_back(wall);
@@ -295,6 +295,10 @@ data_t arcade::SolarFox::update(void) {
         if (_gameStatus == PAUSE) {
             text.pos = {60, 2};
             text.value = "paused";
+            data.texts.push_back(text);
+        } else if (_gameStatus == WAITING) {
+            text.pos = {60, 2};
+            text.value = "press space to start";
             data.texts.push_back(text);
         }
     } else {

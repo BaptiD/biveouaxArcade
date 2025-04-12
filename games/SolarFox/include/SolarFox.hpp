@@ -45,6 +45,7 @@ class SolarFox : public IGame {
     #define DELTA_TIME 1000 / FPS
 
     enum gamestatus_e {
+        WAITING,
         RUNNING,
         WIN,
         LOSE,
