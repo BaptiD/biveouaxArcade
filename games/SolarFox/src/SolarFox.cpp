@@ -10,8 +10,6 @@
 arcade::SolarFox::SolarFox() {
     _libs.game = GAME_PATH;
     initGame();
-    setBorder({MAP_SIZE, MAP_SIZE});
-    setCoins();
 }
 
 void arcade::SolarFox::initGame() {
@@ -25,6 +23,9 @@ void arcade::SolarFox::initGame() {
     };
     _player.pos.y = MAP_OFST.y + MAP_SIZE - MARGIN_ZONE;
     _player.pos.x = MAP_OFST.x + MAP_SIZE / 2;
+    setBorder({MAP_SIZE, MAP_SIZE});
+    setCoins();
+    setEnnemies();
 }
 
 void arcade::SolarFox::movePlayer(void) {
@@ -77,6 +78,16 @@ void arcade::SolarFox::checkIfPlayerOnCoin(void) {
         _coins.erase(to_delete);
 }
 
+void arcade::SolarFox::moveEnnemies(void) {
+    for (std::size_t index = 0; index < _ennemies.size(); index++) {
+        _ennemies[index].pos.x += ENNEMY_SPEED * _ennemiesDirections[index];
+        if (_ennemies[index].pos.x < MAP_OFST.x + WALL_SIZE ||
+            _ennemies[index].pos.x > MAP_OFST.x + MAP_SIZE - WALL_SIZE) {
+            _ennemiesDirections[index] *= -1;
+        }
+    }
+}
+
 void arcade::SolarFox::handleEvent(event_t events) {
     for (event_e event : events.events) {
         if (event == A_KEY_Z && _player.direction != DOWN) {
@@ -99,6 +110,7 @@ void arcade::SolarFox::handleEvent(event_t events) {
     }
     movePlayer();
     checkIfPlayerOnCoin();
+    moveEnnemies();
 }
 
 void arcade::SolarFox::setBorder(vector_t size) {
@@ -133,7 +145,7 @@ void arcade::SolarFox::setCoins(void) {
         .pos = {0, 0},
         .size = {COIN_SIZE, COIN_SIZE},
         .character = 'c',
-        .asset = "",
+        .asset = "./lib/assets/arcade_solarfox/stormtrooper.png",
         .color = {255, 255, 0, 255},
         .direction = UP,
     };
@@ -153,6 +165,25 @@ void arcade::SolarFox::setCoins(void) {
     }
 }
 
+void arcade::SolarFox::setEnnemies(void) {
+    entity_t ennemy = {
+        .pos = {0, 0},
+        .size = {PLAYER_SIZE, PLAYER_SIZE},
+        .character = '$',
+        .asset = "./lib/assets/arcade_solarfox/tie_fighter.png",
+        .color = {.r = 150, .g = 0, .b = 0, .a = 255},
+        .direction = UP
+    };
+    ennemy.pos.x = MAP_OFST.x + WALL_SIZE + MAP_SIZE / 2;
+    ennemy.pos.y = MAP_OFST.y + MAP_SIZE - (WALL_SIZE + 1);
+    _ennemies.push_back(ennemy);
+    _ennemiesDirections.push_back(1);
+    ennemy.direction = DOWN;
+    ennemy.pos.y = MAP_OFST.y + WALL_SIZE;
+    _ennemies.push_back(ennemy);
+    _ennemiesDirections.push_back(-1);
+}
+
 data_t arcade::SolarFox::update(void) {
     data_t data = {};
 
@@ -161,6 +192,8 @@ data_t arcade::SolarFox::update(void) {
         data.bg.push_back(wall);
     for (auto coin : _coins)
         data.bg.push_back(coin);
+    for (auto ennemy : _ennemies)
+        data.bg.push_back(ennemy);
     data.libs = _libs;
     return data;
 }

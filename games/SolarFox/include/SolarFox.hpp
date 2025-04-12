@@ -22,17 +22,19 @@ namespace arcade {
 class SolarFox : public IGame {
 
     #define MAP_SIZE 50
-    #define MARGIN_ZONE 10
+    #define MARGIN_ZONE 15
     #define MAP_OFST vector_t{30, 5}
 
     #define PLAYER_START_POS vector_t{0, 0}
     #define PLAYER_SPEED 0.2
     #define PLAYER_SIZE 3
 
+    #define ENNEMY_SPEED 0.4
+
     #define WALL_SIZE 2
 
-    #define COIN_SIZE 2
-    #define COIN_OFST 1
+    #define COIN_SIZE 3
+    #define COIN_OFST 0
 
     public:
         SolarFox();
@@ -43,6 +45,7 @@ class SolarFox : public IGame {
     private:
         entity_t _player;
         std::vector<entity_t> _ennemies;
+        std::vector<int> _ennemiesDirections;
         std::vector<entity_t> _ennemyShots;
         std::vector<entity_t> _playerShots;
         std::vector<entity_t> _coins;
@@ -50,10 +53,11 @@ class SolarFox : public IGame {
         libPaths_t _libs;
         void initGame();
         void movePlayer(void);
+        void moveEnnemies(void);
         void checkIfPlayerOnCoin(void);
         void setBorder(vector_t size);
         void setCoins(void);
-
+        void setEnnemies(void);
 };
 
 extern "C" {
