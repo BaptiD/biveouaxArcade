@@ -58,6 +58,7 @@ void arcade::Centipede::initGame() {
     //score
     text_t score = {DEFAULT_TEXT_POS, FONT_SIZE, "Score: 0", FONT_PATH, WHITE};
     _state.texts.push_back(score);
+    _lastTime = std::chrono::high_resolution_clock::now();
 }
 
 void arcade::Centipede::handleEvent(event_t events) {
@@ -89,10 +90,16 @@ void arcade::Centipede::handleEvent(event_t events) {
         if (event == A_KEY_F4)
             _state.libs.game.clear();
     }
-    moveCentipede();
+    events.events.clear();
     handleCollision();
-    updateBullets();
     checkPlayerCollision();
+    std::chrono::_V2::system_clock::time_point now = std::chrono::high_resolution_clock::now();
+    if (now - _lastTime < (std::chrono::milliseconds)DELTA_TIME) {
+        return;
+    }
+    _lastTime = now;
+    moveCentipede();
+    updateBullets();
     if (!_gameOver)
         spawnNewCentipede();
     if (_gameOver) {

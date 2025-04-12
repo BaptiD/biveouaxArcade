@@ -23,6 +23,7 @@
     #define FPS (1000 / FRAME_RATE)
     #define GET_TIME std::chrono::steady_clock::now()
     #define CHRONO(lc) (std::chrono::duration_cast<std::chrono::microseconds>(GET_TIME - lc))
+    #define DELTA_TIME 30
 
     #define WHITE {255, 255, 255, 255}
     #define PINK {248, 148, 200, 255}
@@ -41,8 +42,8 @@
     #define MAP_WIDTH 30
     #define MAP_HEIGHT 30
     #define MAP_AREA 28
-    #define OFFSETY_GAME 20
-    #define OFFSETX_GAME 40
+    #define OFFSETY_GAME 35
+    #define OFFSETX_GAME 35
 
     #define MUSHROOM_PTS 10
     #define CENTIPEDE_PTS 100
@@ -90,6 +91,7 @@ class Centipede : public IGame {
     std::vector<mushroom_t> _mushrooms;
     vector_t _playerPos;
     bool _gameOver = false;
+    std::chrono::_V2::system_clock::time_point _lastTime;
 
     void moveCentipede();
     bool isCollision(const entity_t& a, const entity_t& b);
