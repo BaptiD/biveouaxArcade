@@ -116,10 +116,9 @@ event_t arcade::Sfml::getEvent() {
     return events;
 }
 
-sf::Sprite arcade::Sfml::rotateSprite(sf::Sprite sprite, int direction) {
+sf::Sprite arcade::Sfml::rotateSprite(sf::Sprite sprite, int direction, sf::Vector2f size) {
     if (direction == UP)
         return sprite;
-    sf::Vector2f size = sprite.getLocalBounds().getSize();
     if (direction == DOWN) {
         sprite.setRotation(180);
         sprite.setOrigin(size);
@@ -151,7 +150,8 @@ void arcade::Sfml::drawSprites(std::vector<entity_t> entities) {
             scale.x = (WIN_SIZE_X / 100 * entity.size.x) / spriteBounds.width;
             scale.y = (WIN_SIZE_Y / 100 * entity.size.y) / spriteBounds.height;
             sprite.setScale(scale);
-            sprite = rotateSprite(sprite, entity.direction);
+            sf::Vector2f size = static_cast<sf::Vector2f>(texture.getSize());
+            sprite = rotateSprite(sprite, entity.direction, size);
             _window.draw(sprite);
         }
     }
