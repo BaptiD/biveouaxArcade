@@ -113,22 +113,56 @@ event_t arcade::nCurses::getEvent(void) {
     return _events;
 }
 
+void arcade::nCurses::getPos(data_t datas) {
+    _minPos = {100, 100};
+    _maxPos = {0, 0};
+    for (auto& bg : datas.bg) {
+        if (bg.pos.x < _minPos.x)
+            _minPos.x = bg.pos.x;
+        if (bg.pos.y < _minPos.y)
+            _minPos.y = bg.pos.y;
+        if (bg.pos.x > _maxPos.x)
+            _maxPos.x = bg.pos.x;
+        if (bg.pos.y > _maxPos.y)
+            _maxPos.y = bg.pos.y;
+    }
+    for (auto& obj : datas.objects) {
+        if (obj.pos.x < _minPos.x)
+            _minPos.x = obj.pos.x;
+        if (obj.pos.y < _minPos.y)
+            _minPos.y = obj.pos.y;
+        if (obj.pos.x > _maxPos.x)
+            _maxPos.x = obj.pos.x;
+        if (obj.pos.y > _maxPos.y)
+            _maxPos.y = obj.pos.y;
+    }
+    for (auto& ui : datas.ui) {
+        if (ui.pos.x < _minPos.x)
+            _minPos.x = ui.pos.x;
+        if (ui.pos.y < _minPos.y)
+            _minPos.y = ui.pos.y;
+        if (ui.pos.x > _maxPos.x)
+            _maxPos.x = ui.pos.x;
+        if (ui.pos.y > _maxPos.y)
+            _maxPos.y = ui.pos.y;
+    }
+}
+
 void arcade::nCurses::display(data_t datas) {
     clear();
+    getPos(datas);
 
-    float offsetX = (COLS - GAME_WIDTH) / 2;
-    float offsetY = (LINES - GAME_HEIGHT) / 2;
     //display bg
     for (auto& bg : datas.bg)
-        drawEntity(bg, offsetX, offsetY);
+        drawEntity(bg);
 
     //display items
     for (auto& item : datas.objects)
-        drawEntity(item, offsetX, offsetY);
+        drawEntity(item);
 
     //display UI
     for (auto& ui : datas.ui)
-        drawEntity(ui, offsetX, offsetY);
+        drawEntity(ui);
     
     //display texts
     for (auto& text : datas.texts) {
@@ -136,19 +170,19 @@ void arcade::nCurses::display(data_t datas) {
             int pairIndex = get_color_pair(text.color);
             attron(COLOR_PAIR(pairIndex));
         }
-        mvprintw(static_cast<int>(((float)text.pos.y / 100) * LINES), static_cast<int>(((float)text.pos.x / 100) * COLS), "%s", text.value.c_str());
+        mvprintw(static_cast<int>(text.pos.y), static_cast<int>(text.pos.x), "%s", text.value.c_str());
         if (text.color.a > 0) {
             attroff(COLOR_PAIR(get_color_pair(text.color)));
         }
     }
 }
 
-void arcade::nCurses::drawEntity(entity_t& entity, float offsetX, float offsetY) {
+void arcade::nCurses::drawEntity(entity_t& entity) {
     if (entity.color.a > 0) {
         int pairIndex = get_color_pair(entity.color);
         attron(COLOR_PAIR(pairIndex));
     }
-    mvprintw(static_cast<int>(((float)entity.pos.y / 100) * LINES), static_cast<int>(((float)entity.pos.x / 100) * COLS), "%c", entity.character);
+    mvprintw(static_cast<int>(entity.pos.y - _minPos.y), static_cast<int>(entity.pos.x - _minPos.x), "%c", entity.character);
     if (entity.color.a > 0) {
         attroff(COLOR_PAIR(get_color_pair(entity.color)));
     }

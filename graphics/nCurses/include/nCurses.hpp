@@ -34,7 +34,10 @@ class nCurses : public IGraphic {
         std::map<unsigned int, int> _rgbaToPair;
         int _nextCustomColorIndex = 16;
         int _nextCustomPairIndex  = 8;
-        void drawEntity(entity_t& entity, float offsetX, float offsetY);
+        vector_t _minPos = {100, 100};
+        vector_t _maxPos = {0, 0};
+        void drawEntity(entity_t& entity);
+        void getPos(data_t datas);
         unsigned int hash_rgba(const color_t &color);
         int convertColorComponent(int comp);
         int get_color_pair(const color_t &color);
