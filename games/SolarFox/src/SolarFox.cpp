@@ -261,11 +261,12 @@ void arcade::SolarFox::setEnnemies(void) {
         .color = {.r = 150, .g = 0, .b = 0, .a = 255},
         .direction = UP
     };
-    ennemy.pos.x = MAP_OFST.x + WALL_SIZE + MAP_SIZE / 2;
+    ennemy.pos.x = MAP_OFST.x + WALL_SIZE;
     ennemy.pos.y = MAP_OFST.y + MAP_SIZE - (WALL_SIZE + 1);
     _ennemies.push_back(ennemy);
     _ennemiesDirections.push_back(1);
     ennemy.direction = DOWN;
+    ennemy.pos.x = MAP_OFST.x + MAP_SIZE - WALL_SIZE;
     ennemy.pos.y = MAP_OFST.y + WALL_SIZE;
     _ennemies.push_back(ennemy);
     _ennemiesDirections.push_back(-1);
