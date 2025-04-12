@@ -108,8 +108,8 @@ event_t arcade::Sfml::getEvent() {
 
     }
     sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(_window));
-    events.mPos.x = mousePos.x / static_cast<float>(WIN_SIZE_X) * 100;
-    events.mPos.y = mousePos.y / static_cast<float>(WIN_SIZE_Y) * 100;
+    events.mPos.x = mousePos.x / static_cast<float>(_window.getSize().x) * 100;
+    events.mPos.y = mousePos.y / static_cast<float>(_window.getSize().y) * 100;
     return events;
 }
 
