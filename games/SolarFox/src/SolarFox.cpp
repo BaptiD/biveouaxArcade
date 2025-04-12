@@ -157,6 +157,8 @@ void arcade::SolarFox::handleEvent(event_t events) {
                 _libs.game = MENU_PATH;
             } else if (event == A_KEY_F4) {
                 _libs.game.clear();
+            } else if (event == A_KEY_SPACE && _gameStatus == PAUSE) {
+                _gameStatus = RUNNING;
             }
         }
         return;
@@ -178,8 +180,15 @@ void arcade::SolarFox::handleEvent(event_t events) {
             _libs.game = MENU_PATH;
         } else if (event == A_KEY_F4) {
             _libs.game.clear();
+        } else if (event == A_KEY_SPACE) {
+            _gameStatus = PAUSE;
         }
     }
+    std::chrono::_V2::system_clock::time_point now = std::chrono::high_resolution_clock::now();
+    if (now - _lastTime < (std::chrono::milliseconds)DELTA_TIME) {
+        return;
+    }
+    _lastTime = now;
     movePlayer();
     checkIfPlayerOnCoin();
     moveEnnemies();
@@ -263,7 +272,7 @@ void arcade::SolarFox::setEnnemies(void) {
 data_t arcade::SolarFox::update(void) {
     data_t data = {};
 
-    if (_gameStatus == RUNNING) {
+    if (_gameStatus == RUNNING || _gameStatus == PAUSE) {
         data.objects.push_back(_player);
         for (auto wall : _border)
             data.bg.push_back(wall);
@@ -273,11 +282,23 @@ data_t arcade::SolarFox::update(void) {
             data.objects.push_back(ennemy);
         for (auto ennemyShot : _ennemyShots)
             data.objects.push_back(ennemyShot);
+        text_t text = {
+            .pos = {50, 2},
+            .fontSize = 20,
+            .value = "paused",
+            .fontPath = "./lib/assets/arcade_solarfox/Starjedi.ttf",
+            .color = {255, 255, 0, 255}
+        };
+        if (_gameStatus == PAUSE) {
+            text.pos = {60, 2};
+            text.value = "paused";
+            data.texts.push_back(text);
+        }
     } else {
         text_t text = {
             .pos = {35, 40},
             .fontSize = 20,
-            .value = "Press Enter to restart",
+            .value = "press enter to restart",
             .fontPath = "./lib/assets/arcade_solarfox/Starjedi.ttf",
             .color = {255, 255, 0, 255}
         };
@@ -285,9 +306,9 @@ data_t arcade::SolarFox::update(void) {
         text.pos = {40, 30};
         text.fontSize = 30;
         if (_gameStatus == WIN) {
-            text.value = "VICTORY !";
+            text.value = "victory !";
         } else {
-            text.value = "DEFEAT !";
+            text.value = "defeat !";
         }
         data.texts.push_back(text);
     }

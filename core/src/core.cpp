@@ -72,5 +72,6 @@ void arcade::core::run(void)
         // if (datas.libs.game.empty())
         //     return;
         CALL(_graphic)->display(datas);
+//        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
