@@ -19,6 +19,17 @@ const std::map<int, event_e> arcade::nCurses::_map = {
     {27, A_KEY_ESC},
     {10, A_KEY_ENTER},
     {32, A_KEY_SPACE},
+    {127, A_KEY_DEL},
+    {48,  A_KEY_0},
+    {49,  A_KEY_1},
+    {50,  A_KEY_2},
+    {51,  A_KEY_3},
+    {52,  A_KEY_4},
+    {53,  A_KEY_5},
+    {54,  A_KEY_6},
+    {55,  A_KEY_7},
+    {56,  A_KEY_8},
+    {57,  A_KEY_9},
     {97, A_KEY_A},
     {98, A_KEY_B},
     {99, A_KEY_C},
@@ -44,7 +55,23 @@ const std::map<int, event_e> arcade::nCurses::_map = {
     {119, A_KEY_W},
     {120, A_KEY_X},
     {121, A_KEY_Y},
-    {122, A_KEY_Z}
+    {122, A_KEY_Z},
+    {KEY_UP, A_KEY_UP},
+    {KEY_DOWN, A_KEY_DOWN},
+    {KEY_RIGHT, A_KEY_RIGHT},
+    {KEY_LEFT, A_KEY_LEFT},
+    {264, A_KEY_F1},
+    {265, A_KEY_F2},
+    {266, A_KEY_F3},
+    {267, A_KEY_F4},
+    {268, A_KEY_F5},
+    {269, A_KEY_F6},
+    {270, A_KEY_F7},
+    {271, A_KEY_F8},
+    {272, A_KEY_F9},
+    {273, A_KEY_F10},
+    {274, A_KEY_F11},
+    {275, A_KEY_F12},
  };
 
 arcade::nCurses::nCurses() {
@@ -55,6 +82,13 @@ arcade::nCurses::nCurses() {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
     curs_set(0);
+    init_pair(1, COLOR_RED, COLOR_BLACK);
+    init_pair(2, COLOR_GREEN, COLOR_BLACK);
+    init_pair(3, COLOR_WHITE, COLOR_BLACK);
+    init_pair(4, COLOR_BLUE, COLOR_BLACK);
+    init_pair(5, COLOR_CYAN, COLOR_BLACK);
+    init_pair(6, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(7, COLOR_YELLOW, COLOR_BLACK);
 }
 
 arcade::nCurses::~nCurses() {
@@ -98,16 +132,63 @@ void arcade::nCurses::display(data_t datas) {
     
     //display texts
     for (auto& text : datas.texts) {
+        if (text.color.a > 0) {
+            int pairIndex = get_color_pair(text.color);
+            attron(COLOR_PAIR(pairIndex));
+        }
         if (LINES > 100)
             mvprintw(static_cast<int>(((float)LINES / 100) * text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
         else
             mvprintw(static_cast<int>(text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
+        if (text.color.a > 0) {
+            attroff(COLOR_PAIR(get_color_pair(text.color)));
+        }
     }
 }
 
 void arcade::nCurses::drawEntity(entity_t& entity, float offsetX, float offsetY) {
+    if (entity.color.a > 0) {
+        int pairIndex = get_color_pair(entity.color);
+        attron(COLOR_PAIR(pairIndex));
+    }
     if (LINES > 100)
         mvprintw(static_cast<int>(LINES / 100 * entity.pos.y), static_cast<int>(COLS / 100 * entity.pos.x), "%c", entity.character);
     else
         mvprintw(static_cast<int>(entity.pos.y), static_cast<int>(COLS / 100 * entity.pos.x), "%c", entity.character);
+    if (entity.color.a > 0) {
+        attroff(COLOR_PAIR(get_color_pair(entity.color)));
+    }
+}
+
+unsigned int arcade::nCurses::hash_rgba(const color_t &color) {
+    unsigned int hash = 17;
+    hash = hash * 31 + color.r;
+    hash = hash * 31 + color.g;
+    hash = hash * 31 + color.b;
+    hash = hash * 31 + color.a;
+    return hash;
+}
+
+int arcade::nCurses::convertColorComponent(int comp) {
+    return (comp * 1000) / 255;
+}
+
+int arcade::nCurses::get_color_pair(const color_t &color) {
+    unsigned int key = hash_rgba(color);
+    if (_rgbaToPair.find(key) != _rgbaToPair.end()) {
+        return _rgbaToPair[key];
+    } else {
+        if (!can_change_color()) {
+            return 0;
+        }
+        int customColorIndex = _nextCustomColorIndex++;
+        int customPairIndex = _nextCustomPairIndex++;
+        int ncurses_r = convertColorComponent(color.r);
+        int ncurses_g = convertColorComponent(color.g);
+        int ncurses_b = convertColorComponent(color.b);
+        init_color(customColorIndex, ncurses_r, ncurses_g, ncurses_b);
+        init_pair(customPairIndex, customColorIndex, COLOR_BLACK);
+        _rgbaToPair[key] = customPairIndex;
+        return customPairIndex;
+    }
 }
