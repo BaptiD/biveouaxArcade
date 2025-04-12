@@ -32,7 +32,6 @@ namespace arcade {
 			static const std::map<int, event_e> _conversionKeyboard;
 			static const std::map<int, event_e> _conversionMouse;
 			sf::RenderWindow _window;
-			sf::Font _font;
 	};
 
 	extern "C" IGraphic* makeGraphic() {

@@ -76,10 +76,6 @@ const std::map<int, event_e> arcade::Sfml::_conversionMouse = {
 
 arcade::Sfml::Sfml() {
     _window.create(sf::VideoMode(WIN_SIZE_X, WIN_SIZE_Y), "Arcade SFML");
-
-    if (!_font.loadFromFile("./lib/assets/arcade_menu/font/arcade.ttf")) {
-        std::cerr << "Error: Can't load font" << std::endl;
-    }
 }
 
 arcade::Sfml::~Sfml() {
@@ -159,8 +155,11 @@ void arcade::Sfml::drawSprites(std::vector<entity_t> entities) {
 
 void arcade::Sfml::drawTexts(std::vector<text_t> texts) {
     for (text_t txt : texts) {
+        sf::Font font;
         sf::Text text;
-        text.setFont(_font);
+        if (!font.loadFromFile(txt.fontPath))
+            std::cerr << "Error: Can't load font" << std::endl;
+        text.setFont(font);
         text.setString(txt.value);
         text.setCharacterSize(txt.fontSize);
         sf::Color color;
