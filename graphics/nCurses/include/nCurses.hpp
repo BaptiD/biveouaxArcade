@@ -12,6 +12,10 @@
     #include "IGraphic.hpp"
     #include <map>
 
+    #define HASH_START_VALUE 17
+    #define HASH_MULT 31
+    #define MAX_COLOR_NCURSE 1000
+    #define MAX_RGBA 255
     #define GAME_WIDTH 30
     #define GAME_HEIGHT 30
 namespace arcade {

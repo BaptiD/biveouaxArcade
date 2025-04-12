@@ -82,13 +82,13 @@ arcade::nCurses::nCurses() {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
     curs_set(0);
-    init_pair(1, COLOR_RED, COLOR_BLACK);
-    init_pair(2, COLOR_GREEN, COLOR_BLACK);
-    init_pair(3, COLOR_WHITE, COLOR_BLACK);
-    init_pair(4, COLOR_BLUE, COLOR_BLACK);
-    init_pair(5, COLOR_CYAN, COLOR_BLACK);
-    init_pair(6, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(7, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(1, COLOR_RED, COLOR_WHITE);
+    init_pair(2, COLOR_GREEN, COLOR_WHITE);
+    init_pair(3, COLOR_WHITE, COLOR_WHITE);
+    init_pair(4, COLOR_BLUE, COLOR_WHITE);
+    init_pair(5, COLOR_CYAN, COLOR_WHITE);
+    init_pair(6, COLOR_MAGENTA, COLOR_WHITE);
+    init_pair(7, COLOR_YELLOW, COLOR_WHITE);
 }
 
 arcade::nCurses::~nCurses() {
@@ -161,16 +161,16 @@ void arcade::nCurses::drawEntity(entity_t& entity, float offsetX, float offsetY)
 }
 
 unsigned int arcade::nCurses::hash_rgba(const color_t &color) {
-    unsigned int hash = 17;
-    hash = hash * 31 + color.r;
-    hash = hash * 31 + color.g;
-    hash = hash * 31 + color.b;
-    hash = hash * 31 + color.a;
+    unsigned int hash = HASH_START_VALUE;
+    hash = hash * HASH_MULT + color.r;
+    hash = hash * HASH_MULT + color.g;
+    hash = hash * HASH_MULT + color.b;
+    hash = hash * HASH_MULT + color.a;
     return hash;
 }
 
 int arcade::nCurses::convertColorComponent(int comp) {
-    return (comp * 1000) / 255;
+    return (comp * MAX_COLOR_NCURSE) / MAX_RGBA;
 }
 
 int arcade::nCurses::get_color_pair(const color_t &color) {
@@ -187,7 +187,7 @@ int arcade::nCurses::get_color_pair(const color_t &color) {
         int ncurses_g = convertColorComponent(color.g);
         int ncurses_b = convertColorComponent(color.b);
         init_color(customColorIndex, ncurses_r, ncurses_g, ncurses_b);
-        init_pair(customPairIndex, customColorIndex, COLOR_BLACK);
+        init_pair(customPairIndex, customColorIndex, COLOR_WHITE);
         _rgbaToPair[key] = customPairIndex;
         return customPairIndex;
     }
