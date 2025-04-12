@@ -180,6 +180,11 @@ void arcade::SolarFox::handleEvent(event_t events) {
             _libs.game.clear();
         }
     }
+    std::chrono::_V2::system_clock::time_point now = std::chrono::high_resolution_clock::now();
+    if (now - _lastTime < (std::chrono::milliseconds)DELTA_TIME) {
+        return;
+    }
+    _lastTime = now;
     movePlayer();
     checkIfPlayerOnCoin();
     moveEnnemies();
@@ -277,7 +282,7 @@ data_t arcade::SolarFox::update(void) {
         text_t text = {
             .pos = {35, 40},
             .fontSize = 20,
-            .value = "Press Enter to restart",
+            .value = "press enter to restart",
             .fontPath = "./lib/assets/arcade_solarfox/Starjedi.ttf",
             .color = {255, 255, 0, 255}
         };
@@ -285,9 +290,9 @@ data_t arcade::SolarFox::update(void) {
         text.pos = {40, 30};
         text.fontSize = 30;
         if (_gameStatus == WIN) {
-            text.value = "VICTORY !";
+            text.value = "victory !";
         } else {
-            text.value = "DEFEAT !";
+            text.value = "defeat !";
         }
         data.texts.push_back(text);
     }

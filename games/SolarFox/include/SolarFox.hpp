@@ -8,6 +8,8 @@
 #ifndef SOLARFOX_HPP_
     #define SOLARFOX_HPP_
 
+    #include <chrono>
+
     #include "events.hpp"
     #include "updates.hpp"
     #include "IGame.hpp"
@@ -38,6 +40,9 @@ class SolarFox : public IGame {
     #define COIN_SIZE 3
     #define COIN_OFST 0
 
+    #define FPS 60
+    #define DELTA_TIME 1000 / FPS
+
     enum gamestatus_e {
         RUNNING,
         WIN,
@@ -59,6 +64,7 @@ class SolarFox : public IGame {
         std::vector<entity_t> _playerShots;
         std::vector<entity_t> _coins;
         std::vector<entity_t> _border;
+        std::chrono::_V2::system_clock::time_point _lastTime;
         libPaths_t _libs;
         void initGame();
         void movePlayer(void);
