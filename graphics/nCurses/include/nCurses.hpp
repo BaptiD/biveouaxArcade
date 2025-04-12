@@ -27,7 +27,13 @@ class nCurses : public IGraphic {
     private:
         static const std::map<int, event_e> _map;
         event_t _events;
+        std::map<unsigned int, int> _rgbaToPair;
+        int _nextCustomColorIndex = 16;
+        int _nextCustomPairIndex  = 8;
         void drawEntity(entity_t& entity, float offsetX, float offsetY);
+        unsigned int hash_rgba(const color_t &color);
+        int convertColorComponent(int comp);
+        int get_color_pair(const color_t &color);
 };
 
 extern "C" {

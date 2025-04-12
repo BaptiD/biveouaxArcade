@@ -82,6 +82,13 @@ arcade::nCurses::nCurses() {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
     curs_set(0);
+    init_pair(1, COLOR_RED, COLOR_BLACK);
+    init_pair(2, COLOR_GREEN, COLOR_BLACK);
+    init_pair(3, COLOR_WHITE, COLOR_BLACK);
+    init_pair(4, COLOR_BLUE, COLOR_BLACK);
+    init_pair(5, COLOR_CYAN, COLOR_BLACK);
+    init_pair(6, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(7, COLOR_YELLOW, COLOR_BLACK);
 }
 
 arcade::nCurses::~nCurses() {
@@ -125,10 +132,63 @@ void arcade::nCurses::display(data_t datas) {
     
     //display texts
     for (auto& text : datas.texts) {
-        mvprintw(static_cast<int>(((float)text.pos.y / 100) * LINES), static_cast<int>(((float)text.pos.x / 100) * COLS), "%s", text.value.c_str());
+        if (text.color.a > 0) {
+            int pairIndex = get_color_pair(text.color);
+            attron(COLOR_PAIR(pairIndex));
+        }
+        if (LINES > 100)
+            mvprintw(static_cast<int>(((float)LINES / 100) * text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
+        else
+            mvprintw(static_cast<int>(text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
+        if (text.color.a > 0) {
+            attroff(COLOR_PAIR(get_color_pair(text.color)));
+        }
     }
 }
 
 void arcade::nCurses::drawEntity(entity_t& entity, float offsetX, float offsetY) {
-        mvprintw(static_cast<int>(entity.pos.y / 100 * LINES), static_cast<int>(entity.pos.x / 100 * COLS), "%c", entity.character);
+    if (entity.color.a > 0) {
+        int pairIndex = get_color_pair(entity.color);
+        attron(COLOR_PAIR(pairIndex));
+    }
+    if (LINES > 100)
+        mvprintw(static_cast<int>(LINES / 100 * entity.pos.y), static_cast<int>(COLS / 100 * entity.pos.x), "%c", entity.character);
+    else
+        mvprintw(static_cast<int>(entity.pos.y), static_cast<int>(COLS / 100 * entity.pos.x), "%c", entity.character);
+    if (entity.color.a > 0) {
+        attroff(COLOR_PAIR(get_color_pair(entity.color)));
+    }
+}
+
+unsigned int arcade::nCurses::hash_rgba(const color_t &color) {
+    unsigned int hash = 17;
+    hash = hash * 31 + color.r;
+    hash = hash * 31 + color.g;
+    hash = hash * 31 + color.b;
+    hash = hash * 31 + color.a;
+    return hash;
+}
+
+int arcade::nCurses::convertColorComponent(int comp) {
+    return (comp * 1000) / 255;
+}
+
+int arcade::nCurses::get_color_pair(const color_t &color) {
+    unsigned int key = hash_rgba(color);
+    if (_rgbaToPair.find(key) != _rgbaToPair.end()) {
+        return _rgbaToPair[key];
+    } else {
+        if (!can_change_color()) {
+            return 0;
+        }
+        int customColorIndex = _nextCustomColorIndex++;
+        int customPairIndex = _nextCustomPairIndex++;
+        int ncurses_r = convertColorComponent(color.r);
+        int ncurses_g = convertColorComponent(color.g);
+        int ncurses_b = convertColorComponent(color.b);
+        init_color(customColorIndex, ncurses_r, ncurses_g, ncurses_b);
+        init_pair(customPairIndex, customColorIndex, COLOR_BLACK);
+        _rgbaToPair[key] = customPairIndex;
+        return customPairIndex;
+    }
 }
