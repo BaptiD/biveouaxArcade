@@ -14,6 +14,8 @@
     #include "map.hpp"
 
     #define GAME_MAKER "makeGame" // Name of the extern function to create game class
+    #define MENU_PATH "./lib/arcade_menu.so"
+    #define GAME_PATH "./lib/arcade_solarfox.so"
 
 namespace arcade {
 
@@ -45,8 +47,10 @@ class SolarFox : public IGame {
         std::vector<entity_t> _playerShots;
         std::vector<entity_t> _coins;
         std::vector<entity_t> _border;
+        libPaths_t _libs;
         void initGame();
         void movePlayer(void);
+        void checkIfPlayerOnCoin(void);
         void setBorder(vector_t size);
         void setCoins(void);
 

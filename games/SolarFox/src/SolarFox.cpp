@@ -8,6 +8,7 @@
 #include "SolarFox.hpp"
 
 arcade::SolarFox::SolarFox() {
+    _libs.game = GAME_PATH;
     initGame();
     setBorder({MAP_SIZE, MAP_SIZE});
     setCoins();
@@ -60,6 +61,22 @@ void arcade::SolarFox::movePlayer(void) {
     }
 }
 
+void arcade::SolarFox::checkIfPlayerOnCoin(void) {
+    std::vector<entity_t>::const_iterator to_delete;
+    bool found = false;
+    vector_t player_center_pos = {_player.pos.x + (PLAYER_SIZE / 2), _player.pos.y + (PLAYER_SIZE / 2)};
+
+    for (std::vector<entity_t>::const_iterator coin = _coins.begin(); coin != _coins.end(); coin++) {
+        if (player_center_pos.x - coin->pos.x >= 0 && player_center_pos.x - coin->pos.x <= COIN_SIZE &&
+            player_center_pos.y - coin->pos.y >= 0 && player_center_pos.y - coin->pos.y <= COIN_SIZE) {
+            to_delete = coin;
+            found = true;
+        }
+    }
+    if (found)
+        _coins.erase(to_delete);
+}
+
 void arcade::SolarFox::handleEvent(event_t events) {
     for (event_e event : events.events) {
         if (event == A_KEY_Z && _player.direction != DOWN) {
@@ -74,9 +91,14 @@ void arcade::SolarFox::handleEvent(event_t events) {
         } else if (event == A_KEY_D && _player.direction != LEFT) {
             _player.direction = RIGHT;
             _player.character = '>';
+        } else if (event == A_KEY_ESC) {
+            _libs.game = MENU_PATH;
+        } else if (event == A_KEY_F4) {
+            _libs.game.clear();
         }
     }
     movePlayer();
+    checkIfPlayerOnCoin();
 }
 
 void arcade::SolarFox::setBorder(vector_t size) {
@@ -139,5 +161,6 @@ data_t arcade::SolarFox::update(void) {
         data.bg.push_back(wall);
     for (auto coin : _coins)
         data.bg.push_back(coin);
+    data.libs = _libs;
     return data;
 }
