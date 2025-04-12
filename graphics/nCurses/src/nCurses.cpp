@@ -136,10 +136,7 @@ void arcade::nCurses::display(data_t datas) {
             int pairIndex = get_color_pair(text.color);
             attron(COLOR_PAIR(pairIndex));
         }
-        if (LINES > 100)
-            mvprintw(static_cast<int>(((float)LINES / 100) * text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
-        else
-            mvprintw(static_cast<int>(text.pos.y), static_cast<int>(((float)COLS / 100) * text.pos.x), "%s", text.value.c_str());
+        mvprintw(static_cast<int>(((float)text.pos.y / 100) * LINES), static_cast<int>(((float)text.pos.x / 100) * COLS), "%s", text.value.c_str());
         if (text.color.a > 0) {
             attroff(COLOR_PAIR(get_color_pair(text.color)));
         }
@@ -151,10 +148,7 @@ void arcade::nCurses::drawEntity(entity_t& entity, float offsetX, float offsetY)
         int pairIndex = get_color_pair(entity.color);
         attron(COLOR_PAIR(pairIndex));
     }
-    if (LINES > 100)
-        mvprintw(static_cast<int>(LINES / 100 * entity.pos.y), static_cast<int>(COLS / 100 * entity.pos.x), "%c", entity.character);
-    else
-        mvprintw(static_cast<int>(entity.pos.y), static_cast<int>(COLS / 100 * entity.pos.x), "%c", entity.character);
+    mvprintw(static_cast<int>(((float)entity.pos.y / 100) * LINES), static_cast<int>(((float)entity.pos.x / 100) * COLS), "%c", entity.character);
     if (entity.color.a > 0) {
         attroff(COLOR_PAIR(get_color_pair(entity.color)));
     }
