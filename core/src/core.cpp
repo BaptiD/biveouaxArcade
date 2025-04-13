@@ -49,10 +49,15 @@ data_t arcade::core::setupNewGame(void)
 
 data_t arcade::core::checkLibUpdate(libPaths_t paths, data_t data)
 {
-    if (_update == true) {
+    if (_updateGraphic == true) {
         _graphic.closeLib();
         load(_graphicPaths[_graphicIndex], GRAPHIC_LIB);
-        _update = false;
+        _updateGraphic = false;
+    } else if (_updateGame == true) {
+        _game.closeLib();
+        load(_gamePaths[_gameIndex], GAME_LIB);
+        _updateGame = false;
+        return setupNewGame();
     }
     if (!data.libs.graphic.empty() && paths.graphic.compare(data.libs.graphic)) {
         _graphic.closeLib();
@@ -76,7 +81,18 @@ int arcade::core::checkCoreEvents(event_t events)
                 _graphicIndex = 0;
             else
                 _graphicIndex += 1;
-            _update = true;
+            _updateGraphic = true;
+        }
+        if (event == A_KEY_E) {
+            if (_gamePaths.size() - 1 <= _gameIndex)
+                _gameIndex = 0;
+            else
+                _gameIndex += 1;
+            _updateGame = true;
+        }
+        if (event == A_KEY_R) {
+            _game.closeLib();
+            load(_gamePaths[_gameIndex], GAME_LIB);
         }
     }
     return 0;
