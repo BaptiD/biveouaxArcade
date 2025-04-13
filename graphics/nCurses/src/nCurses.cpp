@@ -82,6 +82,7 @@ arcade::nCurses::nCurses() {
     start_color();
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
+    mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
     curs_set(0);
     init_pair(1, COLOR_RED, COLOR_BLACK);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
@@ -99,9 +100,21 @@ arcade::nCurses::~nCurses() {
 event_t arcade::nCurses::getEvent(void) {
     _events.events.clear();
     int ch = getch();
-    
+
+    getyx(stdscr, _events.mPos.y, _events.mPos.x);
     //if input
     if (ch != -1) {
+        MEVENT event;
+        if (ch == KEY_MOUSE) {
+            if (getmouse(&event) == OK) {
+                if (event.bstate & BUTTON1_PRESSED)
+                    _events.events.push_back(A_MOUSE_LEFT);
+                else if (event.bstate & BUTTON2_PRESSED)
+                    _events.events.push_back(A_MOUSE_MIDDLE);
+                else if (event.bstate & BUTTON3_PRESSED)
+                    _events.events.push_back(A_MOUSE_RIGHT);
+            }
+        }
         //looking for equivalent input on our arcade's key (check also if we manage it or not)
         for (std::map<int, event_e>::const_iterator it = _map.begin(); it != _map.end(); ++it) {
             if (it->first == ch) {
