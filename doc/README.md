@@ -178,3 +178,5 @@ sh compile -re
 - Répertoire Github contenant quelques librairies créées via l'architecture présente dans le répertoire ci-dessus : https://github.com/JulesDELTEIL/ArcadeMultiGroup
 
 - Documentation (format notion) : https://www.notion.so/Documentation-Arcade-1cb3873e4fad80c68b52d587d9cc5df9
+
+- UML Diagramme (contient la logique de l'architecture) : https://www.figma.com/board/ZFgV0zjDJrcWFSmiYQkggJ/UML-Arcade-Dream-Team?node-id=0-1&p=f&t=iePrRdGghth1AQBv-0
