@@ -39,6 +39,7 @@
     #define MAP_WIDTH 30
     #define MAP_HEIGHT 30
     #define MAP_AREA 28
+    #define MAX_Y_PLAYER (MAP_HEIGHT / 5)
     #define OFFSETY_GAME 35
     #define OFFSETX_GAME 35
 
@@ -57,7 +58,7 @@
     #define BULLET_SIZE 1
     #define FONT_SIZE 10
 
-    #define DEFAULT_PLAYER_POS {10 + OFFSETX_GAME, 20 + OFFSETY_GAME}
+    #define DEFAULT_PLAYER_POS {(MAP_AREA / 2) + OFFSETX_GAME, MAP_AREA + OFFSETY_GAME}
     #define DEFAULT_CENTIPEDE_POS(x) {(double)5 + i + OFFSETX_GAME, 5 + OFFSETY_GAME}
     #define DEFAULT_RANDOM_MUSH_POS {(double)(rand() % 20) + OFFSETX_GAME + 1, (double)(rand() % 15) + OFFSETY_GAME + 1}
     #define DEFAULT_TEXT_POS {0, 0}

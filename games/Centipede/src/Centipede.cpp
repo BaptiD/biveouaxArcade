@@ -92,7 +92,7 @@ void arcade::Centipede::handleEvent(event_t events) {
         if (event == A_KEY_D)
             _state.objects[0].pos.x = std::min((double)MAP_AREA + OFFSETX_GAME, _state.objects[0].pos.x + 1);
         if (event == A_KEY_Z)
-            _state.objects[0].pos.y = std::max((double)1 + OFFSETY_GAME, _state.objects[0].pos.y - 1);
+            _state.objects[0].pos.y = std::max((double)MAP_AREA - MAX_Y_PLAYER + OFFSETY_GAME, _state.objects[0].pos.y - 1);
         if (event == A_KEY_S)
             _state.objects[0].pos.y = std::min((double)MAP_AREA + OFFSETY_GAME, _state.objects[0].pos.y + 1);
         if (event == A_KEY_SPACE)
