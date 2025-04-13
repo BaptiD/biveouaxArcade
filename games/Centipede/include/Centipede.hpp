@@ -75,6 +75,11 @@
 namespace arcade {
 class Centipede : public IGame {
   public:
+    typedef enum {
+      WIN,
+      LOSE,
+      INGAME
+    } state_t;
     typedef struct mushroom_s {
       std::size_t health;
       entity_t entity;
@@ -90,8 +95,9 @@ class Centipede : public IGame {
     std::vector<vector_t> _mushroomsPos;
     std::vector<mushroom_t> _mushrooms;
     vector_t _playerPos;
-    bool _gameOver = false;
-    bool _isBullet = false;
+    state_t _gameStatus;
+    std::size_t _nbKilledCentipede;
+    bool _isBullet;
     std::chrono::_V2::system_clock::time_point _lastTime;
 
     void moveCentipede();
@@ -109,10 +115,7 @@ extern "C" {
     IGame *makeGame() {
         return new Centipede;
     }
-}
-
-}
-
-
+};
+};
 
 #endif
