@@ -359,6 +359,45 @@ void arcade::SolarFox::setEnnemies(void) {
     _ennemiesDirections.push_back(-1);
 }
 
+data_t arcade::SolarFox::displayBinds(data_t data) {
+    text_t text = {
+        .pos = {MAP_SIZE + MAP_OFST.x + WALL_SIZE * 2 + 2, 0},
+        .fontSize = 14,
+        .value = "keybinds: " + std::to_string(_score),
+        .fontPath = ASSETS_PATH + static_cast<std::string>("Starjedi.ttf"),
+        .color = {255, 255, 0, 255}
+    };
+    text.pos.y = 20;
+    text.value = "move:  z q s d";
+    data.texts.push_back(text);
+
+    text.pos.y  = 22;
+    text.value = "shoot:  enter";
+    data.texts.push_back(text);
+
+    text.pos.y  = 24;
+    text.value = "pause: space";
+    data.texts.push_back(text);
+
+    text.pos.y = 26;
+    text.value = "menu:  esc";
+    data.texts.push_back(text);
+
+    text.pos.y = 28;
+    text.value = "change graphic:  a";
+    data.texts.push_back(text);
+
+    text.pos.y = 30;
+    text.value = "change game:  e";
+    data.texts.push_back(text);
+
+    text.pos.y = 32;
+    text.value = "restart: r";
+    data.texts.push_back(text);
+
+    return data;
+}
+
 data_t arcade::SolarFox::update(void) {
     data_t data = {};
 
@@ -382,6 +421,7 @@ data_t arcade::SolarFox::update(void) {
             .color = {255, 255, 0, 255}
         };
         data.texts.push_back(text);
+        data = displayBinds(data);
         if (_gameStatus == PAUSE) {
             text.pos = {60, 2};
             text.value = "paused";

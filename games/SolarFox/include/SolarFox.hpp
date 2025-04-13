@@ -91,6 +91,7 @@ class SolarFox : public IGame {
         bool checkIfShotOnCoin(std::vector<entity_t>::const_iterator shot);
         bool checkIfShotOnEnnemy(std::vector<entity_t>::const_iterator shot);
         bool checkIfShotOnEnnemyShot(std::vector<entity_t>::const_iterator shot);
+        data_t displayBinds(data_t data);
 };
 
 extern "C" {
