@@ -23,8 +23,8 @@ namespace arcade {
 
 class SolarFox : public IGame {
 
-    #define MAP_SIZE 50
-    #define MARGIN_ZONE 15
+    #define MAP_SIZE 30
+    #define MARGIN_ZONE 5
     #define MAP_OFST vector_t{30, 5}
 
     #define PLAYER_START_POS vector_t{0, 0}
