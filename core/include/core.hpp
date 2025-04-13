@@ -62,7 +62,8 @@ class core : public ICore {
 
         std::size_t _graphicIndex = 0;
         std::size_t _gameIndex = 0;
-        bool _update = false;
+        bool _updateGraphic = false;
+        bool _updateGame = false;
         std::vector<std::string> _graphicPaths;
         std::vector<std::string> _gamePaths;
 
