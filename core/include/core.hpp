@@ -15,6 +15,8 @@
     #include "ICore.hpp"
 
     #define MENU_PATH_LIB "./lib/arcade_menu.so"
+    #define MENU_LIB "./lib/arcade_menu.so"
+    #define PATH_LIBS "./lib"
     #define CORE_EXIT 1
 
 namespace arcade {
@@ -33,7 +35,36 @@ class core : public ICore {
     private:
         dlManage<IGraphic> _graphic;
         dlManage<IGame> _game;
-        std::string _graphicpath;
+
+        template<typename Lib>
+        bool tryLib(const std::string& filename) {
+            void *handlegame = NULL;
+            Lib *(*make)(void) = NULL;
+            if (!filename.compare(MENU_LIB))
+                return false;
+            handlegame = dlopen(filename.c_str(), RTLD_LAZY);
+            if (handlegame == NULL)
+                return false;
+            if (typeid(Lib) == typeid(arcade::IGame)) {
+                make = (Lib *(*)())dlsym(handlegame, "makeGame");
+                if (make == NULL)
+                    return false;
+                _gamePaths.push_back(filename);
+            } else {
+                make = (Lib *(*)())dlsym(handlegame, "makeGraphic");
+                if (make == NULL)
+                    return false;
+                _graphicPaths.push_back(filename);
+            }
+            dlclose(handlegame);
+            return true;
+        }
+
+        std::size_t _graphicIndex = 0;
+        std::size_t _gameIndex = 0;
+        bool _update = false;
+        std::vector<std::string> _graphicPaths;
+        std::vector<std::string> _gamePaths;
 
         int checkCoreEvents(event_t);
         data_t checkLibUpdate(libPaths_t paths, data_t data);
