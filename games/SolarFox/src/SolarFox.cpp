@@ -71,6 +71,30 @@ void arcade::SolarFox::movePlayer(void) {
     }
 }
 
+bool arcade::SolarFox::checkIfShotOnCoin(std::vector<entity_t>::const_iterator shot) {
+    std::vector<entity_t>::const_iterator to_delete;
+    bool found = false;
+    vector_t laser_center_pos = {shot->pos.x + (SHOT_SIZE / 2), shot->pos.y + (SHOT_SIZE / 2)};
+
+    for (std::vector<entity_t>::const_iterator coin = _coins.begin(); coin != _coins.end(); coin++) {
+        if (laser_center_pos.x - coin->pos.x >= 0 && laser_center_pos.x - coin->pos.x <= COIN_SIZE &&
+            laser_center_pos.y - coin->pos.y >= 0 && laser_center_pos.y - coin->pos.y <= COIN_SIZE) {
+            to_delete = coin;
+            found = true;
+            _score += COIN_VALUE;
+        }
+    }
+    if (found) {
+        _coins.erase(to_delete);
+        return true;
+    }
+    return false;
+    // if ((shot->pos.x - _player.pos.x >= 0 && shot->pos.x - _player.pos.x <= COIN_SIZE) &&
+    // (shot->pos.y - _player.pos.y >= 0 && shot->pos.y - _player.pos.y <= COIN_SIZE)) {
+
+    // }
+}
+
 void arcade::SolarFox::checkShots(void) {
     std::vector<std::vector<entity_t>::const_iterator> to_delete;
     bool found = false;
@@ -88,23 +112,22 @@ void arcade::SolarFox::checkShots(void) {
     for (std::size_t k = 0; k < to_delete.size(); k++) {
         _ennemyShots.erase(to_delete[k]);
     }
-}
-
-void arcade::SolarFox::checkIfPlayerOnCoin(void) {
-    std::vector<entity_t>::const_iterator to_delete;
-    bool found = false;
-    vector_t player_center_pos = {_player.pos.x + (PLAYER_SIZE / 2), _player.pos.y + (PLAYER_SIZE / 2)};
-
-    for (std::vector<entity_t>::const_iterator coin = _coins.begin(); coin != _coins.end(); coin++) {
-        if (player_center_pos.x - coin->pos.x >= 0 && player_center_pos.x - coin->pos.x <= COIN_SIZE &&
-            player_center_pos.y - coin->pos.y >= 0 && player_center_pos.y - coin->pos.y <= COIN_SIZE) {
-            to_delete = coin;
-            found = true;
-            _score += COIN_VALUE;
+    to_delete.clear();
+    for (std::vector<entity_t>::const_iterator shot = _playerShots.begin(); shot != _playerShots.end(); shot++) {
+        if (shot->pos.y < MAP_OFST.y + WALL_SIZE ||
+            shot->pos.y > MAP_OFST.y + MAP_SIZE ||
+            shot->pos.x < MAP_OFST.x + WALL_SIZE ||
+            shot->pos.x > MAP_OFST.x + MAP_SIZE) {
+                to_delete.push_back(shot);
+        } else {
+            if (checkIfShotOnCoin(shot) == true)
+                to_delete.push_back(shot);
         }
     }
-    if (found)
-        _coins.erase(to_delete);
+    for (std::size_t k = 0; k < to_delete.size(); k++) {
+        _playerShots.erase(to_delete[k]);
+    }
+
 }
 
 void arcade::SolarFox::moveShots(void) {
@@ -115,6 +138,17 @@ void arcade::SolarFox::moveShots(void) {
             _ennemyShots[k].pos.y += SHOT_SPEED;
         }
     }
+    for (std::size_t k = 0; k < _playerShots.size(); k++) {
+        if (_playerShots[k].direction == UP) {
+            _playerShots[k].pos.y -= SHOT_SPEED;
+        } else if (_playerShots[k].direction == DOWN) {
+            _playerShots[k].pos.y += SHOT_SPEED;
+        } else if (_playerShots[k].direction == LEFT) {
+            _playerShots[k].pos.x -= SHOT_SPEED;
+        } else if (_playerShots[k].direction == RIGHT) {
+            _playerShots[k].pos.x += SHOT_SPEED;
+        }
+    }
 }
 
 void arcade::SolarFox::ennemyShoot(void) {
@@ -123,7 +157,7 @@ void arcade::SolarFox::ennemyShoot(void) {
         if (chance <= SHOOT_PERCENTAGE) {
             entity_t newShot = {
                 .pos = _ennemies[index].pos,
-                .size = {1, 1},
+                .size = {SHOT_SIZE, SHOT_SIZE},
                 .character = '*',
                 .asset = ASSETS_PATH + static_cast<std::string>("green_laser.png"),
                 .color = {.r = 0, .g = 255, .b = 0, .a = 255},
@@ -149,6 +183,18 @@ void arcade::SolarFox::moveEnnemies(void) {
 void arcade::SolarFox::isThereCoin(void) {
     if (_coins.size() == 0)
         _gameStatus = WIN;
+}
+
+void arcade::SolarFox::playerShoot(void) {
+    entity_t newShot = {
+        .pos = {_player.pos.x + PLAYER_SIZE / 2, _player.pos.y + PLAYER_SIZE / 2},
+        .size = {SHOT_SIZE, SHOT_SIZE},
+        .character = '*',
+        .asset = ASSETS_PATH + static_cast<std::string>("red_laser.png"),
+        .color = {.r = 255, .g = 0, .b = 0, .a = 255},
+        .direction = _player.direction
+    };
+    _playerShots.push_back(newShot);
 }
 
 void arcade::SolarFox::handleEvent(event_t events) {
@@ -179,6 +225,8 @@ void arcade::SolarFox::handleEvent(event_t events) {
         } else if (event == A_KEY_D && _player.direction != LEFT) {
             _player.direction = RIGHT;
             _player.character = '>';
+        } else if (event == A_KEY_ENTER) {
+            playerShoot();
         } else if (event == A_KEY_ESC) {
             _libs.game = MENU_PATH;
         } else if (event == A_KEY_F4) {
@@ -193,7 +241,6 @@ void arcade::SolarFox::handleEvent(event_t events) {
     }
     _lastTime = now;
     movePlayer();
-    checkIfPlayerOnCoin();
     moveEnnemies();
     ennemyShoot();
     moveShots();
@@ -277,7 +324,6 @@ data_t arcade::SolarFox::update(void) {
     data_t data = {};
 
     if (_gameStatus == RUNNING || _gameStatus == PAUSE || _gameStatus == WAITING) {
-        data.objects.push_back(_player);
         for (auto wall : _border)
             data.bg.push_back(wall);
         for (auto coin : _coins)
@@ -286,6 +332,9 @@ data_t arcade::SolarFox::update(void) {
             data.objects.push_back(ennemy);
         for (auto ennemyShot : _ennemyShots)
             data.objects.push_back(ennemyShot);
+        for (auto playerShot : _playerShots)
+            data.objects.push_back(playerShot);
+        data.objects.push_back(_player);
         text_t text = {
             .pos = {MAP_OFST.x, 2},
             .fontSize = 20,
