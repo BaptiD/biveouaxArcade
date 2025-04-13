@@ -70,7 +70,7 @@ void arcade::SDL2::eventManager(void)
         if (_SDLevent.type == SDL_KEYDOWN) {
             if (eventNotAllreadySet(GET_VALUE(KEYS, GET_KEY_EVENT(_SDLevent))))
                 _events.events.push_back(GET_VALUE(KEYS, GET_KEY_EVENT(_SDLevent)));
-            if (GET_KEY_EVENT(_SDLevent) == SDLK_ESCAPE)
+            if (GET_KEY_EVENT(_SDLevent) == SDLK_ESCAPE || GET_KEY_EVENT(_SDLevent) == SDLK_e)
                 Mix_PauseMusic();
         }
         if(_SDLevent.type == SDL_MOUSEMOTION) {
