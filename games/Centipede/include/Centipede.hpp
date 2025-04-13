@@ -31,7 +31,7 @@
     #define BLACK {0, 0, 0, 0}
 
     #define ASSET_DIR "./lib/assets/arcade_centipede/"
-    #define FONT_PATH "./lib/assets/arcade_menu/font/arcade.ttf"
+    #define FONT_PATH "./lib/assets/arcade_centipede/fonts/arcade.ttf"
     #define BULLET_PATH "./lib/assets/arcade_centipede/sprites/Dart.png"
     #define CENTIPEDE_PATH "./lib/assets/arcade_centipede/sprites/CentipedeBody.png"
     #define MUSHROOM_PATH "./lib/assets/arcade_centipede/sprites/Mushroom01.png"
