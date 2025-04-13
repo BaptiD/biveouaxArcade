@@ -59,7 +59,6 @@ bool arcade::SDL2::eventNotAllreadySet(event_e event)
     return true;
 }
 
-#include <iostream>
 void arcade::SDL2::eventManager(void)
 {
     int x, y = 0;
