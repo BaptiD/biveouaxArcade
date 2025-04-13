@@ -72,7 +72,7 @@
     #define TILE_CHAR ' '
     #define PLAYER_CHAR 'P'
     
-    #define KEYS_TEXT "Move: z,q,s,d | Shot: Spacebar | change lib graphic: a | change game: e | restart: r | Return to menu: échap | Leave arcade: suppr"
+    #define KEYS_TEXT "Move: z,q,s,d | Shot: Spacebar | change lib: a,e | restart: r | Return menu: échap | Leave: suppr"
     #define KEYS_TEXT_POS {0, 0}
     #define KEYS_INDEX 0
 

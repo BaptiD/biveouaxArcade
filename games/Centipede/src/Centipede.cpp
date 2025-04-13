@@ -57,9 +57,11 @@ void arcade::Centipede::initGame() {
         _mushrooms.push_back(mushroom);
     }
 
-    //score
+    //keys text
     text_t keys = {KEYS_TEXT_POS, FONT_SIZE, KEYS_TEXT, FONT_PATH, WHITE};
     _state.texts.push_back(keys);
+    
+    //score text
     text_t score = {DEFAULT_SCORE_POS, FONT_SIZE, "Score: 0, number of centipede killed: " + std::to_string(_nbKilledCentipede) + "/20", FONT_PATH, WHITE};
     _state.texts.push_back(score);
     _lastTime = std::chrono::high_resolution_clock::now();
