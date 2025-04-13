@@ -1,6 +1,9 @@
 #UNWANTED FILES
 *.log
 
+# DOXYGEN
+doc/
+
 # OBJECTS
 arcade
 *.o
