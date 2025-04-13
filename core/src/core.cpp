@@ -8,6 +8,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <filesystem>
 
 #include "tool.hpp"
 #include "core.hpp"
@@ -16,7 +17,13 @@ arcade::core::core(std::string graphicPath)
 {
     load(MENU_PATH_LIB, GAME_LIB);
     load(graphicPath, GRAPHIC_LIB);
-    _graphicpath = graphicPath;
+    for (const auto &lib : std::filesystem::directory_iterator(PATH_LIBS)) {
+        if (tryLib<IGraphic>(lib.path())) {
+            if (!graphicPath.compare(lib.path()))
+                _graphicIndex = _graphicPaths.size() - 1;
+        } else
+            tryLib<IGame>(lib.path());
+    }
 }
 
 void arcade::core::load(std::string libPath, typeLib_e type)
@@ -42,6 +49,16 @@ data_t arcade::core::setupNewGame(void)
 
 data_t arcade::core::checkLibUpdate(libPaths_t paths, data_t data)
 {
+    if (_updateGraphic == true) {
+        _graphic.closeLib();
+        load(_graphicPaths[_graphicIndex], GRAPHIC_LIB);
+        _updateGraphic = false;
+    } else if (_updateGame == true) {
+        _game.closeLib();
+        load(_gamePaths[_gameIndex], GAME_LIB);
+        _updateGame = false;
+        return setupNewGame();
+    }
     if (!data.libs.graphic.empty() && paths.graphic.compare(data.libs.graphic)) {
         _graphic.closeLib();
         load(data.libs.graphic, GRAPHIC_LIB);
@@ -59,6 +76,24 @@ int arcade::core::checkCoreEvents(event_t events)
     for (event_e &event : events.events) {
         if (event == A_KEY_DEL)
             return CORE_EXIT;
+        if (event == A_KEY_A) {
+            if (_graphicPaths.size() - 1 <= _graphicIndex)
+                _graphicIndex = 0;
+            else
+                _graphicIndex += 1;
+            _updateGraphic = true;
+        }
+        if (event == A_KEY_E) {
+            if (_gamePaths.size() - 1 <= _gameIndex)
+                _gameIndex = 0;
+            else
+                _gameIndex += 1;
+            _updateGame = true;
+        }
+        if (event == A_KEY_R) {
+            _game.closeLib();
+            load(_gamePaths[_gameIndex], GAME_LIB);
+        }
     }
     return 0;
 }
@@ -69,7 +104,7 @@ void arcade::core::run(void)
     data_t datas = {};
 
     datas.libs.game = MENU_PATH_LIB;
-    datas.libs.graphic = _graphicpath;
+    datas.libs.graphic = _graphicPaths[_graphicIndex];
     while (1) {
         events = CALL(_graphic)->getEvent();
         if (checkCoreEvents(events) == CORE_EXIT)
