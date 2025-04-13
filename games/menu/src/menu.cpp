@@ -56,6 +56,9 @@ void arcade::Menu::buildMenu()
 {
     _state.texts.clear();
 
+    text_t keys = {KEYS_TEXT_POS, KEYS_FONT_SIZE, KEYS_TEXT, FONT_PATH, WHITE};
+    _state.texts.push_back(keys);
+
     int y = 5;
     _state.texts.push_back({{BASE_X + 10, (float)(y += OFST_PERCENTAGE)}, 30, "--- MENU ---", FONT_PATH, WHITE});
     y += OFST_PERCENTAGE * 2;

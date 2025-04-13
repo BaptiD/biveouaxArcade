@@ -14,6 +14,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <unistd.h>
+#include <time.h>
 
 const std::map<int, event_e> arcade::nCurses::_map = {
     {27, A_KEY_ESC},
@@ -57,6 +58,7 @@ const std::map<int, event_e> arcade::nCurses::_map = {
     {121, A_KEY_Y},
     {122, A_KEY_Z},
     {127, A_KEY_DEL},
+    {330, A_KEY_DEL},
     {KEY_UP, A_KEY_UP},
     {KEY_DOWN, A_KEY_DOWN},
     {KEY_RIGHT, A_KEY_RIGHT},

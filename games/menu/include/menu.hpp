@@ -24,6 +24,11 @@
     #define OFST_PERCENTAGE 3
     #define BASE_X 10
 
+    #define KEYS_TEXT "Move among graphic lib: q,d | Move among games: z,s | Leave arcade: suppr"
+    #define KEYS_TEXT_POS {0, 0}
+    #define KEYS_INDEX 0
+    #define KEYS_FONT_SIZE 5
+
     #define MENU_LIB "./lib/arcade_menu.so"
 
 namespace arcade {

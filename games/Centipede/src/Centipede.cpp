@@ -58,7 +58,9 @@ void arcade::Centipede::initGame() {
     }
 
     //score
-    text_t score = {DEFAULT_TEXT_POS, FONT_SIZE, "Score: 0", FONT_PATH, WHITE};
+    text_t keys = {KEYS_TEXT_POS, FONT_SIZE, KEYS_TEXT, FONT_PATH, WHITE};
+    _state.texts.push_back(keys);
+    text_t score = {DEFAULT_SCORE_POS, FONT_SIZE, "Score: 0", FONT_PATH, WHITE};
     _state.texts.push_back(score);
     _lastTime = std::chrono::high_resolution_clock::now();
 }
@@ -71,8 +73,8 @@ void arcade::Centipede::handleEvent(event_t events) {
                 return;
             }
         }
-        _state.texts[0].value = "You lost! Score: " + std::to_string(_score) + " - Press Enter to restart";
-        _state.texts[0].pos = DEFAULT_TEXT_POS;
+        _state.texts[SCORE_INDEX].value = "You lost! Score: " + std::to_string(_score) + " - Press Enter to restart";
+        _state.texts[SCORE_INDEX].pos = DEFAULT_SCORE_POS;
         return;
     }
     if (_gameStatus == WIN) {
@@ -82,8 +84,8 @@ void arcade::Centipede::handleEvent(event_t events) {
                 return;
             }
         }
-        _state.texts[0].value = "You won ! Score: " + std::to_string(_score) + " - Press Enter to restart";
-        _state.texts[0].pos = DEFAULT_TEXT_POS;
+        _state.texts[SCORE_INDEX].value = "You won ! Score: " + std::to_string(_score) + " - Press Enter to restart";
+        _state.texts[SCORE_INDEX].pos = DEFAULT_SCORE_POS;
         return;
     }
     for (auto event : events.events) {
@@ -109,7 +111,7 @@ void arcade::Centipede::handleEvent(event_t events) {
         spawnNewCentipede();
         if (_nbKilledCentipede == 20)
             _gameStatus = WIN;
-        _state.texts[0].value = "Score: " + std::to_string(_score);
+        _state.texts[SCORE_INDEX].value = "Score: " + std::to_string(_score);
         if (now - _lastTime > (std::chrono::nanoseconds)DELTA_TIME_CENTIPEDE) {
             _lastTime = now;
             moveCentipede();
