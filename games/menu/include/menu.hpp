@@ -25,7 +25,6 @@
     #define BASE_X 10
 
     #define MENU_LIB "./lib/arcade_menu.so"
-    #define SET_BASE_GAME(c) (c->_state.libs.game = MENU_LIB)
 
 namespace arcade {
 
