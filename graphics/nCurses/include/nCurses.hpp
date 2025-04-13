@@ -18,6 +18,7 @@
     #define MAX_RGBA 255
     #define GAME_WIDTH 30
     #define GAME_HEIGHT 30
+    #define NCURSES_OFFSET 5
 namespace arcade {
 
 class nCurses : public IGraphic {

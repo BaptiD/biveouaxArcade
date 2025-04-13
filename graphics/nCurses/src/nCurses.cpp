@@ -197,7 +197,7 @@ void arcade::nCurses::drawEntity(entity_t& entity) {
         int pairIndex = get_color_pair(entity.color);
         attron(COLOR_PAIR(pairIndex));
     }
-    mvprintw(static_cast<int>(entity.pos.y - _minPos.y), static_cast<int>(entity.pos.x - _minPos.x), "%c", entity.character);
+    mvprintw(static_cast<int>(entity.pos.y - _minPos.y + NCURSES_OFFSET), static_cast<int>(entity.pos.x - _minPos.x), "%c", entity.character);
     if (entity.color.a > 0) {
         attroff(COLOR_PAIR(get_color_pair(entity.color)));
     }
