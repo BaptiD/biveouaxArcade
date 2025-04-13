@@ -12,6 +12,10 @@
     #include <string>
     #include "tool.hpp"
 
+/**
+ * @brief Direction of the entity
+ * 
+ */
 enum direction_e {
     UP,
     DOWN,
@@ -19,6 +23,10 @@ enum direction_e {
     RIGHT
 };
 
+/**
+ * @brief Structure for the entities
+ * 
+ */
 typedef struct entity_s {
     vector_t pos;
     vector_t size;
@@ -28,6 +36,10 @@ typedef struct entity_s {
     direction_e direction;
 } entity_t;
 
+/**
+ * @brief Structure for the texts
+ * 
+ */
 typedef struct text_s {
     vector_t pos;
     uint8_t fontSize;

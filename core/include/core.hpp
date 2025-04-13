@@ -18,22 +18,28 @@
     #define CORE_EXIT 1
 
 namespace arcade {
-    class core : public ICore {
 
-        public:
-            core(std::string graphicPath);
-            void run(void) override;
-            void load(std::string libPath, typeLib_e type) override;
+/**
+ * @brief 
+ * 
+ */
+class core : public ICore {
 
-        private:
-            dlManage<IGraphic> _graphic;
-            dlManage<IGame> _game;
-            std::string _graphicpath;
+    public:
+        core(std::string graphicPath);
+        void run(void) override;
+        void load(std::string libPath, typeLib_e type) override;
 
-            int checkCoreEvents(event_t);
-            data_t checkLibUpdate(libPaths_t paths, data_t data);
-            data_t setupNewGame(void);
-    };
+    private:
+        dlManage<IGraphic> _graphic;
+        dlManage<IGame> _game;
+        std::string _graphicpath;
+
+        int checkCoreEvents(event_t);
+        data_t checkLibUpdate(libPaths_t paths, data_t data);
+        data_t setupNewGame(void);
+};
+
 }
 
 #endif

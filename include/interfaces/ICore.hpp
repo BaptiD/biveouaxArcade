@@ -13,6 +13,10 @@
 
 namespace arcade {
 
+/**
+ * @brief 
+ * 
+ */
 class ICore {
 
     public:
