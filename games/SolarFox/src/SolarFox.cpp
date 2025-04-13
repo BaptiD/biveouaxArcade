@@ -125,7 +125,7 @@ void arcade::SolarFox::ennemyShoot(void) {
                 .pos = _ennemies[index].pos,
                 .size = {1, 1},
                 .character = '*',
-                .asset = ASSETS_PATH + static_cast<std::string>("dart.png"),
+                .asset = ASSETS_PATH + static_cast<std::string>("green_laser.png"),
                 .color = {.r = 0, .g = 255, .b = 0, .a = 255},
                 .direction = DOWN
             };
