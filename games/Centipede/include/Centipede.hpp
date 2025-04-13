@@ -62,7 +62,8 @@
     #define DEFAULT_PLAYER_POS {(MAP_AREA / 2) + OFFSETX_GAME, MAP_AREA + OFFSETY_GAME}
     #define DEFAULT_CENTIPEDE_POS(x) {(double)5 + i + OFFSETX_GAME, 5 + OFFSETY_GAME}
     #define DEFAULT_RANDOM_MUSH_POS {(double)(rand() % 20) + OFFSETX_GAME + 1, (double)(rand() % 15) + OFFSETY_GAME + 1}
-    #define DEFAULT_TEXT_POS {0, 0}
+    #define DEFAULT_SCORE_POS {0, 2}
+    #define SCORE_INDEX 1
 
     #define CENTIPEDE_CHAR 's'
     #define WALL_CHAR '#'
@@ -70,6 +71,10 @@
     #define BULLET_CHAR '*'
     #define TILE_CHAR ' '
     #define PLAYER_CHAR 'P'
+    
+    #define KEYS_TEXT "Move: z,q,s,d | Shot: Spacebar | change lib graphic: a | change game: e | restart: r | Return to menu: échap | Leave arcade: suppr"
+    #define KEYS_TEXT_POS {0, 0}
+    #define KEYS_INDEX 0
 
 namespace arcade {
 class Centipede : public IGame {
