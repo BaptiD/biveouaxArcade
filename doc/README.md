@@ -164,7 +164,7 @@ sh compile -re
 
 - Contactez les participants de ce répertoire: pierre.pruvost@epitech.eu, jules.delteil@epitech.eu, baptiste.dunes@epitech.eu
 
-- Vous pouvez contacter aussi les autres personnes qui ont contribué à l'architecture : jason.zohou@epitech.eu, mikal.zheng@epitech.eu, paul.berlioz@epitech.eu, luigi.gomes@epitech.eu, celian.raguin@epitech.eu, kerwan.clavier@epitech.eu, swan.grandin@epitech.eu, benoit.thomas, mariia semenchenko 
+- Vous pouvez contacter aussi les autres personnes qui ont contribué à l'architecture : jason.zohou@epitech.eu, mikal.zheng@epitech.eu, paul.berlioz@epitech.eu, luigi.gomes@epitech.eu, celian.raguin@epitech.eu, kerwan.clavier@epitech.eu, swan.grandin@epitech.eu, benoit.thomas@epitech.eu, mariia.semenchenko@epitech.eu 
 
 
 ## Annexes:
