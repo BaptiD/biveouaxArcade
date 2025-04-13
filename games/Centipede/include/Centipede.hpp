@@ -20,7 +20,8 @@
     #define FPS (1000 / FRAME_RATE)
     #define GET_TIME std::chrono::steady_clock::now()
     #define CHRONO(lc) (std::chrono::duration_cast<std::chrono::microseconds>(GET_TIME - lc))
-    #define DELTA_TIME 30
+    #define DELTA_TIME_CENTIPEDE 100000000
+    #define DELTA_TIME_BULLET 99700000
 
     #define WHITE {255, 255, 255, 255}
     #define PINK {248, 148, 200, 255}
