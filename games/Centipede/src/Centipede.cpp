@@ -16,6 +16,7 @@ arcade::Centipede::Centipede() {
 }
 
 void arcade::Centipede::initGame() {
+    //set all set to default ones
     _state.objects.clear();
     _state.texts.clear();
     _mushroomsPos.clear();
@@ -28,6 +29,7 @@ void arcade::Centipede::initGame() {
     entity_t player;
     srand(time(nullptr));
 
+    //background and walls
     for (std::size_t y = 0; y < MAP_HEIGHT; y++) {
         for (std::size_t x = 0; x < MAP_WIDTH; x++) {
             if (x == 0 || x == MAP_WIDTH - 1 || y == 0 || y == MAP_HEIGHT - 1) {
@@ -39,6 +41,7 @@ void arcade::Centipede::initGame() {
             }
         }
     }
+    //the player
     player = {DEFAULT_PLAYER_POS, {PLAYER_SIZE, PLAYER_SIZE}, PLAYER_CHAR, PLAYER_PATH, BLUE, UP};
     _state.objects.push_back(player);
 
@@ -60,7 +63,7 @@ void arcade::Centipede::initGame() {
     //keys text
     text_t keys = {KEYS_TEXT_POS, FONT_SIZE, KEYS_TEXT, FONT_PATH, WHITE};
     _state.texts.push_back(keys);
-    
+
     //score text
     text_t score = {DEFAULT_SCORE_POS, FONT_SIZE, "Score: 0, number of centipede killed: " + std::to_string(_nbKilledCentipede) + "/20", FONT_PATH, WHITE};
     _state.texts.push_back(score);
@@ -69,7 +72,7 @@ void arcade::Centipede::initGame() {
 
 void arcade::Centipede::handleEvent(event_t events) {
     if (_gameStatus == LOSE) {
-        for (auto event : events.events) {
+        for (event_e event : events.events) {
             if (event == A_KEY_ENTER) {
                 initGame();
                 return;
@@ -80,7 +83,7 @@ void arcade::Centipede::handleEvent(event_t events) {
         return;
     }
     if (_gameStatus == WIN) {
-        for (auto event : events.events) {
+        for (event_e event : events.events) {
             if (event == A_KEY_ENTER) {
                 initGame();
                 return;
@@ -90,15 +93,15 @@ void arcade::Centipede::handleEvent(event_t events) {
         _state.texts[SCORE_INDEX].pos = DEFAULT_SCORE_POS;
         return;
     }
-    for (auto event : events.events) {
+    for (event_e event : events.events) {
         if (event == A_KEY_Q)
-            _state.objects[0].pos.x = std::max((double)1 + OFFSETX_GAME, _state.objects[0].pos.x - 1);
+            _state.objects[PLAYER_INDEX].pos.x = std::max((double)1 + OFFSETX_GAME, _state.objects[PLAYER_INDEX].pos.x - 1);
         if (event == A_KEY_D)
-            _state.objects[0].pos.x = std::min((double)MAP_AREA + OFFSETX_GAME, _state.objects[0].pos.x + 1);
+            _state.objects[PLAYER_INDEX].pos.x = std::min((double)MAP_AREA + OFFSETX_GAME, _state.objects[PLAYER_INDEX].pos.x + 1);
         if (event == A_KEY_Z)
-            _state.objects[0].pos.y = std::max((double)MAP_AREA - MAX_Y_PLAYER + OFFSETY_GAME, _state.objects[0].pos.y - 1);
+            _state.objects[PLAYER_INDEX].pos.y = std::max((double)MAP_AREA - MAX_Y_PLAYER + OFFSETY_GAME, _state.objects[PLAYER_INDEX].pos.y - 1);
         if (event == A_KEY_S)
-            _state.objects[0].pos.y = std::min((double)MAP_AREA + OFFSETY_GAME, _state.objects[0].pos.y + 1);
+            _state.objects[PLAYER_INDEX].pos.y = std::min((double)MAP_AREA + OFFSETY_GAME, _state.objects[PLAYER_INDEX].pos.y + 1);
         if (event == A_KEY_SPACE)
             shoot();
         if (event == A_KEY_ESC)
@@ -111,7 +114,7 @@ void arcade::Centipede::handleEvent(event_t events) {
     if (now - _lastTime > (std::chrono::nanoseconds)DELTA_TIME_BULLET) {
         updateBullets();
         spawnNewCentipede();
-        if (_nbKilledCentipede == 20)
+        if (_nbKilledCentipede == NB_CENTIPEDE_TO_KILL)
             _gameStatus = WIN;
         _state.texts[SCORE_INDEX].value = "Score: " + std::to_string(_score) + ", number of centipede killed: " + std::to_string(_nbKilledCentipede) + "/20";
         if (now - _lastTime > (std::chrono::nanoseconds)DELTA_TIME_CENTIPEDE) {
@@ -178,14 +181,14 @@ void arcade::Centipede::moveCentipede() {
 void arcade::Centipede::shoot() {
     if (_isBullet == true)
         return;
-    entity_t bullet = {{_state.objects[0].pos.x, _state.objects[0].pos.y - 1}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, BULLET_CHAR, BULLET_PATH, RED, UP};
+    entity_t bullet = {{_state.objects[PLAYER_INDEX].pos.x, _state.objects[PLAYER_INDEX].pos.y - 1}, {MUSHROOM_SIZE, MUSHROOM_SIZE}, BULLET_CHAR, BULLET_PATH, RED, UP};
     _state.objects.push_back(bullet);
     _isBullet = true;
 }
 
 void arcade::Centipede::updateBullets() {
     std::vector<entity_t>::const_iterator i;
-    for (auto& entity : _state.objects) {
+    for (entity_t& entity : _state.objects) {
         if (entity.character == BULLET_CHAR) {
             entity.pos.y -= 1;
             if (entity.pos.y <= 0 + OFFSETY_GAME)
@@ -212,6 +215,8 @@ void arcade::Centipede::handleCollision(){
             for (std::size_t j = 0; j < _state.objects.size(); j++) {
                 if (i == j)
                     continue;
+
+                //if a bullet hit a centipede or a mushroom
                 if ((_state.objects[j].character == MUSHROOM_CHAR || _state.objects[j].character == CENTIPEDE_CHAR) &&
                     isCollision(_state.objects[i], _state.objects[j])) {
                     if (_state.objects[j].character == CENTIPEDE_CHAR) {
@@ -240,6 +245,8 @@ void arcade::Centipede::handleCollision(){
             }
         }
     }
+
+    //remove object hit by bullet and the bullet
     std::vector<entity_t> newObjects;
     for (std::size_t i = 0; i < _state.objects.size(); i++) {
         if (!toRemove[i]) {
@@ -257,13 +264,13 @@ void arcade::Centipede::checkPlayerCollision() {
             break;
         }
     }
-    for (auto& entity : _state.objects) {
+    for (entity_t& entity : _state.objects) {
         if (entity.character == CENTIPEDE_CHAR && isCollision(player, entity)) {
             _gameStatus = LOSE;
             break;
         }
     }
-    for (auto& centipede : _state.objects) {
+    for (entity_t& centipede : _state.objects) {
         if (centipede.character == CENTIPEDE_CHAR && centipede.pos.y >= MAP_AREA + OFFSETY_GAME) {
             _gameStatus = LOSE;
             break;

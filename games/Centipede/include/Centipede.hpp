@@ -51,6 +51,7 @@
 
     #define DEFAULT_NB_MUSHROOMS 5
     #define DEFAULT_LEN_CENTIPEDE 10
+    #define NB_CENTIPEDE_TO_KILL 20
 
     #define MUSHROOM_SIZE 1
     #define PLAYER_SIZE 1
@@ -64,6 +65,7 @@
     #define DEFAULT_RANDOM_MUSH_POS {(double)(rand() % 20) + OFFSETX_GAME + 1, (double)(rand() % 15) + OFFSETY_GAME + 1}
     #define DEFAULT_SCORE_POS {0, 2}
     #define SCORE_INDEX 1
+    #define PLAYER_INDEX 0
 
     #define CENTIPEDE_CHAR 's'
     #define WALL_CHAR '#'
@@ -71,6 +73,7 @@
     #define BULLET_CHAR '*'
     #define TILE_CHAR ' '
     #define PLAYER_CHAR 'P'
+
     
     #define KEYS_TEXT "Move: z,q,s,d | Shot: Spacebar | change lib: a,e | restart: r | Return menu: échap | Leave: suppr"
     #define KEYS_TEXT_POS {0, 0}
