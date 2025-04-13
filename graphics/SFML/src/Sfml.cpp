@@ -89,7 +89,7 @@ event_t arcade::Sfml::getEvent() {
 
     while (_window.pollEvent(sfEvent)) {
         if (sfEvent.type == sf::Event::Closed) {
-            events.events.push_back(A_KEY_F4);
+            events.events.push_back(A_KEY_DEL);
         } else if (sfEvent.type == sf::Event::KeyPressed) {
             for (std::map<int, event_e>::const_iterator it = _conversionKeyboard.begin(); it != _conversionKeyboard.end(); ++it) {
                 if (it->first == sfEvent.key.code) {
