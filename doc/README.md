@@ -144,9 +144,7 @@ extern "C" IGraphic *makeGraphic() {
 
 ### Compilation:
 
-Construisez votre fichier CMake pour chaque jeu/librairie graphique implémentée et reliez-le dans le CMakeLists.txt à la root.
-
-Placez le `.so` dans le dossier */lib*
+Construisez votre fichier CMake pour chaque jeu/librairie graphique implémentée (il faut placez le `.so` dans le dossier */lib*) et reliez-le dans le CMakeLists.txt à la root.
 
 Puis:
 
@@ -157,10 +155,22 @@ sh compile -re
 ### Exécution :
 
 ```
-./arcade graphique.so
+./arcade arcade_graphique.so
 ```
 
 ## 6. Support
 
 - Consultez la **documentation dans le code**.
-- Contactez: pierre.pruvost@epitech.eu, jules.delteil@epitech.eu, baptiste.dunes@epitech.eu
+
+- Contactez les participants de ce répertoire: pierre.pruvost@epitech.eu, jules.delteil@epitech.eu, baptiste.dunes@epitech.eu
+
+- Vous pouvez contacter aussi les autres personnes qui ont contribué à l'architecture : jason.zohou@epitech.eu, mikal.zheng@epitech.eu, paul.berlioz@epitech.eu, luigi.gomes@epitech.eu, celian.raguin@epitech.eu, kerwan.clavier@epitech.eu, swan.grandin@epitech.eu, benoit.thomas, mariia semenchenko 
+
+
+## Annexes:
+
+- Répertoire Github avec les Interfaces et Structures nécessaires : https://github.com/JulesDELTEIL/ArcadeMultiGroup
+
+- Répertoire Github contenant quelques librairies créées via l'architecture présente dans le répertoire ci-dessus : https://github.com/JulesDELTEIL/ArcadeMultiGroup
+
+- Documentation (format notion) : https://www.notion.so/Documentation-Arcade-1cb3873e4fad80c68b52d587d9cc5df9
