@@ -2,7 +2,7 @@
 *.log
 
 # DOXYGEN
-doc/
+doxygene/
 
 # OBJECTS
 arcade
