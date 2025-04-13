@@ -104,8 +104,8 @@ event_t arcade::nCurses::getEvent(void) {
     getyx(stdscr, _events.mPos.y, _events.mPos.x);
     //if input
     if (ch != -1) {
-        MEVENT event;
         if (ch == KEY_MOUSE) {
+            MEVENT event;
             if (getmouse(&event) == OK) {
                 if (event.bstate & BUTTON1_PRESSED)
                     _events.events.push_back(A_MOUSE_LEFT);
@@ -113,15 +113,16 @@ event_t arcade::nCurses::getEvent(void) {
                     _events.events.push_back(A_MOUSE_MIDDLE);
                 else if (event.bstate & BUTTON3_PRESSED)
                     _events.events.push_back(A_MOUSE_RIGHT);
+            }     
+        } else {
+            //looking for equivalent input on our arcade's key (check also if we manage it or not)
+            for (std::map<int, event_e>::const_iterator it = _map.begin(); it != _map.end(); ++it) {
+                if (it->first == ch) {
+                    _events.events.push_back(it->second);
+                    break;
+                }
+                flushinp();
             }
-        }
-        //looking for equivalent input on our arcade's key (check also if we manage it or not)
-        for (std::map<int, event_e>::const_iterator it = _map.begin(); it != _map.end(); ++it) {
-            if (it->first == ch) {
-                _events.events.push_back(it->second);
-                break;
-            }
-            flushinp();
         }
     }
     return _events;
