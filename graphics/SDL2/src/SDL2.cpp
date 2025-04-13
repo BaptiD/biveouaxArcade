@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 
 #include "SDL2.hpp"
 
@@ -22,14 +23,20 @@ arcade::SDL2::SDL2()
     if (_renderer == NULL)
         throw SDL_GetError();
     TTF_Init();
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1)
+        throw SDL_GetError();
+    Mix_Volume(1, MIX_MAX_VOLUME);
     IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
     CHANGE_RENDER_COLOR(_renderer, BLACK);
 }
 
 arcade::SDL2::~SDL2()
 {
+    for (Mix_Music*&music : _musics)
+        Mix_FreeMusic(music);
     TTF_Quit();
     IMG_Quit();
+    Mix_CloseAudio();
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
     SDL_Quit();
@@ -59,9 +66,12 @@ void arcade::SDL2::eventManager(void)
     while (SDL_PollEvent(&_SDLevent)) {
         if (_SDLevent.type == SDL_QUIT)
             exit(0);
-        if (_SDLevent.type == SDL_KEYDOWN)
-            if (eventNotAllreadySet(GET_VALUE(KEYS, _SDLevent.key.keysym.sym)))
-                _events.events.push_back(GET_VALUE(KEYS, _SDLevent.key.keysym.sym));
+        if (_SDLevent.type == SDL_KEYDOWN) {
+            if (eventNotAllreadySet(GET_VALUE(KEYS, GET_KEY_EVENT(_SDLevent))))
+                _events.events.push_back(GET_VALUE(KEYS, GET_KEY_EVENT(_SDLevent)));
+            if (GET_KEY_EVENT(_SDLevent) == SDLK_ESCAPE)
+                Mix_PauseMusic();
+        }
         if(_SDLevent.type == SDL_MOUSEMOTION) {
             _events.events.push_back(GET_VALUE(KEYS, SDL_MOUSEMOTION));
             SDL_GetGlobalMouseState(&x, &y);
@@ -123,17 +133,29 @@ void arcade::SDL2::displayText(text_t text_data)
     SDL_DestroyTexture(msg);
 }
 
+void arcade::SDL2::playSound(std::string path)
+{
+    Mix_Music *music = Mix_LoadMUS(path.c_str());
+
+    if (music == NULL)
+        return;
+    _musics.push_back(music);
+    Mix_PlayMusic(music, -1);
+}
+
 void arcade::SDL2::display(data_t data)
 {
     SDL_RenderClear(_renderer);
-    for (auto& bg : data.bg)
+    for (entity_t& bg : data.bg)
         displayEntity(bg);
-    for (auto& ui : data.ui)
+    for (entity_t& ui : data.ui)
         displayEntity(ui);
-    for (auto& objects : data.objects)
+    for (entity_t& objects : data.objects)
         displayEntity(objects);
-    for (auto& text : data.texts)
+    for (text_t& text : data.texts)
         displayText(text);
+    for (std::string& audio : data.audios)
+        playSound(audio);
     SDL_RenderPresent(_renderer);
     eventManager();
 }

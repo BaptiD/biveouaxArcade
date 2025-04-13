@@ -18,11 +18,14 @@
     #define WINDOW_SIZE_Y 1000
     #define BLACK (color_t){0, 0, 0, 255}
 
+    // Get key pressed from SDL event
+    #define GET_KEY_EVENT(e) (e.key.keysym.sym)
+
     // Get mouse pos in percentage
     #define MOUSE_POS_PERCENT(mPos) ((vector_t){mPos.x / WINDOW_SIZE_X * 100, mPos.y / WINDOW_SIZE_Y * 100})
 
-    #define SIZE_ARRAY(a) (sizeof(a)/sizeof(a[0])) // Get size of no-empty any const array
-    #define GET_VALUE(m, i) (m.find(i)->second) // Get value from map with index
+    // Get value from map with index
+    #define GET_VALUE(m, i) (m.find(i)->second)
 
     // Set SDL_Rect from entity data
     #define RECT(e) ((SDL_Rect){WINDOW_SIZE_X * (int)e.pos.x / 100, WINDOW_SIZE_Y * (int)e.pos.y / 100, \
@@ -118,6 +121,9 @@ class SDL2 : public IGraphic{
         void eventManager(void);
         void displayText(text_t text_data);
         void displayEntity(entity_t entity);
+        void playSound(std::string path);
+
+        std::vector<Mix_Music *> _musics;
         SDL_Window *_window = NULL;
         SDL_Renderer *_renderer = NULL;
         SDL_Event _SDLevent;
