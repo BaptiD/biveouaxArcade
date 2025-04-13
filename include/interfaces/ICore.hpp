@@ -11,10 +11,6 @@
     #include <string>
     #include "tool.hpp"
 
-/// 
-/// \namespace arcade
-/// \class ICore
-///
 namespace arcade {
 
 class ICore {
