@@ -17,10 +17,11 @@ arcade::SolarFox::SolarFox() {
 void arcade::SolarFox::initGame() {
     _gameStatus = WAITING;
     _score = 0;
+    _ennemies.clear();
     _ennemiesDirections.clear();
+    _ennemiesStatus = {-1, -1};
     _ennemyShots.clear();
     _playerShots.clear();
-    _ennemies.clear();
     _coins.clear();
     _libs.game = GAME_PATH;
     _player = {
@@ -89,10 +90,22 @@ bool arcade::SolarFox::checkIfShotOnCoin(std::vector<entity_t>::const_iterator s
         return true;
     }
     return false;
-    // if ((shot->pos.x - _player.pos.x >= 0 && shot->pos.x - _player.pos.x <= COIN_SIZE) &&
-    // (shot->pos.y - _player.pos.y >= 0 && shot->pos.y - _player.pos.y <= COIN_SIZE)) {
+}
 
-    // }
+bool arcade::SolarFox::checkIfShotOnEnnemy(std::vector<entity_t>::const_iterator shot) {
+    vector_t laser_center_pos = {shot->pos.x + (SHOT_SIZE / 2), shot->pos.y + (SHOT_SIZE / 2)};
+    std::size_t index = 0;
+
+    for (std::vector<entity_t>::const_iterator ennemy = _ennemies.begin(); ennemy != _ennemies.end(); ennemy++) {
+        if (laser_center_pos.x - ennemy->pos.x >= 0 && laser_center_pos.x - ennemy->pos.x <= ENNEMY_SIZE &&
+            laser_center_pos.y - ennemy->pos.y >= 0 && laser_center_pos.y - ennemy->pos.y <= ENNEMY_SIZE) {
+            _score += ENNEMY_HIT_VALUE;
+            _ennemiesStatus[index] = 0;
+            return true;
+        }
+        index++;
+    }
+    return false;
 }
 
 void arcade::SolarFox::checkShots(void) {
@@ -119,9 +132,10 @@ void arcade::SolarFox::checkShots(void) {
             shot->pos.x < MAP_OFST.x + WALL_SIZE ||
             shot->pos.x > MAP_OFST.x + MAP_SIZE) {
                 to_delete.push_back(shot);
-        } else {
-            if (checkIfShotOnCoin(shot) == true)
-                to_delete.push_back(shot);
+        } else if (checkIfShotOnCoin(shot) == true) {
+            to_delete.push_back(shot);            
+        } else if (checkIfShotOnEnnemy(shot) == true) {
+            to_delete.push_back(shot);
         }
     }
     for (std::size_t k = 0; k < to_delete.size(); k++) {
@@ -153,29 +167,38 @@ void arcade::SolarFox::moveShots(void) {
 
 void arcade::SolarFox::ennemyShoot(void) {
     for (std::size_t index = 0; index < _ennemies.size(); index++) {
-        int chance = rand() % 100;
-        if (chance <= SHOOT_PERCENTAGE) {
-            entity_t newShot = {
-                .pos = _ennemies[index].pos,
-                .size = {SHOT_SIZE, SHOT_SIZE},
-                .character = '*',
-                .asset = ASSETS_PATH + static_cast<std::string>("green_laser.png"),
-                .color = {.r = 0, .g = 255, .b = 0, .a = 255},
-                .direction = DOWN
-            };
-            if (_ennemies[index].pos.y > MAP_OFST.y + MAP_SIZE / 2)
-                newShot.direction = UP;
-            _ennemyShots.push_back(newShot);
+        if (_ennemiesStatus[index] == -1) {
+            int chance = rand() % 100;
+            if (chance <= SHOOT_PERCENTAGE) {
+                entity_t newShot = {
+                    .pos = _ennemies[index].pos,
+                    .size = {SHOT_SIZE, SHOT_SIZE},
+                    .character = '*',
+                    .asset = ASSETS_PATH + static_cast<std::string>("green_laser.png"),
+                    .color = {.r = 0, .g = 255, .b = 0, .a = 255},
+                    .direction = DOWN
+                };
+                if (_ennemies[index].pos.y > MAP_OFST.y + MAP_SIZE / 2)
+                    newShot.direction = UP;
+                _ennemyShots.push_back(newShot);
+            }
         }
     }
 }
 
 void arcade::SolarFox::moveEnnemies(void) {
     for (std::size_t index = 0; index < _ennemies.size(); index++) {
-        _ennemies[index].pos.x += ENNEMY_SPEED * _ennemiesDirections[index];
-        if (_ennemies[index].pos.x < MAP_OFST.x + WALL_SIZE ||
-            _ennemies[index].pos.x > MAP_OFST.x + MAP_SIZE - WALL_SIZE) {
-            _ennemiesDirections[index] *= -1;
+        if (_ennemiesStatus[index] == -1) {
+            _ennemies[index].pos.x += ENNEMY_SPEED * _ennemiesDirections[index];
+            if (_ennemies[index].pos.x < MAP_OFST.x + WALL_SIZE ||
+                _ennemies[index].pos.x > MAP_OFST.x + MAP_SIZE - WALL_SIZE) {
+                _ennemiesDirections[index] *= -1;
+            }
+        } else {
+            _ennemiesStatus[index] += 1;
+            if (_ennemiesStatus[index] > (FPS)) {
+                _ennemiesStatus[index] = -1;
+            }
         }
     }
 }
