@@ -92,7 +92,7 @@ void arcade::Centipede::handleEvent(event_t events) {
         if (event == A_KEY_D)
             _state.objects[0].pos.x = std::min((double)MAP_AREA + OFFSETX_GAME, _state.objects[0].pos.x + 1);
         if (event == A_KEY_Z)
-            _state.objects[0].pos.y = std::max((double)1 + OFFSETY_GAME, _state.objects[0].pos.y - 1);
+            _state.objects[0].pos.y = std::max((double)MAP_AREA - MAX_Y_PLAYER + OFFSETY_GAME, _state.objects[0].pos.y - 1);
         if (event == A_KEY_S)
             _state.objects[0].pos.y = std::min((double)MAP_AREA + OFFSETY_GAME, _state.objects[0].pos.y + 1);
         if (event == A_KEY_SPACE)
@@ -104,16 +104,18 @@ void arcade::Centipede::handleEvent(event_t events) {
     handleCollision();
     checkPlayerCollision();
     std::chrono::_V2::system_clock::time_point now = std::chrono::high_resolution_clock::now();
-    if (now - _lastTime < (std::chrono::milliseconds)DELTA_TIME) {
-        return;
+    if (now - _lastTime > (std::chrono::nanoseconds)DELTA_TIME_BULLET) {
+        updateBullets();
+        spawnNewCentipede();
+        if (_nbKilledCentipede == 20)
+            _gameStatus = WIN;
+        _state.texts[0].value = "Score: " + std::to_string(_score);
+        if (now - _lastTime > (std::chrono::nanoseconds)DELTA_TIME_CENTIPEDE) {
+            _lastTime = now;
+            moveCentipede();
+            return;
+        }
     }
-    _lastTime = now;
-    moveCentipede();
-    updateBullets();
-    spawnNewCentipede();
-    if (_nbKilledCentipede == 20)
-        _gameStatus = WIN;
-    _state.texts[0].value = "Score: " + std::to_string(_score);
 }
 
 void arcade::Centipede::spawnNewCentipede() {
