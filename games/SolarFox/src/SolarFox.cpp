@@ -108,6 +108,20 @@ bool arcade::SolarFox::checkIfShotOnEnnemy(std::vector<entity_t>::const_iterator
     return false;
 }
 
+bool arcade::SolarFox::checkIfShotOnEnnemyShot(std::vector<entity_t>::const_iterator shot) {
+    vector_t laser_center_pos = {shot->pos.x + (SHOT_SIZE / 2), shot->pos.y + (SHOT_SIZE / 2)};
+
+    for (std::vector<entity_t>::const_iterator ennemyShot = _ennemyShots.begin(); ennemyShot != _ennemyShots.end(); ennemyShot++) {
+        if (laser_center_pos.x - ennemyShot->pos.x >= 0 && laser_center_pos.x - ennemyShot->pos.x <= SHOT_SIZE &&
+            laser_center_pos.y - ennemyShot->pos.y >= 0 && laser_center_pos.y - ennemyShot->pos.y <= SHOT_SIZE) {
+            _score += ENNEMY_SHOT_HIT_VALUE;
+            _ennemyShots.erase(ennemyShot);
+            return true;
+        }
+    }
+    return false;
+}
+
 void arcade::SolarFox::checkShots(void) {
     std::vector<std::vector<entity_t>::const_iterator> to_delete;
     bool found = false;
@@ -132,6 +146,8 @@ void arcade::SolarFox::checkShots(void) {
             shot->pos.x < MAP_OFST.x + WALL_SIZE ||
             shot->pos.x > MAP_OFST.x + MAP_SIZE) {
                 to_delete.push_back(shot);
+        } else if (checkIfShotOnEnnemyShot(shot) == true) {
+            to_delete.push_back(shot);            
         } else if (checkIfShotOnCoin(shot) == true) {
             to_delete.push_back(shot);            
         } else if (checkIfShotOnEnnemy(shot) == true) {

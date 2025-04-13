@@ -38,6 +38,7 @@ class SolarFox : public IGame {
     #define SHOT_SIZE 1
     #define SHOT_SPEED 0.5
     #define SHOOT_PERCENTAGE 0.2
+    #define ENNEMY_SHOT_HIT_VALUE 250
 
     #define WALL_SIZE 2
 
@@ -89,6 +90,7 @@ class SolarFox : public IGame {
         void playerShoot(void);
         bool checkIfShotOnCoin(std::vector<entity_t>::const_iterator shot);
         bool checkIfShotOnEnnemy(std::vector<entity_t>::const_iterator shot);
+        bool checkIfShotOnEnnemyShot(std::vector<entity_t>::const_iterator shot);
 };
 
 extern "C" {
