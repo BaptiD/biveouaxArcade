@@ -64,7 +64,6 @@ void arcade::Centipede::initGame() {
 }
 
 void arcade::Centipede::handleEvent(event_t events) {
-    SET_BASE_GAME(this);
     if (_gameStatus == LOSE) {
         for (auto event : events.events) {
             if (event == A_KEY_ENTER) {
