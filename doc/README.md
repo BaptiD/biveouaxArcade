@@ -77,7 +77,11 @@ L'utilisateur lance le programme (`arcade`) avec en paramètre la bibliothèque 
 4. Affichage avec `display()` -> `IGraphic`
 
 ### Changement de jeu ou bibliothèque
-Possibilité de switcher dynamiquement sans quitter le programme (en retournant au menu via la touche 'échap' ou en appuyant sur 'a' pour changer de librairie graphique durant le jeu).
+Possibilité de switcher dynamiquement sans quitter le programme:
+- *échap* en retournant au menu via la touche
+- *a* pour changer de librairie graphique durant le jeu
+- *e* pour changer de jeu durant un jeu
+- *r* pour recommencer une partie sur le même jeu
 
 ### Fermeture
 Libération des ressources (fenêtre, librairies...).
