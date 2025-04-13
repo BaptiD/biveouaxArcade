@@ -13,14 +13,14 @@
 arcade::SDL2::SDL2()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
-        throw "Error: init SDL";
+        throw SDL_GetError();
     _window = SDL_CreateWindow("SDL2", SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED, WINDOW_SIZE_X, WINDOW_SIZE_Y, SDL_WINDOW_SHOWN);
     if (_window == NULL)
-        throw "Error: init SDL window";
+        throw SDL_GetError();
     _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
     if (_renderer == NULL)
-        throw "Error: init SDL renderer failed";
+        throw SDL_GetError();
     TTF_Init();
     IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
     CHANGE_RENDER_COLOR(_renderer, BLACK);
@@ -75,6 +75,19 @@ void arcade::SDL2::eventManager(void)
     }
 }
 
+double getAngle(direction_e direction)
+{
+    if (direction == UP)
+        return 0.0;
+    if (direction == DOWN)
+        return 180.0;
+    if (direction == LEFT)
+        return 270.0;
+    if (direction == RIGHT)
+        return 90.0;
+    return 0.0;
+}
+
 void arcade::SDL2::displayEntity(entity_t entity_data)
 {
     SDL_Surface *sprite = NULL;
@@ -84,7 +97,8 @@ void arcade::SDL2::displayEntity(entity_t entity_data)
     if (std::filesystem::exists(entity_data.asset)) {
         sprite = IMG_Load(entity_data.asset.c_str());
         texture = SDL_CreateTextureFromSurface(_renderer, sprite);
-        SDL_RenderCopy(_renderer, texture, NULL, &rect);
+        SDL_RenderCopyEx(_renderer, texture, NULL, &rect,
+            getAngle(entity_data.direction), NULL, SDL_FLIP_NONE);
         SDL_FreeSurface(sprite);
         SDL_DestroyTexture(texture);
     } else {

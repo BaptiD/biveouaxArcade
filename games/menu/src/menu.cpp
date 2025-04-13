@@ -19,12 +19,9 @@ arcade::Menu::Menu()
 
 void arcade::Menu::handleEvent(event_t events)
 {
-    SET_BASE_GAME(this);
     if (_gamePaths.empty() || _graphicPaths.empty())
         return;
     for (auto& event : events.events) {
-        if (event == A_KEY_ESC || event == A_KEY_F4)
-            _state.libs.game.clear();
         if (event == A_KEY_Z || event == A_KEY_UP)
             _gameIndex = (_gameIndex - 1) < 0 ? 0 : (_gameIndex - 1);
         if (event == A_KEY_S || event == A_KEY_DOWN)

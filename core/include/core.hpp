@@ -15,6 +15,7 @@
     #include "ICore.hpp"
 
     #define MENU_PATH_LIB "./lib/arcade_menu.so"
+    #define CORE_EXIT 1
 
 namespace arcade {
     class core : public ICore {
@@ -25,11 +26,13 @@ namespace arcade {
             void load(std::string libPath, typeLib_e type) override;
 
         private:
-            data_t checkLibUpdate(libPaths_t paths, data_t data);
-            data_t setupNewGame(void);
             dlManage<IGraphic> _graphic;
             dlManage<IGame> _game;
             std::string _graphicpath;
+
+            int checkCoreEvents(event_t);
+            data_t checkLibUpdate(libPaths_t paths, data_t data);
+            data_t setupNewGame(void);
     };
 }
 

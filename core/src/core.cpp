@@ -42,18 +42,25 @@ data_t arcade::core::setupNewGame(void)
 
 data_t arcade::core::checkLibUpdate(libPaths_t paths, data_t data)
 {
-    // if (data.libs.game.empty())
-    //     return data;
     if (!data.libs.graphic.empty() && paths.graphic.compare(data.libs.graphic)) {
         _graphic.closeLib();
         load(data.libs.graphic, GRAPHIC_LIB);
     }
-    if (paths.game.compare(data.libs.game)) {
+    if (!data.libs.game.empty() && paths.game.compare(data.libs.game)) {
         _game.closeLib();
         load(data.libs.game, GAME_LIB);
         return setupNewGame();
     }
     return data;
+}
+
+int arcade::core::checkCoreEvents(event_t events)
+{
+    for (event_e &event : events.events) {
+        if (event == A_KEY_DEL)
+            return CORE_EXIT;
+    }
+    return 0;
 }
 
 void arcade::core::run(void)
@@ -65,12 +72,10 @@ void arcade::core::run(void)
     datas.libs.graphic = _graphicpath;
     while (1) {
         events = CALL(_graphic)->getEvent();
-        if (!CALL(_game))
+        if (checkCoreEvents(events) == CORE_EXIT)
             return;
         CALL(_game)->handleEvent(events);
         datas = checkLibUpdate(datas.libs, CALL(_game)->update());
-        // if (datas.libs.game.empty())
-        //     return;
         CALL(_graphic)->display(datas);
 //        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }

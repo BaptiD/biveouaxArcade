@@ -44,7 +44,7 @@
 const std::map<int, event_e> KEYS = {
     {SDLK_ESCAPE, A_KEY_ESC},
     {SDLK_SPACE, A_KEY_SPACE},
-    {SDLK_BACKSPACE, A_KEY_DEL},
+    {SDLK_DELETE, A_KEY_DEL},
     {SDLK_RETURN, A_KEY_ENTER},
     {SDLK_TAB, A_KEY_TAB},
     {SDLK_LCTRL, A_KEY_CTRL},
@@ -100,6 +100,7 @@ const std::map<int, event_e> KEYS = {
     {NOT_SET, A_MOUSE_VERTICALWHEEL},
     {NOT_SET, A_MOUSE_HORIZONTALWHEEL},
     {SDL_MOUSEMOTION, A_MOUSE_MOVE},
+    {SDLK_F4, A_KEY_F4},
 };
 
 namespace arcade {
